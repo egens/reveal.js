@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/black.css">
+		<link rel="stylesheet" href="dist/theme/black.css">
+
+		<link rel="stylesheet" href="practicum/css/custom.css">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+	</head>
+	<body>
+
+
+		<div class="reveal">
+			<div class="watermark">
+				<img src="practicum/images/yandex.svg" height="38"/>
+				<img src="practicum/images/practicum.svg" />
+			</div>
+
+			<div class="slides">
+				<section>
+					<section>
+						<h2>Q&A</h2>
+						<h2>Спринт 1</h2>
+						<a href="#/2">3</a>
+						<a href="#/3">4</a>
+						<a href="#/4">5</a>
+						<a href="#/5">6</a>
+						<a href="#/6">7</a>
+						<a href="#/7">8</a>
+						<a href="#/8">9</a>
+						<a href="#/9">10</a>
+						<a href="#/10">11</a>
+						<a href="#/11">12</a>
+						<a href="#/12">13</a>
+						<a href="#/13">14</a>
+						<a href="#/14">15</a>
+						<a href="#/15">16</a>
+						<a href="#/16">17</a>
+						<a href="#/17">18</a>
+						<a href="#/18">19</a>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Q&A</h2>
+						<h2>Спринт 2</h2>
+						<a href="#/0">в начало</a>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Q&A</h2>
+						<h2>Спринт 3</h2>
+						<a href="#/0">в начало</a>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Q&A</h2>
+						<h2>Спринт 4</h2>
+						<a href="#/0">в начало</a>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Q&A</h2>
+						<h2>Спринт 5</h2>
+						<a href="#/0">в начало</a>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Q&A</h2>
+						<h2>Спринт 6</h2>
+						<a href="#/0">в начало</a>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Q&A</h2>
+						<h2>Спринт 7</h2>
+						<a href="#/0">в начало</a>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Q&A</h2>
+						<h2>Спринт 8</h2>
+						<a href="#/0">в начало</a>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Q&A</h2>
+						<h2>Спринт 9</h2>
+						<a href="#/0">в начало</a>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Q&A</h2>
+						<h2>Спринт 10</h2>
+						<a href="#/0">в начало</a>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Q&A</h2>
+						<h2>Спринт 11</h2>
+						<a href="#/0">в начало</a>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Q&A</h2>
+						<h2>Спринт 12</h2>
+						<a href="#/0">в начало</a>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Q&A</h2>
+						<h2>Спринт 13</h2>
+						<a href="#/0">в начало</a>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Q&A</h2>
+						<h2>Спринт 14</h2>
+						<a href="#/0">в начало</a>
+					</section>
+					<section>
+						<h2 data-id="code-title">Hibernate ORM</h2>
+						<ul>
+							<li>Object–relational mapping</li>
+							<li>DTO pattern</li>
+							<li>Транзакции</li>
+							<li>Репозитории</li>
+						</ul>
+						<pre data-id="code-animation"><code class="hljs java" data-trim data-line-numbers>
+							@Service
+							public class ServiceTest {
+
+								@Transactional
+								public void test1() {
+									test2();
+								}
+
+								@Transactional(propagation = Propagation.REQUIRES_NEW)
+								public void test2() {
+								}
+							｝
+						</code></pre>
+						<aside class="notes"><small><small>
+							Мы наконец-то дошли до автоматизации запросов к базе и познакомились с Hibernate. ORM забирает у программиста часть ответственности за запросы к базе. Это уменьшает количество ошибок и позволяет менять СХД в случае необходимости.
+
+							Также, вы рассмотрели паттерн DTO — отделяет сущности ORM и интерфейс сервиса, потому что в общем случае это разные вещи.
+
+							Когда вы пишете приложение, может показаться логичным возвращать ровно то, что лежит в БД — то есть Entity.
+
+							Но это ошибка — в современном гибком мире вы точно будете менять и БД и интерфейс сервиса, тогда почувствуете боль. Лучше сразу уменьшить связность и отделить интерфейс сервиса от сущности.
+
+							Для маппинга есть удобные фреймворки, например mapstruct — вы пишете интерфейс маппера что-куда замапить, а фреймворк генерирует качественный код с проверками.
+
+							Еще в этом модуле вы начали знакомиться с транзакциями, это довольно сложный концепт, который обеспечивает целостность данных в БД.  Хотел расскать о важной особенности аннотации @Transactional — на скрине сервис с двумя методами, помеченными этой аннотацией. Как вы думаете, сколько транзакций будет создано при вызове метода test1? — одна, потому что код управляющий транзакциями выполняется только при вызове метода снаружи объекта, на самом деле сервис оборачивается в прокси-объект
+
+							Еще про транзакции — бывает, что при работе двух человек с БД один делает в ней изменения, а второй их не видит — это чаще всего связано с настройками клиента, выключен автокоммит. Несколько раз сталкивался с этим.
+
+							Вообще как вы поняли — когда нужно использовать транзакции?
+
+							При использовании JPQL десять раз подумайте, нет ли возможности обойтись без него.
+
+							Запросы в коде на мой взгляд существенно усложняют его когнитивную сложность — вам приходится держать в голове не только ООП взаимодействие на JAVA, но и декларативный код запроса, который к тому же отличается от SQL.
+
+							Один раз напишете запрос — придется его поддерживать и расширять. Очнетесь, когда он будет динамически составляться и содержать сотню строчек.
+
+							В теории есть такой Момент:
+							Доступно два вида сохранения. Первый — строковый вид EnumType.STRING. Он сохранит в базу строку, полученную в результате вызова метода enum-класса state.name(). Второй — целочисленный вид EnumType.ORDINAL. Он сохранит порядковый номер элемента перечисления — его также можно получить через вызов метода state.ordinal().  Какой вам больше нравится?  https://vladmihalcea.com/the-best-way-to-map-a-onetomany-association-with-jpa-and-hibernate/ https://habr.com/ru/articles/532000/ https://habr.com/ru/post/347752/
+						</small></small></aside>
+					</section>
+					<section>
+						<h4>Можно ли сделать запросный метод для выражения?</h4>
+						<h2>((A and B) or (C and D)) and E</h2>
+						<aside class="notes"><small><small>
+							В теории написано, что нельзя создать запросный метод на сложное выражение. Можно ли создать на такое?
+							<br><br>
+							Ответ: Можно — достаточно раскрыть скобки по правилам логических выражений.
+						</small></small></aside>
+					</section>
+					<section>
+						<h2 data-id="code-title">ACID</h2>
+						<ul>
+							<li>Atomicity — атомарность</li>
+							<li>Consistency — согласованность</li>
+							<li>Isolation — изоляция</li>
+							<li>Durability — устойчивость</li>
+						</ul>
+						<aside class="notes"><small><small>
+							Акроним — набор требований к транзакционной системе, обеспечивающий надежную и предсказуемую работу.
+							<br><br>
+							Бывает на собеседованиях.
+							<br><br>
+							Давайте вместе вспомним, кто расскажет?
+							<br><br>
+							A — all or nothing, комплексная транзакция либо выполняется полностью либо никак. Важно — система должна гарантировать атомарность в любых ситуациях — при сетевых проблемах, ошибках программы, отказе железа и тп
+							<br><br>
+							C — корректно написанная транзакция сохраняет согласованность данных в БД. То есть все правила и ограничения данных в таблице будут сохранены.
+							<br><br>
+							I — параллельные транзакции не должны влиять друг на друга.
+							<br><br>
+							D — если транзакция завершилась и пользователю было возвращено ОК, то любые проблемы системы не могут на нее повлиять. Обычно значит, что результат записан в отказоустойчивой СХД.
+						</small></small></aside>
+					</section>
+					<section>
+						<h2>Проблема N+1</h2>
+						<blockquote>
+							&ldquo;The Hibernate recommendation is to statically
+							<span class="fragment highlight-blue">mark all associations lazy</span> and to use
+							dynamic fetching strategies for eagerness. This is unfortunately at odds with the JPA
+							specification which defines that all one-to-one and many-to-one associations should be eagerly
+							fetched by default. Hibernate, as a JPA provider, honors that default.
+							&rdquo;
+						</blockquote>
+					</section>
+					<section>
+						<h2>Double brace initialisation</h2>
+						<pre data-id="code-animation"><code class="hljs java" data-trim data-line-numbers>
+							<script type="text/template">
+							HashMap<String, String> map = new HashMap<>(){{
+								put("1", "ONE");
+								put("2", "TWO");
+								put("3", "THREE");
+							}};
+
+							// анонимный внутренний класс
+							HashMap<String, String> map1 = new HashMap<>(){
+
+								{ // блок инициализации
+									put("1", "ONE");
+									put("2", "TWO");
+									put("3", "THREE");
+								}
+							};
+							</script>
+						</code></pre>
+					</section>
+					<section>
+						<h2>ФП14 ShareIt bookings</h2>
+						<ul>
+							<li>Добавить PostgreSQL</li>
+							<li>Переход на JPA</li>
+							<li>Booking — функция бронирования</li>
+							<li>Даты бронирования</li>
+							<li>Отзывы</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Ваши вопросы</h2>
+						<ul>
+							<li>ORM</li>
+							<li>DTO pattern</li>
+							<li>Транзакции</li>
+							<li>Репозитории</li>
+							<li>ACID</li>
+							<li>N+1</li>
+							<li>Double brace</li>
+							<li>ФП14</li>
+						</ul>
+					</section>
+					<section>
+						<section>
+							<h2>Q&A</h2>
+							<h2>Спринт 15</h2>
+							<a href="#/0">в начало</a>
+						</section>
+					</section>
+					<section>
+						<section>
+							<h2>Q&A</h2>
+							<h2>Спринт 16</h2>
+							<a href="#/0">в начало</a>
+						</section>
+					</section>
+					<section>
+						<section>
+							<h2>Q&A</h2>
+							<h2>Спринт 17</h2>
+							<a href="#/0">в начало</a>
+						</section>
+					</section>
+					<section>
+						<section>
+							<h2>Q&A</h2>
+							<h2>Спринт 18</h2>
+							<a href="#/0">в начало</a>
+						</section>
+					</section>
+					<section>
+						<section>
+							<h2>Q&A</h2>
+							<h2>Спринт 19</h2>
+							<a href="#/0">в начало</a>
+						</section>
+					</section>
+				</section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
