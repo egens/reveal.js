@@ -5,3 +5,14 @@
     z-index: 10;
     opacity: 0.5;
 }
+
+.container{
+    display: flex;
+}
+.col{
+    flex: 1;
+}
+
+speaker-controls-notes {
+    font-size: 10px;
+}
