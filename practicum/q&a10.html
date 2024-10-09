@@ -43,6 +43,37 @@
 					<br><br>
 					Привет Камеры Ждем остальных
 					<br><br>
+					<a href="https://leetcode.com/problems/roman-to-integer/">https://leetcode.com/problems/roman-to-integer/</a>
+					<pre><code class="java" data-trim>
+							<script type="text/template">
+								class Solution {
+								public int romanToInt(String s) {
+									Map<Character, Integer> m = new HashMap<>();
+
+									m.put('I', 1);
+									m.put('V', 5);
+									m.put('X', 10);
+									m.put('L', 50);
+									m.put('C', 100);
+									m.put('D', 500);
+									m.put('M', 1000);
+
+									int ans = 0;
+
+									for (int i = 0; i < s.length(); i++) {
+										if (i < s.length() - 1 && m.get(s.charAt(i)) < m.get(s.charAt(i + 1))) {
+											ans -= m.get(s.charAt(i));
+										} else {
+											ans += m.get(s.charAt(i));
+										}
+									}
+
+									return ans;
+								}
+							}
+							</script>
+						</code></pre>
+					<br><br>
 					<a href="https://leetcode.com/problems/maximum-depth-of-binary-tree/description/">https://leetcode.com/problems/maximum-depth-of-binary-tree/description/</a>
 					<pre><code class="java" data-trim>
 							<script type="text/template">
@@ -343,6 +374,9 @@
 				<br>
 				Вам нужно написать модели Фильм, Пользователь, Добавить эндпоинты для них, валидацию и логирование.
 				<br>
+				Валидацию даты фильма можно реализовать отдельным методом и сделать тесты на него.
+				Написание аннотации валидации и тестирование через валидатор — задача со звездочкой.
+				<br>
 				Как сдавать? Сделать ветку и pull request с кодом. Запустятся автопроверки. Строго соблюдать название ветки.
 				<br>
 				Мержить не надо, если что-то правим — пушим в эту же ветку. Когда ревьюер дал добро — мержим.
@@ -353,9 +387,8 @@
 			</aside>
 		</section>
 		<section>
-			<h2>Ваши вопросы</h2>
+			<h2>Спринт 10 — Ваши вопросы</h2>
 			<ul>
-				<li>Спринт 10</li>
 				<li>Системы сборки, Maven</li>
 				<li>Логирование</li>
 				<li>Аннотации</li>

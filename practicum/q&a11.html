@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>reveal.js</title>
+
+	<link rel="stylesheet" href="../dist/reset.css">
+	<link rel="stylesheet" href="../dist/reveal.css">
+	<link rel="stylesheet" href="../dist/theme/black.css">
+	<link rel="stylesheet" href="css/custom.css">
+
+	<!-- Theme used for syntax highlighted code -->
+	<link rel="stylesheet" href="../plugin/highlight/monokai.css">
+</head>
+<body>
+<div class="reveal">
+	<div class="watermark">
+		<img src="images/yandex.svg" height="38"/>
+		<img src="images/practicum.svg" />
+	</div>
+
+	<div class="slides">
+		<section>
+			<div class="container">
+				<div class="col">
+					<br>
+					<div class="qa"><h1>Q&A11</h1></div>
+				</div>
+				<div class="col">
+					<img src="images/photo.tiff" height="300" />
+					<h5>Егор Ерохин</h5>
+					наставник
+				</div>
+				<aside class="notes">
+					<a href="https://practicum.yandex.ru/webinar-form/java-developer/">Заранее зарегистрировать вебинар</a>
+					(erohinegor)
+					<br><br>
+					Нужно быть залогиненым под учеткой, которая используется в практикуме. Выбрать пункт "студент". Нажать отправить.
+					<br><br>
+					Поставить на запись
+					<br><br>
+					Привет Камеры Ждем остальных
+					<br><br>
+					<a href="https://leetcode.com/problems/intersection-of-two-linked-lists">https://leetcode.com/problems/intersection-of-two-linked-lists/submissions/1401811606/</a>
+					<pre><code class="java" data-trim>
+						public class Solution {
+							public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+								ListNode a = headA;
+								ListNode b = headB;
+
+								while( a != b){
+									a = a == null? headB : a.next;
+									b = b == null? headA : b.next;
+								}
+
+								return a;
+							}
+						}
+					</code></pre>
+					<br><br>
+					<a href="https://leetcode.com/problems/maximum-repeating-substring/">https://leetcode.com/problems/maximum-repeating-substring/</a>
+					<pre><code class="java" data-trim></code>
+						class Solution {
+					public int maxRepeating(String sequence, String word) {
+					int k = 1;
+					while (sequence.contains(word.repeat(k))) k++;
+					return k - 1;
+					}
+					}
+					</pre>
+				</aside>
+			</div>
+		</section>
+		<section>
+			<h2>Спринт 11</h2>
+			<ul>
+				<li>Внедрение зависимостей</li>
+				<li>Обработка запросов</li>
+				<li>Конфигурация и логирование Spring</li>
+			</ul>
+			<aside class="notes">
+				Еще раз обсудим инверсию управления, внедрение зависимостей и другие шаблоны проектирования.
+				<br><br>
+				Поговорим про то, когда применять переменные пути, параметры запроса или его тело.
+				<br><br>
+				Про централизованную обработку ошибок
+				<br><br>
+				Обсудим ФП10 Отвечу на вопросы по хард вебинару
+				<br><br>
+				Начнем с вопроса к собеседованию. Кто расскажет, что такое Spring?
+				<br><br>
+				Web Application framework.
+
+				Spring has libraries for
+
+				connecting to your database
+				managing authentication
+				creating restful api
+			</aside>
+		</section>
+		<section>
+			<h2>Инверсия управления</h2>
+			Шаблонный метод
+			<pre><code class="java" data-trim data-line-numbers>
+				public abstract class ComputerBuilder {
+
+					public final Computer buildComputer() {
+						addMotherboard();
+						setupMotherboard();
+						addProcessor();
+						return new Computer(computerParts);
+					}
+
+					public abstract void addMotherboard();
+					public abstract void setupMotherboard();
+					public abstract void addProcessor();
+				}
+			</code></pre>
+			<aside class="notes">
+				Как мы уже обсуждали, в основе Spring лежит принцип Инверсии управления. То есть поток управления программой передается Фреймворку.
+				<br><br>
+				Внедрение зависимостей — одна из базовых техник применения инверсии управления.
+				<br><br>
+				Расскажу еще про два популярных паттерна проектирования связанных с инверсией управления.
+				<br><br>
+				Шаблонный метод — когда в классе родителе задается конкретный шаблон алгоритма и абстрактные шаги по его выполнению.
+				<br><br>
+				В наследнике нужно просто определить шаги и выполнить метод с алгоритмом.
+				<br><br>
+				Примеры встречаются в Core — например метод addAll в классе AbstractList задает алгоритм. А для его выполнения в конкретном списке нужно задать операцию add.  В шаблонном методе управление алгоритмом передается от наследника родителю.
+			</aside>
+		</section>
+		<section>
+			<h2>Инверсия управления</h2>
+			Стратегия
+			<pre><code class="java" data-trim data-line-numbers="1-3|5-12|14-21|23-33">
+				interface PaymentStrategy {
+					void pay(int amount);
+				}
+
+				class CreditCardPayment implements PaymentStrategy {
+					private String creditCardNumber;
+
+					@Override
+					public void pay(int amount) {
+						System.out.println("Paid " + amount + " using credit card number: " + creditCardNumber);
+					}
+				}
+
+				class PayPalPayment implements PaymentStrategy {
+					private String email;
+
+					@Override
+					public void pay(int amount) {
+						System.out.println("Paid " + amount + " using PayPal account: " + email);
+					}
+				}
+
+				class ShoppingCart {
+					private PaymentStrategy paymentStrategy;
+
+					public void setPaymentStrategy(PaymentStrategy paymentStrategy) {
+						this.paymentStrategy = paymentStrategy;
+					}
+
+					public void checkout(int amount) {
+						paymentStrategy.pay(amount);
+					}
+				}
+			</code></pre>
+			<aside class="notes">
+				Второй шаблон — стратегия. На примере видно, что создается интерфейс для выполнения платежа и две реализации — через PayPal и кредитную карту.
+				<br><br>
+				И дальше при осуществлении платежа в корзине передается одна из реализации.
+				<br><br>
+				В стратегии управление передается другому объекту, который умеет выполнят действие.
+				<br><br>
+				Отличие двух методов — шаблонный метод работает через наследование, то есть применяется до компиляции. Стратегию же можно менять после компляции в рантайме.
+			</aside>
+		</section>
+		<section>
+			<h2>Внедрение зависимостей</h2>
+			<h5>Плюсы</h5>
+			<ul>
+				<li>Композиция</li>
+				<li>Гибкость</li>
+				<li>Уменьшает связность</li>
+				<li>Убирает бойлерплейт</li>
+				<li>Улучшает тестируемость</li>
+			</ul>
+			<aside class="notes">
+				Внедрение зависимостей — передача зависимостей объекту через конструктор или метод. Также является основой фреймворка Spring.
+				<br><br>
+				Рассмотрим плюсы и минусы.
+				<br><br>
+				Подталкивает нас использовать композицию, дробить логику на классы, что само по себе хорошо.
+				<br><br>
+				Добавляет гибкость в изменении реализаций компонентов программы. Если правильно написаны зависимости через интерфейсы.
+				<br><br>
+				Уменьшает связность между компонентами.
+				<br><br>
+				Убирает бойлерплейт код создания объектов, потому что создание отдано фреймворку
+				<br><br>
+				И наверное одно из самых важных — улучшает тестируемость через изоляцию компонентов и подмену зависимостей их макетами.
+			</aside>
+		</section>
+		<section>
+			<h2>Внедрение зависимостей</h2>
+			<h5>Минусы</h5>
+			<ul>
+				<li>Увеличивает порог входа</li>
+				<li>Усложняет работу IDE</li>
+				<li>Зависимость от фреймворка</li>
+			</ul>
+			<aside class="notes">
+				Минусы могут казаться высосанными из пальца, но их стоит проговорить.
+				<br><br>
+				Увеличивает порог входа в разработку — наш курс можно было бы сделать в два раза короче
+				<br><br>
+				Усложняет работу IDE — многие столкнулись с проблемами в проектах. На мой взгляд, это связано с тем,
+				что корректная обработка спринга в IDEA настолько сложная, что там до сих пор не могут поправить все баги.
+				<br><br>
+				Зависимость от фреймворка — в частности в ПО приезжают все его уязвимости, хотя не факт, что в своем коде их будет меньше.
+				<br><br>
+				А также если привыкать к Фреймворку, будет сложнее написать чистый код, когда он недоступен — я
+				приводил пример написания обработчиков для Big Data кластера, когда пришлось писать на голой 8 Java.
+				<br><br>
+				Дайте + если разобрались что такое Инверсия управления
+			</aside>
+		</section>
+		<section>
+			<h2>Путь, параметры пути, тело запроса</h2>
+			<ul>
+				<li>URL: api/v1/users/{userId}/name</li>
+				<li>Query: api/v1/users?age=20</li>
+				<li>BAD: api/v1/cards/{card-number}</li>
+				<li>Body: {"name": "Alice"}</li>
+			</ul>
+			<aside class="notes">
+				Еще вы поподробнее изучили разные способы передачи параметров и данных через запросы.
+				<br><br>
+				Давайте проговорим когда и что нужно использовать.
+				<br><br>
+				Мы помним, что в REST каждый эндпоинт — ресурс. Переменные внутри пути задают конкретный ресурс.
+				<br><br>
+				Параметры пути задают дополнительные фильтры для ресурса.
+				<br><br>
+				Не надо использовать секретные идентификаторы ресурсов в пути. Например номер кредитной карты. Потому что строка пути при запросах в интернете — открытая информация.
+				<br><br>
+				Не смотря на то, что она шифруется в HTTPS, она отображается в бразуере и легко доступна пользователю для копирования.
+				<br><br>
+				BODY — тело запроса, когда нужно использовать? Что туда помещается?
+				<br><br>
+				Если параметры пути имеют более сложную структуру чем ключ-значение.
+				<br><br>
+				Если параметров много (условно) или они большого размера. Строки большой длины могут не поддерживаться сервером или клиентом. Де факто стандарт — до 2000 символов.
+				<br><br>
+				Для бинарных данных.
+			</aside>
+		</section>
+		<section>
+			<h2>Обработка ошибок</h2>
+			<ul>
+				<li>ControllerAdvice / RestControllerAdvice</li>
+				<li>Единая точка обработки всех ошибок</li>
+				<li>Один формат ответов при ошибках</li>
+			</ul>
+			<aside class="notes">
+				Вам показали различные методы обработки ошибок, но пришли мы к самому удобному — ControllerAdvice.
+				<br><br>
+				RestControllerAdvice или ControllerAdvice c ResponseBody.
+				<br><br>
+				Он обеспечивает единую точку обработки всех ошибок.
+				<br><br>
+				Что позволяет контролировать, чтобы ответы при ошибках имели один формат.
+			</aside>
+		</section>
+		<section>
+			<h2>ФП11 Filmorate Friends & Likes</h2>
+			<ul>
+				<li>Ветка add-friends-likes</li>
+				<li>In memory storage для Film, User</li>
+				<li>Сервисный слой</li>
+				<li>Дружба между пользователями</li>
+				<li>Лайки к фильмам</li>
+				<li>Обработка ошибок в ExceptionHandler</li>
+			</ul>
+			<aside class="notes">
+				Важно соблюдать именование веток, иначе не будут запускаться тесты. В ТЗ10 используется новая ветка add-friends-likes.
+				<br><br>
+				В этом ТЗ вам нужно реализовать слой хранения для пользователей и фильмов.
+				<br><br>
+				Добавить сервисный слой, чтобы вынести логику обработки запросов из контроллеров.
+				<br><br>
+				В контроллерах по сути остаются пути, вызовы сервисов ну и логирование при желании.
+				<br><br>
+				@Service — аналог @Component, но помечает классы сервисного слоя. Классы UserService и FilmService.
+				<br><br>
+				Две фичи — дружбу между пользователями и простановку лайков к фильмам.
+				<br><br>
+				Обработку ошибок.
+				<br><br>
+				Прописывайте внедрение зависимостей руками, в дальнейшем можно опускать Aurowired и использовать конструктор ломбока.
+				<br><br>
+				Смотрите в Postman. Например при ошибках должен возвращаться JSON.
+			</aside>
+		</section>
+		<section>
+			<h2>Ваши вопросы</h2>
+			<ul>
+				<li>Инверсия управления</li>
+				<li>Внедрение зависимостей</li>
+				<li>Обработка ошибок</li>
+				<li>Валидация</li>
+				<li>ФП11</li>
+				<li>Хард вебинар "Паттерны проектирования"</li>
+			</ul>
+		</section>
+	</div>
+</div>
+
+<script src="../dist/reveal.js"></script>
+<script src="../plugin/notes/notes.js"></script>
+<script src="../plugin/markdown/markdown.js"></script>
+<script src="../plugin/highlight/highlight.js"></script>
+<script>
+	// More info about initialization & config:
+	// - https://revealjs.com/initialization/
+	// - https://revealjs.com/config/
+	Reveal.initialize({
+		hash: true,
+
+		// Learn about plugins: https://revealjs.com/plugins/
+		plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+	});
+</script>
+</body>
+</html>
