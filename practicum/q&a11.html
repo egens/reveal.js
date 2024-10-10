@@ -42,6 +42,26 @@
 					Поставить на запись
 					<br><br>
 					Привет Камеры Ждем остальных
+
+					<br><br>
+					<a href="https://leetcode.com/problems/longest-unequal-adjacent-groups-subsequence-i/description/">https://leetcode.com/problems/longest-unequal-adjacent-groups-subsequence-i/description/</a>
+					<pre><code class="java" data-trim>
+						class Solution {
+							public List<String> getLongestSubsequence(String[] words, int[] groups) {
+								List<String> result = new ArrayList<>();
+								int prev = -1;
+								for (int i = 0; i < words.length; i++) {
+									int group = groups[i];
+									if(group == prev) continue;
+									prev = group;
+									result.add(words[i]);
+								}
+
+								return result;
+							}
+						}
+					</code></pre>
+
 					<br><br>
 					<a href="https://leetcode.com/problems/intersection-of-two-linked-lists">https://leetcode.com/problems/intersection-of-two-linked-lists/submissions/1401811606/</a>
 					<pre><code class="java" data-trim>
@@ -59,6 +79,7 @@
 							}
 						}
 					</code></pre>
+
 					<br><br>
 					<a href="https://leetcode.com/problems/maximum-repeating-substring/">https://leetcode.com/problems/maximum-repeating-substring/</a>
 					<pre><code class="java" data-trim></code>
