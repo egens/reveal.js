@@ -9,7 +9,7 @@
 	<link rel="stylesheet" href="../dist/reset.css">
 	<link rel="stylesheet" href="../dist/reveal.css">
 	<link rel="stylesheet" href="../dist/theme/black.css">
-	<link rel="stylesheet" href="css/custom.css">
+	<link rel="stylesheet" href="./css/custom.css">
 
 	<!-- Theme used for syntax highlighted code -->
 	<link rel="stylesheet" href="../plugin/highlight/monokai.css">
@@ -42,6 +42,46 @@
 					Поставить на запись
 					<br><br>
 					Привет Камеры Ждем остальных
+
+					<br><br>
+					<a href="https://leetcode.com/problems/delete-characters-to-make-fancy-string/description/">https://leetcode.com/problems/delete-characters-to-make-fancy-string/description/</a>
+					<pre><code class="java" data-trim>
+						class Solution {
+							public String makeFancyString(String s) {
+								char prev = s.charAt (0);
+								int freq = 1;
+								StringBuilder res = new StringBuilder ();
+								res.append (s.charAt (0));
+								for (int i = 1; i < s.length (); i++) {
+									if (s.charAt (i) == prev)
+										freq++;
+									else {
+										prev = s.charAt (i);
+										freq = 1;
+									}
+									if (freq < 3)
+										res.append (s.charAt (i));
+								}
+								return res.toString ();
+							}
+						}
+					</code></pre>
+
+					<br><br>
+					<a href="https://leetcode.com/problems/find-words-containing-character/description/">https://leetcode.com/problems/find-words-containing-character/description/</a>
+					<pre><code class="java" data-trim>
+						class Solution {
+							public List<Integer> findWordsContaining(String[] words, char x) {
+								List<Integer> ans = new ArrayList<>();
+								for (int i = 0; i < words.length; ++i) {
+									if (words[i].indexOf(x) != -1) {
+										ans.add(i);
+									}
+								}
+								return ans;
+							}
+						}
+					</code></pre>
 
 					<br><br>
 					<a href="https://leetcode.com/problems/find-words-containing-character/description/">https://leetcode.com/problems/find-words-containing-character/description/</a>
