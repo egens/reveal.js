@@ -46,6 +46,28 @@
 					Привет Камеры Ждем остальных
 
 					<br><br>
+					<a href="https://leetcode.com/problems/split-with-minimum-sum/description/">https://leetcode.com/problems/split-with-minimum-sum/description/</a>
+					<pre><code class="java" data-trim>
+						class Solution {
+							public int splitNum(int num) {
+								String number = String.valueOf(num);
+								char[] digits = number.toCharArray();
+								Arrays.sort(digits);
+								int i = digits.length - 1;
+								int sum = 0;
+								int d = 1;
+								while (i >= 0) {
+									sum += (digits[i--] -'0') * d;
+									if (i < 0) return sum;
+									sum += (digits[i--] -'0') * d;
+									d *= 10;
+								}
+								return sum;
+							}
+						}
+					</code></pre>
+
+					<br><br>
 					<a href="https://leetcode.com/problems/find-the-k-th-character-in-string-game-i/description/">https://leetcode.com/problems/find-the-k-th-character-in-string-game-i/description/</a>
 					<pre><code class="java" data-trim>
 						class Solution {
@@ -96,6 +118,7 @@
 				<li>CAP</li>
 				<li>DAL</li>
 				<li>DAO</li>
+				<li>Observer</li>
 				<li>ТЗ12</li>
 			</ul>
 			<aside class="notes">
@@ -233,8 +256,37 @@
 			</aside>
 		</section>
 		<section>
+			<h2>Наблюдатель (observer)</h2>
+			<img src="images/12-2/observer.webp" class="r-stretch">
+			<aside class="notes">
+				Хочу сегодня вам также рассказать об одном из самых популярных поведенческих паттернов проектирования Наблюдатель.
+				<br><br>
+				Он применяется, когда есть набор классов наблюдателей, в которых нужно запускать некоторые процессы при изменениях в другом Наблюдаемом объекте.
+				Позволяет добиться связи классов один ко многим с низким зацеплением между классами.
+				<br><br>
+				Реализация заключается в использовании двух интерфейсов.
+				Subject — его будет имплементировать основной объект, при изменениях в котором нужно запускать действия на ряде других классов.
+				Эти классы должны имплементировать интерфейс Observer. Они будут "наблюдателями" за основным объектом.
+				<br><br>
+				Subject имеет три метода — добавление и удаление наблюдателей, а также оповещение их об изменении.
+				Observer имеет метод обработки изменений в наблюдаемом объекте.
+				<br><br>
+				ОБЪЯСНИТЬ ПО КАРТИНКЕ КАК ЭТО РАБОТАЕТ
+				<br><br>
+				В коде сами методы и поля объектов, а также интерфейсы могут называться иначе.
+				Но если вы встречаетесь с подобной структурой классов, то будете знать, что тут происходит.
+				<br><br>
+				Тут стоит отметить, что простые реализации Observer Observable в java.util переведены в статус Deprecated.
+				Потому что накладывают очень существенные ограничения — Observable нельзя сериализовать, они непотокобезопасны и
+				как выражаются разработчики java "не предоставляют достаточно богатые возможность обработки ивент модели".
+				<br><br>
+				Вместо них рекомендуется использовать PropertyChangeEvent и PropertyChangeListener из пакета java.beans.
+			</aside>
+		</section>
+		<section>
 			<h2>ФП12 Persistent Filmorate</h2>
 			<ul>
+				<li>Ветка add-database</li>
 				<li>Создаем спроектированную БД</li>
 				<li>Реализуем DAO</li>
 				<li>InMemory имплементации можно удалить или доработать</li>
@@ -260,6 +312,7 @@
 				<li>CAP</li>
 				<li>DAL</li>
 				<li>DAO</li>
+				<li>Observer</li>
 				<li>ТЗ12</li>
 			</ul>
 		</section>
