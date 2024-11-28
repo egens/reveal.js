@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>reveal.js</title>
+
+	<link rel="stylesheet" href="../dist/reset.css">
+	<link rel="stylesheet" href="../dist/reveal.css">
+	<link rel="stylesheet" href="../dist/theme/black.css">
+	<link rel="stylesheet" href="css/custom.css">
+
+	<!-- Theme used for syntax highlighted code -->
+	<link rel="stylesheet" href="../plugin/highlight/monokai.css">
+</head>
+<body>
+<div class="reveal">
+	<div class="watermark">
+		<img src="images/yandex.svg" height="38"/>
+		<img src="images/practicum.svg" />
+	</div>
+
+	<div class="slides">
+		<section>
+			<div class="container">
+				<div class="col">
+					<br>
+					<div class="qa"><h5>Групповой вводный</h5></div>
+					<aside class="notes">
+						Наставник проводит 3 вебинара
+						1. Установочный в понедельник, допустимо во вторник
+						2. Вебинар QA и опрос тимлидов по статусу проекта в команде
+						3. В пятницу на 2 недели ретро
+	<!--					TODO Дописать-->
+
+						slopeone алгоритм не подходит, на википедии есть алгоритм для бинарных оценок
+						тесты очень тупые, можно реализовать свой алгоритм, который будет проходить их
+					</aside>
+				</div>
+				<div class="col">
+					<img src="images/photo.tiff" height="300" />
+					<h5>Егор Ерохин</h5>
+					наставник
+				</div>
+				<aside class="notes">
+					Кто такой тим лид
+					Присутствовать на созвонах, общаться со всеми, сдавать работу
+					<br><br>
+					Репозиторий не обязательно тим лида — можно проголосовать за любой
+					<br><br>
+					Setting – Collaborators
+					<br><br>
+					Роль тимлида
+					Отправлять пулл реквесты
+					Управлять командой, раздавать задачки, назначать созвоны
+					Если отправит не тимлид, то это может быть -1 попытка
+					Репо не обязательно тимлида
+					<br><br>
+					Важно, что работаем именно в репозитории одного человека НЕ В СВОЕМ СКОРЕЕ ВСЕГО
+				</aside>
+			</div>
+		</section>
+		<section>
+			<h2>Задачи</h2>
+			<aside class="notes">
+				https://github.com/users/yandex-praktikum/projects/5/views/1
+
+				Список задач доступен по ссылке, которая есть в теории.
+
+				Все 8 задач кроме задачи со звездочкой обязательные.
+
+				Внутри задачи описание и самое главное — название ветки, в которой должна быть разработка — иначе тесты не запустятся.
+
+				Сами задания на доске
+				Есть зависимые
+				Удаление фильмов и пользователей может заблокировать все разработку
+				Добавление режиссеров в фильмы тоже
+				Можно попробовать большие задачи поделить, но не обязательно
+				Имя ветки, создаем от ветки develop
+
+				При проверке будут заворачивать решения с двумя и более вложенными подзапросами, такие запросы нужно писать через join
+			</aside>
+		</section>
+		<section>
+			<h2>Ветки</h2>
+			<ul>
+				<li>main
+					<ul>
+						<li>develop
+							<ul>
+								<li>add-reviews</li>
+								<li>add-search</li>
+								<li>add-common-films</li>
+								<li>...</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+			<aside class="notes">
+				https://practicum.yandex.ru/learn/java-developer/courses/25d33887-e804-43d5-a330-b5539e8dcd6c/sprints/145694/topics/cbc2c262-92c1-4833-b444-70c446365a30/lessons/fdf7b95f-a3a0-42a6-a30d-0ef6f33024af/
+				<br><br>
+				Как и раньше нужно сделать ветку от main и назвать ее develop
+				<br><br>
+				Но дальше работаем по новому — ветки задач создаем от ветки develop и после завершения работы выполняем PR обратно в develop
+				<br><br>
+				Таким образом, в конце работы у вас будет собраны все фичи в ветке develop, после этого нужно создать PR develop -> main, который отправить на проверку.
+				<br><br>
+				Тимлиду обязательно защитить ветки, чтобы не было проблем в групповой работе. Как это сделать описано в теории.
+				<br><br>
+				В теории есть информация по настройке защиты веток — ее должен выполнить тимлид
+				<br><br>
+				Важно — только тимлид может отправить проект проект из своего репозитория.
+				<br><br>
+				* ДАЛЬШЕ МОЖНО ОПУСТИТЬ
+				<br><br>
+				Что нужно сделать владеьцу репозитория
+				Добавить коллабораторов
+				Если владелец репозитория не тимлид, то мержить мб придется не тимлиду
+				Ветки - main, develop
+				main
+				Require PR berfore merging
+				Require approvals 1
+				Require convertsation resolution before merging
+				Require status checks to pass before merging
+				Require branches to be up-to-date before merging
+				Do not allow bypassing the above settings
+				<br><br>
+				Allow force pushes
+				Allow deletions
+				<br><br>
+				develop
+				Также как в main, кроме
+				Require approvals 2
+				Require convertsation resolution before merging
+				Логи можно смотреть полные
+				<br><br>
+				Как мерджить
+				Просто мердж
+				Сквош
+				Ребейз
+				<br><br>
+				К заданиям со звездочкой переходить после мерджа основных
+			</aside>
+		</section>
+		<section>
+			<h2>Тесты</h2>
+			<ul>
+				<li>add-director</li>
+				<li>add-remove-user-endpoint <br> add-remove-film-endpoint</li>
+				<li>add-recommendations</li>
+				<li>add-search</li>
+				<li>add-reviews</li>
+				<li>add-feed</li>
+				<li>add-common-films</li>
+				<li>most-populars</li>
+			</ul>
+			<aside class="notes">
+				https://github.com/egens/java-filmorate-21
+				<br><br>
+				*ПОКАЗАТЬ КАК ДОСТАТЬ ПОСТМАН ФАЙЛ И ЧТО ТАМ С ТЕСТАМИ — по ссылке перейти на template и достать файл из папки postman, импортировать в постман
+				<br><br>
+				Тесты
+				<br>
+				Все тесты находятся в шаблоне в каждой ветке (add-*)
+				<br>
+				В ветке develop 6 тестов (обязательные задачи)
+				<br>
+				В ветке add-marks 8 (задача со *) все 8 обязательных, но на само задание тестов нет
+			</aside>
+		</section>
+		<section>
+			<h2>Ваши вопросы</h2>
+		</section>
+	</div>
+</div>
+
+<script src="../dist/reveal.js"></script>
+<script src="../plugin/notes/notes.js"></script>
+<script src="../plugin/markdown/markdown.js"></script>
+<script src="../plugin/highlight/highlight.js"></script>
+<script>
+	// More info about initialization & config:
+	// - https://revealjs.com/initialization/
+	// - https://revealjs.com/config/
+	Reveal.initialize({
+		hash: true,
+
+		// Learn about plugins: https://revealjs.com/plugins/
+		plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+	});
+</script>
+</body>
+</html>
