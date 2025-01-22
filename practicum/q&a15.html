@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>reveal.js</title>
+
+	<link rel="stylesheet" href="../dist/reset.css">
+	<link rel="stylesheet" href="../dist/reveal.css">
+	<link rel="stylesheet" href="../dist/theme/black.css">
+	<link rel="stylesheet" href="css/custom.css">
+
+	<!-- Theme used for syntax highlighted code -->
+	<link rel="stylesheet" href="../plugin/highlight/monokai.css">
+</head>
+<body>
+<div class="reveal">
+	<div class="watermark">
+		<img src="images/yandex.svg" height="38"/>
+		<img src="images/practicum.svg" />
+	</div>
+
+	<div class="slides">
+		<section>
+			<div class="container">
+				<div class="col">
+					<br>
+					ПЕРЕПРОВЕРИТЬ ВЕСЬ ВЕБИНАР ОН НЕ РАБОТАЕТ
+					<div class="qa"><h5>Q&A15</h5></div>
+				</div>
+				<div class="col">
+					<img src="images/photo.tiff" height="300" />
+					<h5>Егор Ерохин</h5>
+					наставник
+				</div>
+				<aside class="notes">
+					Заранее зарегистрировать вебинар
+					https://practicum.yandex.ru/webinar-form/java-developer/
+					erohinegor
+
+					Нужно быть залогиненым под учеткой, которая используется в практикуме. Выбрать пункт "студент". Нажать отправить.
+					ЗАПИСЬ
+					Привет
+					Камеры
+					Ждем остальных
+
+					Hibernate, транзакции и репозитории
+					Проблему N+1
+					Double brace intialization
+					ТЗ 15 — добавление бронирований
+
+					<a href="https://leetcode.com/problems/isomorphic-strings/">https://leetcode.com/problems/isomorphic-strings/</a>
+					<pre><code class="java" data-trim>
+						class Solution {
+							public boolean isIsomorphic(String s, String t) {
+								int[] indexS = new int[200];
+								int[] indexT = new int[200];
+								int len = s.length();
+
+								if(len != t.length()) {
+									return false;
+								}
+
+								for(int i = 0; i < len; i++) {
+									if(indexS[s.charAt(i)] != indexT[t.charAt(i)]) {
+										return false;
+									}
+									indexS[s.charAt(i)] = i + 1;
+									indexT[t.charAt(i)] = i + 1;
+								}
+								return true;
+							}
+						}
+					</code></pre>
+					<br><br>
+					<a href="https://leetcode.com/problems/perfect-squares/description/">https://leetcode.com/problems/perfect-squares/description/</a>
+					<pre><code class="java" data-trim>
+						class Solution {
+							public int numSquares(int n) {
+								int[] dp = new int[n + 1];
+								dp[0] = 0;
+								for (int i = 1; i <= n; i++) {
+									int min = i;
+									for (int j = 1; j * j <= i; j++) {
+										min = Math.min(min, dp[i - j * j] + 1);
+									}
+									dp[i] = min;
+								}
+								return dp[n];
+							}
+						}
+					</code></pre>
+				</aside>
+			</div>
+		</section>
+		<section>
+			<h2 data-id="code-title">Hibernate ORM</h2>
+			<ul>
+				<li>Object–relational mapping</li>
+				<li>DTO pattern</li>
+				<li>Транзакции</li>
+				<li>Репозитории</li>
+			</ul>
+			<pre data-id="code-animation"><code class="hljs java" data-trim data-line-numbers>
+							@Service
+							public class ServiceTest {
+
+								@Transactional
+								public void test1() {
+									test2();
+								}
+
+								@Transactional(propagation = Propagation.REQUIRES_NEW)
+								public void test2() {
+								}
+							｝
+						</code></pre>
+			<aside class="notes">
+				Мы наконец-то дошли до автоматизации запросов к базе и познакомились с Hibernate. ORM забирает у программиста часть ответственности за запросы к базе. Это уменьшает количество ошибок и позволяет менять СХД в случае необходимости.
+
+				Также, вы рассмотрели паттерн DTO — отделяет сущности ORM и интерфейс сервиса, потому что в общем случае это разные вещи.
+
+				Когда вы пишете приложение, может показаться логичным возвращать ровно то, что лежит в БД — то есть Entity.
+
+				Но это ошибка — в современном гибком мире вы точно будете менять и БД и интерфейс сервиса, тогда почувствуете боль. Лучше сразу уменьшить связность и отделить интерфейс сервиса от сущности.
+
+				Для маппинга есть удобные фреймворки, например mapstruct — вы пишете интерфейс маппера что-куда замапить, а фреймворк генерирует качественный код с проверками.
+
+				Еще в этом модуле вы начали знакомиться с транзакциями, это довольно сложный концепт, который обеспечивает целостность данных в БД.  Хотел расскать о важной особенности аннотации @Transactional — на скрине сервис с двумя методами, помеченными этой аннотацией. Как вы думаете, сколько транзакций будет создано при вызове метода test1? — одна, потому что код управляющий транзакциями выполняется только при вызове метода снаружи объекта, на самом деле сервис оборачивается в прокси-объект
+
+				Еще про транзакции — бывает, что при работе двух человек с БД один делает в ней изменения, а второй их не видит — это чаще всего связано с настройками клиента, выключен автокоммит. Несколько раз сталкивался с этим.
+
+				Вообще как вы поняли — когда нужно использовать транзакции?
+
+				При использовании JPQL десять раз подумайте, нет ли возможности обойтись без него.
+
+				Запросы в коде на мой взгляд существенно усложняют его когнитивную сложность — вам приходится держать в голове не только ООП взаимодействие на JAVA, но и декларативный код запроса, который к тому же отличается от SQL.
+
+				Один раз напишете запрос — придется его поддерживать и расширять. Очнетесь, когда он будет динамически составляться и содержать сотню строчек.
+
+				В теории есть такой Момент:
+				Доступно два вида сохранения. Первый — строковый вид EnumType.STRING. Он сохранит в базу строку, полученную в результате вызова метода enum-класса state.name(). Второй — целочисленный вид EnumType.ORDINAL. Он сохранит порядковый номер элемента перечисления — его также можно получить через вызов метода state.ordinal().  Какой вам больше нравится?  https://vladmihalcea.com/the-best-way-to-map-a-onetomany-association-with-jpa-and-hibernate/ https://habr.com/ru/articles/532000/ https://habr.com/ru/post/347752/
+			</aside>
+		</section>
+		<section>
+			<h4>Можно ли сделать запросный метод для выражения?</h4>
+			<h2>((A and B) or (C and D)) and E</h2>
+			<aside class="notes">
+				В теории написано, что нельзя создать запросный метод на сложное выражение. Можно ли создать на такое?
+				<br><br>
+				Ответ: Можно — достаточно раскрыть скобки по правилам логических выражений.
+			</aside>
+		</section>
+		<section>
+			```
+			@Service
+			public class UserService {
+
+			@Autowired
+			private InvoiceService invoiceService;
+
+			@Transactional
+			public void invoice() {
+			invoiceService.createPdf();
+			// send invoice as email, etc.
+			}
+			}
+
+			@Service
+			public class InvoiceService {
+
+			@Transactional
+			public void createPdf() {
+			// ...
+			}
+			}
+			```
+
+			```
+			@Service
+			public class InvoiceService {
+
+			@Transactional(propagation = Propagation.REQUIRES_NEW)
+			public void createPdf() {
+			// ...
+			}
+			}
+			```
+		</section>
+		<aside class="notes">
+			Про логические и физические транзакции с примерами. Логические транзакции живут на уровне спринга.
+			Физические транзакции это непосредственный вызов запросов к БД, который формируется спрингом.
+			В коде ниже вызов метода invoice() создаст две логические транзакции. Вторая — в методе createPdf(),
+			который будет вызван из другого бина. При этом спринг умный и всем вызовы к БД будут сделаны в одной физической транзакции.
+
+			Изменим InvoiceService и установим Propagation.REQUIRES_NEW. Опять вызовем invoice() класса UserService.
+			Теперь обращения к БД обоих методов будут сделаны в своих собственных физических транзакциях к БД. Логических транзакций также будет две.
+
+			Подробнее про работу транзакций можно почитать в [этой статье](https://www.marcobehler.com/guides/spring-transaction-management-transactional-in-depth), из которой взяты примеры.
+		</aside>
+		<section>
+			Про READ_COMMITED и REPEATABLE_READ.
+
+			READ_COMMITED гарантирует, что данные закомичены в момент чтения. То есть просто запрещает чтение незакомиченных данных (dirty read).
+
+			REPEATABLE_READ более высокий уровень изоляции. В добавок к READ_COMMITED гарантируется, что любая прочитанная информация не может измениться до завершения транзакции. Если в транзакции мы делаем SELECT *, то условно (это может быть реализовано сложнее) таблица блокируется для изменения существующих строк полностью. Но новые строки при этом добавлять можно и они не влияют на транзакцию.
+
+			Вот тут подробно расписано.
+
+			Вопросы-предложения оставляйте в комментах.
+		</section>
+		<section>
+			<h2 data-id="code-title">ACID</h2>
+			<ul>
+				<li>Atomicity — атомарность</li>
+				<li>Consistency — согласованность</li>
+				<li>Isolation — изоляция</li>
+				<li>Durability — устойчивость</li>
+			</ul>
+			<aside class="notes">
+				Акроним — набор требований к транзакционной системе, обеспечивающий надежную и предсказуемую работу.
+				<br><br>
+				Бывает на собеседованиях.
+				<br><br>
+				Давайте вместе вспомним, кто расскажет?
+				<br><br>
+				A — all or nothing, комплексная транзакция либо выполняется полностью либо никак.
+				Важно — система должна гарантировать атомарность в любых ситуациях — при сетевых проблемах, ошибках программы, отказе железа и тп
+				<br><br>
+				C — корректно написанная транзакция сохраняет согласованность данных в БД. То есть все правила и ограничения данных в таблице будут сохранены.
+				<br><br>
+				I — параллельные транзакции не должны влиять друг на друга.
+				<br><br>
+				D — если транзакция завершилась и пользователю было возвращено ОК, то любые проблемы системы не могут на нее повлиять.
+				Обычно значит, что результат записан в отказоустойчивой СХД.
+			</aside>
+		</section>
+		<section>
+			<h2>Проблема N+1</h2>
+			<blockquote>
+				&ldquo;The Hibernate recommendation is to statically
+				<span class="fragment highlight-blue">mark all associations lazy</span> and to use
+				dynamic fetching strategies for eagerness. This is unfortunately at odds with the JPA
+				specification which defines that all one-to-one and many-to-one associations should be eagerly
+				fetched by default. Hibernate, as a JPA provider, honors that default.
+				&rdquo;
+			</blockquote>
+		</section>
+		<section>
+
+			<h2>Double brace initialisation</h2>
+			<pre data-id="code-animation"><code class="hljs java" data-trim data-line-numbers>
+				<script type="text/template">
+					HashMap<String, String> map = new HashMap<>(){{
+						put("1", "ONE");
+						put("2", "TWO");
+						put("3", "THREE");
+					}};
+
+					// анонимный внутренний класс
+					HashMap<String, String> map1 = new HashMap<>(){
+						{ // блок инициализации
+							put("1", "ONE");
+							put("2", "TWO");
+							put("3", "THREE");
+						}
+					};
+				</script>
+			</code></pre>
+		</section>
+		<section>
+			<h2>ФП14 ShareIt bookings</h2>
+			<ul>
+				<li>Ветка add-bookings</li>
+				<li>Добавить PostgreSQL</li>
+				<li>Переход на JPA</li>
+				<li>Booking — функция бронирования</li>
+				<li>Даты бронирования</li>
+				<li>Отзывы</li>
+			</ul>
+		</section>
+		<section>
+			<h2>Ваши вопросы</h2>
+			<ul>
+				<li>ORM</li>
+				<li>DTO pattern</li>
+				<li>Транзакции</li>
+				<li>Репозитории</li>
+				<li>ACID</li>
+				<li>N+1</li>
+				<li>Double brace</li>
+				<li>ФП14</li>
+			</ul>
+		</section>
+	</div>
+</div>
+
+<script src="../dist/reveal.js"></script>
+<script src="../plugin/notes/notes.js"></script>
+<script src="../plugin/markdown/markdown.js"></script>
+<script src="../plugin/highlight/highlight.js"></script>
+<script>
+	// More info about initialization & config:
+	// - https://revealjs.com/initialization/
+	// - https://revealjs.com/config/
+	Reveal.initialize({
+		hash: true,
+
+		// Learn about plugins: https://revealjs.com/plugins/
+		plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+	});
+</script>
+</body>
+</html>
