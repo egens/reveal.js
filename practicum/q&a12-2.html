@@ -57,9 +57,9 @@
 								int sum = 0;
 								int d = 1;
 								while (i >= 0) {
-									sum += (digits[i--] -'0') * d;
+									sum += Character.getNumericValue(digits[i--]) * d;
 									if (i < 0) return sum;
-									sum += (digits[i--] -'0') * d;
+									sum += Character.getNumericValue(digits[i--]) * d;
 									d *= 10;
 								}
 								return sum;

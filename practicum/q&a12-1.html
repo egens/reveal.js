@@ -44,6 +44,27 @@
 					Привет Камеры Ждем остальных
 
 					<br><br>
+					<a href="https://leetcode.com/problems/path-sum">112. Path Sum</a>
+					<pre><code class="java" data-trim>
+						class Solution {
+							public boolean hasPathSum(TreeNode root, int targetSum) {
+								if (root == null) {
+									return false;
+								}
+
+								if (root.left == null && root.right == null) {
+									return targetSum == root.val;
+								}
+
+								boolean leftSum = hasPathSum(root.left, targetSum - root.val);
+								boolean rightSum = hasPathSum(root.right, targetSum - root.val);
+
+								return leftSum || rightSum;
+							}
+						}
+					</code></pre>
+
+					<br><br>
 					<a href="https://leetcode.com/problems/delete-characters-to-make-fancy-string/description/">https://leetcode.com/problems/delete-characters-to-make-fancy-string/description/</a>
 					<pre><code class="java" data-trim>
 						class Solution {
