@@ -1,0 +1,195 @@
+<section>
+	<h2>Спринт 3</h2>
+	<ul>
+		<li>Сложные типы данных</li>
+		<li>Введение в коллекции</li>
+		<li>Git и GitHub</li>
+		<li>Отладка кода, JDK</li>
+	</ul>
+	<br>
+	<a href="#/0" class="footer">в начало</a>
+	<aside class="notes">
+		Давайте посмотрим на темы, которые вы разобрали. Как я уже говорил, вопросы по ядру Джавы часто спрашивают на
+		собеседованиях и она очень важна для понимания того, что будет проходить в дальнейшем.
+		Вам рассказали, что в Джаве всего 8 встроенных примитивных типов.
+		целочисленные, дробные, символьный, логический
+		А все остальные типы — ссылочные, которые описывают разработчики в библиотеках или в своих программах.
+		Кто понял чем отличаются примитивы от ссылочных типов? (Обсудить)
+		Очень важно понять разницу между передачей по ссылке и значению — кто может рассказать как он понимает?
+		Также, вы познакомились с коллекциями — списками и хеш-таблицами, они постоянно используются при написании программ.
+		Во втором модуле мы будем изучать внутреннее устройство этих объектов.
+
+		<a href="https://leetcode.com/problems/ugly-number/">https://leetcode.com/problems/ugly-number/</a>
+		<pre><code class="java" data-trim><script type="text/template">
+			class Solution {
+				public boolean isUgly(int n) {
+					if (n <= 0) return false;
+					if (n == 1) return true;
+					if (n % 2 == 0) return isUgly(n / 2);
+					if (n % 3 == 0) return isUgly(n / 3);
+					if (n % 5 == 0) return isUgly(n / 5);
+					return false;
+				}
+			}
+		</script></code></pre>
+	</aside>
+</section>
+<section>
+	<h2>Хранение чисел</h2>
+	<div>
+		32 bit Integer<br>
+		65 = 2^6 + 2^0
+	</div>
+	<img src="images\3\integer.png" height="50">
+	<div>
+		32 bit Float (IEEE 754)<br>
+		10.75 = 1010.11 = 1.01011 * 2³
+	</div>
+	<img src="images\3\float.png" height="50">
+	<img src="images\3\float1.png" height="50">
+	<aside class="notes">
+		Давайте разберем, как компьютеры хранят числа – это фундамент, на котором строятся все вычисления в Java.<br>
+		Кто знает разницу между битом и байтом?<br>
+		А кто готов объяснить, что такое мантисса?<br>
+		<br><br>
+		Отлично! Напомню:
+		Бит – это минимальная ячейка (0 или 1)<br>
+		Байт = 8 бит – как раз размер символа ASCII<br>
+		Мантисса – ключевая часть чисел с плавающей точкой, о ней через минуту<br>
+		<br><br>
+		В основе компьютерной архитектуры лежат нули и единицы — двоичная система счисления. Когда мы пишем программу,
+		мы оперируем машинными числами. Примитивные типы, ссылки на объекты, даже строки — все можно представить в виде
+		набора битов. Строковые символы связаны со своими кодами через таблицы кодировок, с которыми многие уже успели
+		познакомиться.
+		<br><br>
+		На примере напомню про хранения целых чисел и чисел с плавающей точкой.<br>
+		Целое число 65 раскладывается на степени двойки: 65 = 2⁶ + 2⁰ (64 + 1) и хранится как 0100 0001<br>
+		Фишка Java: Все типы вроде byte, int, long используют этот принцип
+		<br><br>
+		Дробное число 10.75 переводится в двоичный вид 1010.11<br>
+		Дальше выполняется нормализация: 1.01011 × 2³ (сдвигаем точку на 3 позиции)<br>
+		Из этого представления можно составить двоичное представление, оно состоит из трех частей:<br>
+		Знак (1 бит): + или -, Экспонента (8 бит): степень (здесь 3), Мантисса (23 бита): дробная часть (здесь .01011)
+		<br><br>
+		Давайте ответим на вопрос — сколько всего разных чисел можно представить в Float?
+		2^32 это примерно 4 миллиарда. Обратите внимание, что максимальное значение для float 10^38 степени. Это 38 нулей.
+		То есть максимальное значение гораздо больше количества чисел в диапазоне.
+		Это говорит о том, что даже если взять только целые числа из диапазона, мы сможем без потери точности представить
+		только малую часть из них. На самом деле, если взять все числа, которые можно записать в float
+		и разместить их на числовой оси — получится картина внизу. Вокруг нуля плотность будет очень высокой, а
+		для больших значений наоборот очень низкой.
+		<br><br>
+		Это был краткий обзор, если было тяжело, рекомендую найти на ютубе ролик с описанием работы двоичных систем
+		счисления, с этим очень важно разобраться.
+		Вопросы?
+	</aside>
+</section>
+<section>
+	<h2>Что будет выведено?</h2>
+	<pre data-id="code-animation"><code class="hljs java" data-trim data-line-numbers>
+		<script type="text/template">
+			// Создаем пустые объекты
+			HashMap<String, ArrayList<Integer>> map = new HashMap<>();
+			ArrayList<Integer> list = new ArrayList<>();
+			// Добавляем в список единицу и помещаем в хеш-таблицу
+			list.add(1);
+			map.put("foo", list);
+			// Получаем список из хеш-таблицы и добавляем в него двойку
+			ArrayList<Integer> fooList = map.get("foo");
+			fooList.add(2);
+			// Выводим список
+			System.out.println(list);
+		</script>
+	</code></pre>
+	<ul>
+		<li>1</li>
+		<li>2</li>
+		<li>1, 2</li>
+	</ul>
+	<aside class="notes">
+		Еще одна задачка на понимание ссылочных типов.
+		Будет выведено 1,2
+		Потому что переменные list и fooList ссылаются на один список в памяти.
+	</aside>
+</section>
+
+<section>
+	<h2>ФП3 Конструктор обеда</h2>
+	<ul>
+		<li>Main — меню</li>
+		<li>DinnerConstructor — логика</li>
+		<li>Ключ — тип блюда, значение — список названий блюд</li>
+	</ul>
+	<pre data-id="code-animation"><code class="hljs java" data-trim data-line-numbers>
+		<script type="text/template">
+			HashMap<String, ArrayList<String>> dinnersByType =
+				new HashMap<>();
+		</script>
+	</code></pre>
+	<aside class="notes">
+		Поставьте + кто решил и - кто не решил.
+		В этом спринте мы пишем небольшое консольное приложение конструктор обедов.
+		<br><br>
+		Вам нужно последовательно наполнить несколько классов кодом. В ТЗ есть подсказки, попробуйте без них.
+		Алгоритмы работы приложения нужно будет написать самому.
+		<br><br>
+		На экране будет код решения.
+		Вы можете подглядывать в него при выполнении ДЗ, но очевидно, что самостоятельная работа
+		гораздо эффективнее для вашего обучения.
+		<br><br>
+		<pre><code class="java" data-trim>
+			public class DinnerConstructor {
+
+				HashMap<String, ArrayList<String>> dinnersByType = new HashMap<>();
+				Random random = new Random();
+
+				public void addNewDish(String dishType, String dishName) {
+					ArrayList<String> dishesForType;
+					if (dinnersByType.containsKey(dishType)) {
+						dishesForType = dinnersByType.get(dishType);
+					} else {
+						dishesForType = new ArrayList<>();
+						dinnersByType.put(dishType, dishesForType);
+					}
+
+					dishesForType.add(dishName);
+				}
+
+				public ArrayList<ArrayList<String>> generateCombos(int comboNumber, ArrayList<String> dishTypes) {
+					ArrayList<ArrayList<String>> combos = new ArrayList<>();
+					for (int i = 1; i <= comboNumber; i++) {
+						ArrayList<String> combo = generateCombo(dishTypes);
+						combos.add(combo);
+					}
+					return combos;
+				}
+
+				private ArrayList<String> generateCombo(ArrayList<String> dishTypes) {
+					ArrayList<String> selectedDishes = new ArrayList<>();
+					for (String dishType: dishTypes) {
+						ArrayList<String> availableDishes = dinnersByType.get(dishType);
+						int numberOfDishesForType = availableDishes.size();
+						int dishIndex = random.nextInt(numberOfDishesForType);
+						String selectedDish = availableDishes.get(dishIndex);
+						selectedDishes.add(selectedDish);
+					}
+					return selectedDishes;
+				}
+
+				public boolean checkType(String type) {
+					return dinnersByType.containsKey(type);
+				}
+			}
+		</code></pre>
+	</aside>
+</section>
+<section>
+	<h2>Ваши вопросы</h2>
+	<ul>
+		<li>Сложные типы данных</li>
+		<li>Введение в коллекции</li>
+		<li>Git и GitHub</li>
+		<li>Отладка кода, JDK</li>
+		<li>ФП3 Конструктор обеда</li>
+	</ul>
+</section>
