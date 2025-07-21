@@ -1,153 +1,170 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-		<title>reveal.js</title>
-
-		<link rel="stylesheet" href="../dist/reset.css">
-		<link rel="stylesheet" href="../dist/reveal.css">
-		<link rel="stylesheet" href="../dist/theme/black.css">
-		<link rel="stylesheet" href="css/custom.css">
-
-		<!-- Theme used for syntax highlighted code -->
-		<link rel="stylesheet" href="../plugin/highlight/monokai.css">
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="watermark">
-				<img src="images/yandex.svg" height="38"/>
-				<img src="images/practicum.svg" />
-			</div>
-
-			<div class="slides">
-				<section>
-					<div class="container">
-						<div class="col">
-							<br>
-							<div class="qa"><h1>Q&A17</h1></div>
-						</div>
-						<div class="col">
-							<img src="images/photo.tiff" height="300" />
-							<h5>Егор Ерохин</h5>
-							наставник
-						</div>
-						<aside class="notes">
-							<a href="https://practicum.yandex.ru/webinar-form/java-developer/">Заранее зарегистрировать вебинар</a>
-							(erohinegor)
-							<br><br>
-							Нужно быть залогиненым под учеткой, которая используется в практикуме. Выбрать пункт "студент". Нажать отправить.
-							<br><br>
-							Поставить на запись
-							<br><br>
-							Привет Камеры Ждем остальных
-							<br><br>
-							https://leetcode.com/problems/reverse-linked-list/description/
-
-							public ListNode reverseList(ListNode head) {
-									ListNode prev = null;
-									ListNode current = head;
-
-									while (current != null) {
-										ListNode next = current.next;
-										current.next = prev;
-										prev = current;
-										current = next;
-									}
-									return prev;
-								}
-
-							https://practicum.yandex.ru/webinar-form/java-developer/
-						</aside>
-					</div>
-				</section>
-				<section>
-					<h2>Спринт 17</h2>
-					<ul>
-						<li>Сортировки</li>
-						<li>Сборка мусора</li>
-						<li>Многопоточка</li>
-					</ul>
-					<aside class="notes">
-						Какие сортировки по умолчанию в java и других языках программирования — n log n
-						mergesort для ссылочных типов, потому что стабильная
-						Что такое стабильность?
-						Стабильным (устойчивым, stable) называется алгоритм сортировки, который не меняет порядок элементов с одинаковыми ключами относительно друг друга.
-						quicksort для примитивов — скорее всего это потому что для них стабильность не важна, потому что кроме значения у них нет других полей.  При этом mergesort требует клонирования массива — для примитивов это большие накладные расходы, тогда как для ссылочных типов нужно только массив ссылок склонировать
-
-						Сборка мусора — проблемы с оптимизацией памяти и работой сборщиков мусора встречаются редко, но на собесах могут спрашивать.  Многопоточка также — часто в вакансии пишут, будет ли она, таких вакансий меньше. Но опять же спрашивают на собесах.  
-						Многоядерные процессоры и hiperthreading
-					</aside>
-				</section>
-				<section>
-					<h2>Рекурсия</h2>
-					<pre><code class="java" data-trim>
-						// обычная рекурсия
-						public static long fact(long n) {
-							if (n == 0) return 1;
-							return n * fact(n - 1);
+<section>
+	<h2>Спринт 17-18</h2>
+	<ul>
+		<li>Работа на сервере</li>
+		<li>Алгоритмы и рекурсия</li>
+		<li>Сборка мусора</li>
+		<li>Многопоточное программирование</li>
+		<li>Фундаментальная теория программирования</li>
+	</ul>
+	<br>
+	<a href="#/0" class="footer">в начало</a>
+	<aside class="notes">
+		<a href="https://leetcode.com/problems/image-smoother">Ссылка</a>
+		<pre><code class="java" data-trim><script type="text/template">
+			class Solution {
+				public int[][] imageSmoother(int[][] img) {
+					int res[][] = new int[img.length][img[0].length];
+					for(int i = 0; i < img.length; i++) {
+						for(int j = 0; j < img[0].length; j++) {
+							res[i][j] = smoothen(img, i, j);
 						}
+					}
+					return res;
+				}
 
-						// хвостовая рекурсия
-						public static long factTail(long n, long acc) {
-							if (n == 1) return acc;
-							return factTail(n - 1, n * acc);
+				int smoothen(int[][] img, int x, int y) {
+					int m = img.length;
+					int n = img[0].length;
+					int sum = 0;
+					int count = 0;
+					for(int i = -1; i <= 1; i++) {
+						for(int j = -1; j <= 1; j++) {
+							int nx = x + i;
+							int ny = y + j;
+							if(nx < 0 || nx >= m || ny < 0 || ny >= n) continue;
+							sum += img[nx][ny];
+							count++;
 						}
-					</code></pre>
-					<aside class="notes">
-						Хвостовая рекурсия — рекурсивный вызов должен быть самым последним в функции.
+					}
+					return sum/count;
 
-						В первом примере после расчета fact(n - 1) контроль должен вернуться к строке return n * fact(n - 1); чтобы посчитать значение и вернуть результат. Компиляторы оптимизировать такое не умеют.
+				}
+			}
+		</script></code></pre>
+		<br><br>
+		<a href="https://leetcode.com/problems/reverse-linked-list/description/">Ссылка</a>
+		<pre><code class="java" data-trim><script type="text/template">
+			public ListNode reverseList(ListNode head) {
+				ListNode prev = null;
+				ListNode current = head;
 
-						Во втором примере — хвостовая. Но я лично против применения рекурсии в продакшен коде, потому что в Java это лишний оверхед на стеки, тк нет оптимизации хвостовой рекурсии.
-					</aside>
-				</section>
-				<section>
-					<h2>Модули диплома</h2>
-					<img src="images/17/modules.png" height="400px">
-				</section>
-				<section>
-					<h2>Диплом — этап 1</h2>
-					<ul>
-						<li>Сервис статистики</li>
-						<li>Три модуля</li>
-						<li>Эндпоинты POST /hit GET /stats</li>
-					</ul>
-					<aside class="notes">
-						Я на вводном все рассказал)
+				while (current != null) {
+					ListNode next = current.next;
+					current.next = prev;
+					prev = current;
+					current = next;
+				}
+				return prev;
+			}
+		</script></code></pre>
+		<br><br>
+		<a href="https://leetcode.com/problems/find-the-difference/">Ссылка</a>
+		<pre><code class="java" data-trim><script type="text/template">
+			Исключающее или
+			char c = 0;
+			for(char cs : s.toCharArray()) c ^= cs;
+			for(char ct : t.toCharArray()) c ^= ct;
+			return c;
 
-						Когда пишете методы клиента, думайте о том, как будете их использовать.
+			Xor — ассоциативная операция
+			Xor char сам с собой
+		</script></code></pre>
+		Какие сортировки по умолчанию в java и других языках программирования — n log n
+		mergesort для ссылочных типов, потому что стабильная
+		Что такое стабильность?
+		Стабильным (устойчивым, stable) называется алгоритм сортировки, который не меняет порядок элементов с одинаковыми ключами относительно друг друга.
+		quicksort для примитивов — скорее всего это потому что для них стабильность не важна, потому что кроме значения у них нет других полей.  При этом mergesort требует клонирования массива — для примитивов это большие накладные расходы, тогда как для ссылочных типов нужно только массив ссылок склонировать
+		<br><br>
+		Сборка мусора — проблемы с оптимизацией памяти и работой сборщиков мусора встречаются редко, но на собесах могут спрашивать.  Многопоточка также — часто в вакансии пишут, будет ли она, таких вакансий меньше. Но опять же спрашивают на собесах.  
+		Многоядерные процессоры и hiperthreading
+		<br><br>
+		В теории говорится про Неизменяемость — помните про понятия (unmodifiable) и иммутабельность
+		<br><br>
+		HTTP HTTPS 80 443 порты
+		<br><br>
+		ArrayList LinkedList — чаще используется ArrayList. Если сможете объяснить чем LinkedList лучше ArrayList — кайф.
+		Если работа со списком состоит в множественных удалениях и добавлениях элементов при перемещении по списку, используя Итератор.
+		Для чего нужно Having
+		Инверсия управления и внедрение зависимостей
+		<br><br>
+		Принцип передачи контроля объектов или части программы фреймворку
+		<br><br>
+		Внедрение зависимостей — пример реализации инверсии управления, при котором фреймворку передается управление над зависимостями при создании сущностей
+	</aside>
+</section>
+<section>
+	<h2>Рекурсия</h2>
+	<pre><code class="java" data-trim>
+		// обычная рекурсия
+		public static long fact(long n) {
+			if (n == 0) return 1;
+			return n * fact(n - 1);
+		}
 
-						В compose 4 сервиса — сервер статистики, основной сервер и БД для каждого из них.
-
-						БД на сервис — обеспечивает низкую связность, независимость сервисов, разрешает вносить изменения в БД отдельного сервиса не влияя на другие. Позволяет скейлить БД независимо, если какие-то сервисы имеют большую нагрузку чем другие.
-
-						Начинайте смотреть на фичи, чтобы выбрать какую делать.
-
-						** показать как maven модули добавлять
-					</aside>
-				</section>
-				<section>
-					<h2>Ваши вопросы</h2>
-				</section>
-			</div>
-		</div>
-
-		<script src="../dist/reveal.js"></script>
-		<script src="../plugin/notes/notes.js"></script>
-		<script src="../plugin/markdown/markdown.js"></script>
-		<script src="../plugin/highlight/highlight.js"></script>
-		<script>
-			// More info about initialization & config:
-			// - https://revealjs.com/initialization/
-			// - https://revealjs.com/config/
-			Reveal.initialize({
-				hash: true,
-
-				// Learn about plugins: https://revealjs.com/plugins/
-				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
-			});
-		</script>
-	</body>
-</html>
+		// хвостовая рекурсия
+		public static long factTail(long n, long acc) {
+			if (n == 1) return acc;
+			return factTail(n - 1, n * acc);
+		}
+	</code></pre>
+	<aside class="notes">
+		Хвостовая рекурсия — рекурсивный вызов должен быть самым последним в функции.
+		<br><br>
+		Если после рекурсивного вызова функция выполняет ещё операции (например, n * fact(n-1)) - это не хвостовая.
+		В первом примере после расчета fact(n - 1) контроль должен вернуться к строке return n * fact(n - 1);
+		чтобы посчитать значение и вернуть результат. Компиляторы оптимизировать такое не умеют.
+		<br><br>
+		Во втором примере — хвостовая. Но я лично против применения рекурсии в продакшен коде, потому что в Java это
+		лишний оверхед на стеки, тк нет оптимизации хвостовой рекурсии.
+	</aside>
+</section>
+<section>
+	<h2>Модули диплома</h2>
+	<img src="images/17/modules.png" height="400px">
+</section>
+<section>
+	<h2>Диплом — этап 1</h2>
+	<ul>
+		<li>Сервис статистики</li>
+		<li>Три модуля</li>
+		<li>Эндпоинты POST /hit GET /stats</li>
+	</ul>
+	<aside class="notes">
+		<a href="http://https://github.com/yandex-praktikum/java-explore-with-me">Диплом</a>
+		<br><br>
+		Я на вводном все рассказал)
+		<br><br>
+		Когда пишете методы клиента, думайте о том, как будете их использовать.
+		<br><br>
+		В compose 4 сервиса — сервер статистики, основной сервер и БД для каждого из них.
+		<br><br>
+		БД на сервис — обеспечивает низкую связность, независимость сервисов, разрешает вносить изменения в БД отдельного сервиса не влияя на другие. Позволяет скейлить БД независимо, если какие-то сервисы имеют большую нагрузку чем другие.
+		<br><br>
+		Начинайте смотреть на фичи, чтобы выбрать какую делать.
+		<br><br>
+		** показать как maven модули добавлять
+	</aside>
+</section>
+<section>
+	<h2>Диплом — этап 2 и фича</h2>
+	<ul>
+		<li>comments — комментарии к событиям</li>
+		<li>subscriptions — подписки на пользователей</li>
+		<li>rating_events — лайки/дизлайки, рейтинг мероприятий</li>
+		<li>location_processing — администрирование локаций</li>
+		<li>moderation_enhancement — модерация событий администратором</li>
+	</ul>
+	<aside class="notes">
+		Две сложных эндпоинта
+		- изменения статуса заявок на участие
+		- получение событий с возможностью фильтрации
+		<br><br>
+		И сказать, что фичу надо делать осознанно
+		В целом это написано в ТЗ
+		Нужно написать постман тесты простейшие (только коды проверять), сохранить обратную совместимость, сдавать фичу в виде архива (тоже в ТЗ есть)
+	</aside>
+</section>
+<section>
+	<h2>Ваши вопросы</h2>
+</section>
