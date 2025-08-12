@@ -1,1 +1,212 @@
-Сложность алгоритмов из keynote Q&A2
+<section>
+    <h2>Спринт 6</h2>
+    <ul>
+        <li>Введение в алгоритмы</li>
+        <li>Списки</li>
+        <li>Хеш-таблицы и множества</li>
+    </ul>
+    <br>
+    <a href="#/0" class="footer">в начало</a>
+    <aside class="notes">
+        <br><br>
+        <a href="https://leetcode.com/problems/unique-number-of-occurrences/">Link</a>
+        <pre><code class="java" data-trim><script type="text/template">
+            class Solution {
+                public boolean uniqueOccurrences(int[] arr) {
+                    Map<Integer, Integer> m = new HashMap<>();
+                    for (int i = 0; i < arr.length; i++)
+                        m.put(arr[i], m.getOrDefault(arr[i], 0) + 1);
+                    Set<Integer> s = new HashSet<>();
+                    s.addAll(m.values());
+                    return m.size() == s.size();
+                }
+            }
+		</script></code></pre>
+    </aside>
+</section>
+
+<section>
+    <h2>Сложность алгоритмов</h2>
+    <img src="images\6\complexity.jpg" height="500">
+    <aside class="notes">
+        Давайте еще раз проговорим про сложности.
+        <br><br>
+        Важно понять, что сложность это количество операций алгоритма, а то как количество операций зависит от объема входных данных.
+        <br><br>
+        Лучшая возможная сложность — константная, например обращение к элементу массива по индексу.
+        <br><br>
+        Дальше идет логарифмическая, например бинарный поиск — поиск числа в сортированном массиве.
+        <br><br>
+        Потом линейная — тут проще, это там где надо пройтись по всем элементам объема входных данных, например сумма всех элементов массива.
+        <br><br>
+        Дальше логлинейная — она возникает во многих хороших алгоритмах сортировки.
+        Квадратичная, степенная и факториал — плохие сложности, программа будет быстро начинать виснуть с увеличением объема данных.
+        Часто это означает, что алгоритм написан неверно, но есть задачи, которые быстрее решить нельзя.
+        Мы разговаривали о сложности по операциям, но также есть сложность по памяти — то как растет объем памяти с увеличением размера входа.
+        <br><br>
+        Обычно важнее сложность по операциям, потому что памяти в компьютерах много.
+    </aside>
+</section>
+
+<section>
+    <h2>Проверка на дубликаты</h2>
+    <pre data-id="code-animation"><code class="hljs java" data-trim data-line-numbers>
+        <script type="text/template">
+            int[] array = new int[] {1, 5, 999, 2, 9, 1, 552, 3, 4};
+
+            boolean duplFound = false;
+            for (int i = 0; i < array.length && !duplFound; i++) {
+                for (int j = 0; j < array.length; j++) {
+                    if (j == i) continue;
+                    if (array[i] == array[j]) {
+                        duplFound = true;
+                        break;
+                    }
+                }
+            }
+
+            System.out.println("Дубликат найден: " + duplFound);
+		</script>
+	</code></pre>
+
+    <aside class="notes">
+        Давайте рассмотрим пример из теории.
+        Это поиск дубликатов в массиве. У нас есть два вложенных цикла.
+        <br><br>
+        Какая сложность по операциям? n^2
+        Какая сложность по памяти? Сколько дополнительной нужно? 0(1)
+        <br><br>
+        А можно быстрее? За линейное время.
+        <br><br>
+        Можно один раз пройтись и заполнить частотный HashMap, потом еще раз пройтись по нему и найти те, у которых частота 2.
+        <br><br>
+        Какая сложность по операциям и памяти в этом случае? n, n
+    </aside>
+</section>
+
+<section>
+    <h2>Списки</h2>
+    <img src="images\6\arraylist.png" height="350">
+    <img src="images\6\linkedlist.png" height="350">
+    <aside class="notes">
+        Вы познакомились с устройством arraylist и linkedlist. ArrayList это наверное самая используемая реализация списка, но связные списки также много где используются.
+        <br><br>
+        ArrayList — реализация через расширяющийся динамический массив. Обратите внимание, при удалении размер массива не уменьшается.
+        Детали реализации не важны, главное, что амортизированная сложность — константная.
+        Амортизированная — сложность одной операции при последовательности. Мало кто знает это понятие, на собеседованиях.
+        <br><br>
+        Какой выбрать? Кто помнит?
+        ArrayList — занимает меньше места из-за ссылок в LinkedList (но не сильно, если основное место — данные),
+        ровно расположен в памяти, быстрые операции.
+        LinkedList — если часто нужна вставка и удаление в начало или середину, если критически важно, чтобы вставка работала за O(1).
+    </aside>
+</section>
+
+<section>
+    <h2>Хеш-таблицы</h2>
+    <img src="images\6\hashtable.png" height="500">
+    <aside class="notes">
+        Давайте обсудим хэш таблицы. В Java с помощью хэш таблиц реализуется абстрактный тип данных ассоциативный массив, поэтому часто эти понятия используются как синонимы.  Это по сути массив, только в индексах вместо номеров элементов используются ключи. Иногда говорят, что хранятся пары — ключ, значение.
+        <br><br>
+        Часто гоняют на собесах с вопросом как они работают. Обязательно нужно сказать, что для корректной работы у значений должны быть переопределены hashCode и equals.
+        <br><br>
+        Если у ключа не переопределены hashcode() и equals(), таблица работает неправильно.  Например hashCode по умолчанию разный для разных объектов — если у вас есть какой-то класс, для получения данных по ключу, вам недостаточно знать значения его полей, вам нужно иметь конкретный экземпляр. Equals используется для поиска в ячейке ключа, значение которого нужно вывести. 
+        Когда что использовать? HashMap LinkedHashMap TreeMap  LinkedHashMap сохраняет порядок добавления либо доступа по ключу.  А TreeMap сортирует элементы в процессе добавления. Важно помнить, что базовые операции добавления-изменения-получения в TreeMap имеет log(n) сложность.
+        <br><br>
+        Обратите внимания — сложность добавления в treemap N элементов имеет сложность N Log N — как я раньше говорил, так работают эффективные сортировки. 
+        Также вы прошли Множества — урезанные хэш таблицы  И бонусом Деревья — сложные задачки в топ IT кампании, leetcode
+    </aside>
+</section>
+
+<section>
+    <h2>Проверка на дубликаты</h2>
+    software engineer way
+    <pre data-id="code-animation"><code class="hljs java" data-trim data-line-numbers>
+        <script type="text/template">
+            int[] array = new int[] {1, 5, 999, 2, 9, 1, 552, 3, 4};
+
+            Set<Integer> set = new HashSet<>();
+            for (Integer e: array) set.add(e);
+
+            boolean hasDuplicates = set.size() != array.length;
+            boolean noDuplicates = set.size() == array.length;
+		</script>
+	</code></pre>
+    <h2>Бинарный поиск</h2>
+    <ul>
+        <li>mid = low + ((high - low) / 2)</li>
+        <li>mid = (low + high) / 2</li>
+    </ul>
+    <aside class="notes">
+        Вернемся к задаче поиска дубликатов.
+        Можно составить множество элементов массива и сравнить его размер с исходным.
+        <br><br>
+        Если размеры совпали, то дубликатов нет. Поставьте +, если понимаете почему и
+        Обратите внимание, что логическую переменную можно назвать по разному, чаще бывает удобнее, чтобы в выражении не было отрицания
+        <br><br>
+        В теории для БП верхний вариант, кто догадается, зачем нужно так сложно?
+    </aside>
+</section>
+
+<section>
+    <h2>Comparator</h2>
+    <ul>
+
+    </ul>
+    @FunctionalInterface c методом
+    <pre data-id="code-animation"><code class="hljs java" data-trim data-line-numbers>
+        <script type="text/template">
+            int compare(T o1, T o2);
+		</script>
+	</code></pre>
+    static методы
+    <pre data-id="code-animation"><code class="hljs java" data-trim data-line-numbers>
+        <script type="text/template">
+            Comparator<Player> byAge =
+                Comparator.comparing(Player::getAge);
+            byAge.compare(firstPlayer, secondPlayer);
+		</script>
+	</code></pre>
+    default методы
+    <pre data-id="code-animation"><code class="hljs java" data-trim data-line-numbers>
+        <script type="text/template">
+            default Comparator<T> reversed()
+            Comparator.comparingInt(Player::getAge)
+                .reversed()
+                .thenComparing(Player::getWeight)
+		</script>
+	</code></pre>
+
+    <aside class="notes">
+        @FunctionalInterface c методом
+        <br><br>
+        static методы для удобного создания компараторов
+        <br><br>
+        default методы для организации цепочки вызовов
+        <br><br>
+        Интерфейс компаратор позволяет задавать правила сравнения классов для сортировки коллекций.
+    </aside>
+</section>
+
+<section>
+    <h2>ФП6 Трекер задач</h2>
+    Бесконечная история без повторов за O(1)
+    <img src="images\6\tz6.png" height="500">
+    <aside class="notes">
+        LinkedHashMap не подойдет, нужно написать самому.
+        Сам класс InMemoryHistoryManager должен основываться на структуре двусвязного списка
+        Node — есть в теории про LinkedList.
+        Откройте исходники LinkedList
+        Демо
+    </aside>
+</section>
+
+<section>
+    <h2>Ваши вопросы</h2>
+    <ul>
+        <li>Введение в алгоритмы</li>
+        <li>Списки</li>
+        <li>Хеш-таблицы и множества</li>
+        <li>ФП6 Трекер задач</li>
+    </ul>
+</section>
