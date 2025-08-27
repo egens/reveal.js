@@ -85,6 +85,36 @@
 </section>
 
 <section>
+    <h2>Проверка на дубликаты</h2>
+    software engineer way
+    <pre data-id="code-animation"><code class="hljs java" data-trim data-line-numbers>
+        <script type="text/template">
+            int[] array = new int[] {1, 5, 999, 2, 9, 1, 552, 3, 4};
+
+            Set<Integer> set = new HashSet<>();
+            for (Integer e: array) set.add(e);
+
+            boolean hasDuplicates = set.size() != array.length;
+            boolean noDuplicates = set.size() == array.length;
+		</script>
+	</code></pre>
+    <h2>Бинарный поиск</h2>
+    <ul>
+        <li>mid = low + ((high - low) / 2)</li>
+        <li>mid = (low + high) / 2</li>
+    </ul>
+    <aside class="notes">
+        Вернемся к задаче поиска дубликатов.
+        Можно составить множество элементов массива и сравнить его размер с исходным.
+        <br><br>
+        Если размеры совпали, то дубликатов нет. Поставьте +, если понимаете почему и
+        Обратите внимание, что логическую переменную можно назвать по разному, чаще бывает удобнее, чтобы в выражении не было отрицания
+        <br><br>
+        В теории для БП верхний вариант, кто догадается, зачем нужно так сложно?
+    </aside>
+</section>
+
+<section>
     <h2>Списки</h2>
     <img src="images\6\arraylist.png" height="350">
     <img src="images\6\linkedlist.png" height="350">
@@ -119,36 +149,6 @@
 </section>
 
 <section>
-    <h2>Проверка на дубликаты</h2>
-    software engineer way
-    <pre data-id="code-animation"><code class="hljs java" data-trim data-line-numbers>
-        <script type="text/template">
-            int[] array = new int[] {1, 5, 999, 2, 9, 1, 552, 3, 4};
-
-            Set<Integer> set = new HashSet<>();
-            for (Integer e: array) set.add(e);
-
-            boolean hasDuplicates = set.size() != array.length;
-            boolean noDuplicates = set.size() == array.length;
-		</script>
-	</code></pre>
-    <h2>Бинарный поиск</h2>
-    <ul>
-        <li>mid = low + ((high - low) / 2)</li>
-        <li>mid = (low + high) / 2</li>
-    </ul>
-    <aside class="notes">
-        Вернемся к задаче поиска дубликатов.
-        Можно составить множество элементов массива и сравнить его размер с исходным.
-        <br><br>
-        Если размеры совпали, то дубликатов нет. Поставьте +, если понимаете почему и
-        Обратите внимание, что логическую переменную можно назвать по разному, чаще бывает удобнее, чтобы в выражении не было отрицания
-        <br><br>
-        В теории для БП верхний вариант, кто догадается, зачем нужно так сложно?
-    </aside>
-</section>
-
-<section>
     <h2>Comparator</h2>
     <ul>
 
@@ -178,6 +178,8 @@
 	</code></pre>
 
     <aside class="notes">
+        TODO Больше инфы
+
         @FunctionalInterface c методом
         <br><br>
         static методы для удобного создания компараторов
@@ -193,11 +195,29 @@
     Бесконечная история без повторов за O(1)
     <img src="images\6\tz6.png" height="500">
     <aside class="notes">
-        LinkedHashMap не подойдет, нужно написать самому.
+        LinkedHashMap подойдет, но для тренировки нужно написать самому. Иначе ревьюер может завернуть
+
         Сам класс InMemoryHistoryManager должен основываться на структуре двусвязного списка
         Node — есть в теории про LinkedList.
         Откройте исходники LinkedList
-        Демо
+
+        Демо метод removeNode
+
+        	private void removeNode(int id) {
+		final Node node = nodeMap.remove(id);
+		// todo first == last
+
+		if (node == first) {
+			first = node.next;
+			node.next.prev = null;
+		} else if (node == last) {
+			last = node.prev;
+			node.prev.next = null;
+		} else {
+			node.prev.next = node.next;
+			node.next.prev = node.prev;
+		}
+	}
     </aside>
 </section>
 

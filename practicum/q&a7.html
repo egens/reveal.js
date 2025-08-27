@@ -1,1 +1,231 @@
-Сложность алгоритмов из keynote Q&A2
+<section>
+    <h2>Спринт 7</h2>
+    <ul>
+        <li>Класс String</li>
+        <li>Unmodifiable vs immutable</li>
+        <li>Исключения</li>
+        <li>Работа с файлами</li>
+    </ul>
+    <br>
+    <a href="#/0" class="footer">в начало</a>
+    <aside class="notes">
+        <br><br>
+        <a href="https://leetcode.com/problems/make-three-strings-equal/description/">Link</a>
+        <pre><code class="java" data-trim><script type="text/template">
+            class Solution {
+                public int findMinimumOperations(String s1, String s2, String s3) {
+                    int i = 0;
+                    while (s1.charAt(i) == s2.charAt(i) && s2.charAt(i) == s3.charAt(i)) {
+                        i += 1;
+                        if (s1.length() < i + 1) break;
+                        if (s2.length() < i + 1) break;
+                        if (s3.length() < i + 1) break;
+                    }
+                    if (i == 0) return -1;
+                    return s1.length() + s2.length() + s3.length() - 3 * i;
+                }
+            }
+		</script></code></pre>
+    </aside>
+</section>
+
+<section>
+    <h2>String</h2>
+    <pre data-id="code-animation"><code class="hljs java" data-trim data-line-numbers>
+        <script type="text/template">
+            String foo = "hello";
+            String bar = foo;
+            bar += " world";
+            System.out.printf(String.join(", ", foo, bar));
+		</script>
+	</code></pre>
+    Неизменяемость строк дает:
+    <ul>
+        <li>Стабильность работы classloader</li>
+        <li>Безопасность «секретной» информации</li>
+        <li>Потоковую безопасность</li>
+        <li>Возможность использовать String Pool</li>
+    </ul>
+    <aside class="notes">
+        Строки — базовый ссылочный тип Java, которые имеет свои особенности.
+
+        Давайте проверим как вы поняли теорию, что вернет такой код?  3. hello, hello world
+
+        Строки используются в classloader при начальной загрузке и дальнейшей работе приложения.
+
+        Также большое количество секретов – паролей и тп хранится в строках, поэтому они должны быть безопасны.
+
+        Все это привело к тому, что на уровне языке реализовали неизменяемость строк.
+
+        Он обеспечивает безопасность секретов, потоковую безопасность и работу String pool, который оптимизирует хранение в памяти.
+
+        Также, String класс имеет модификатор final чтобы нельзя было переопределить его поведение и нарушить безопасность
+
+        Обратите внимание на стандартную ошибку начинающих разработчиков — строки как и все ссылочные типы надо сравнивать через Equals, сравнение через == возвращает неверный результат.
+
+        Если катенировать строки, будут ли они равны по ссылке?
+        https://www.baeldung.com/java-string-immutable
+        https://stackoverflow.com/a/22398067
+        https://www.digitalocean.com/community/tutorials/string-immutable-final-java
+        https://stackoverflow.com/questions/8881291/why-is-char-preferred-over-string-for-passwords
+    </aside>
+</section>
+
+<section>
+    <h2>Unmodifiable vs immutable</h2>
+    <pre data-id="code-animation"><code class="hljs java" data-trim data-line-numbers>
+        <script type="text/template">
+            List<String> modifiableList = new ArrayList<>();
+
+            List<String> unmodifiableList =
+                Collections.unmodifiableList(modifiableList);
+
+            List<String> immutableList =
+                Collections.unmodifiableList(unmodifiableList);
+		</script>
+	</code></pre>
+    Classes should be immutable unless there's a very good reason to make them mutable....
+    If a class cannot be made immutable, limit its mutability as much as possible. (Effective Java)
+    <aside class="notes">
+        В Java Collections есть два понятия — unmodifiable и immutable — немодифицируемый и неизменяемый.
+        <br><br>
+        Unmodifiable означает невозможность изменить состав коллекции — добавить или удалить элементы.
+        <br><br>
+        Но коллекция мутабельных объектов остается мутабельной — можно получить и изменить объект внутри коллекции.
+        Чтобы коллекция была иммутабельной, она должна быть немодифицируемой и соддержать в себе неизменяемые элементы.
+        <br><br>
+        Изменяемость — один из источников ошибок, неизменяемые объекты — потокобезопасны и делают невозможным побочные
+        эффекты в методах (когда метод влияет на внешние объекты, в частности на аргументы).
+        <br><br>
+        Давайте разберем пример, в верхне строчке создается обычный список строк, его можно изменить
+        <br><br>
+        Можно ли изменить второй список? umodifiableList отключает методы изменения списка.
+        — Немодифицируемый список изменяемый, потому что является ссылкой на изменяемый список
+        <br><br>
+        Третий пример — неизменяемый, потому что аргумент при создании немодифицируемого списка не выдается наружу.
+        Ну и если список более сложных объектов, которые изменяемы, то и список — изменяемый
+    </aside>
+</section>
+
+<section>
+    <h2>Исключения</h2>
+    <img src="images\7\exceptions.png" height="350">
+    <aside class="notes">
+        Важная тема, на собесах редко
+        <br><br>
+        Проверяемые — разработчик предусмотрел возможные проблемы при выполнении кода и показывает, что их нужно обработать.
+        Их используют в core библиотеках, которые пишутся для внешнего пользователя.
+        <br><br>
+        Error — случилось что-то плохое, что лучше не продолжать работу и не пытаться исправить.
+        Когда я писал ETL Джобы на Java, мы кидали именно ошибки, чтобы Джоб быстрее ушел в ретрай или подсветился на дашборде.
+        <br><br>
+        Непроверяемые — используются в остальных случаях, например при написании приложений на Spring.
+        Там есть механизм, который позволяет инкапсулировать логику обработки непроверяемых исключений.
+        <br><br>
+        То есть в случае ошибок API программа кидает различные непроверяемые исключения, а обработчик знает, как подготовить ответ сервера для каждого из них.
+    </aside>
+</section>
+
+<section>
+    <h2>Списки</h2>
+    <img src="images\6\arraylist.png" height="350">
+    <img src="images\6\linkedlist.png" height="350">
+    <aside class="notes">
+        Вы познакомились с устройством arraylist и linkedlist. ArrayList это наверное самая используемая реализация списка, но связные списки также много где используются.
+        <br><br>
+        ArrayList — реализация через расширяющийся динамический массив. Обратите внимание, при удалении размер массива не уменьшается.
+        Детали реализации не важны, главное, что амортизированная сложность — константная.
+        Амортизированная — сложность одной операции при последовательности. Мало кто знает это понятие, на собеседованиях.
+        <br><br>
+        Какой выбрать? Кто помнит?
+        ArrayList — занимает меньше места из-за ссылок в LinkedList (но не сильно, если основное место — данные),
+        ровно расположен в памяти, быстрые операции.
+        LinkedList — если часто нужна вставка и удаление в начало или середину, если критически важно, чтобы вставка работала за O(1).
+    </aside>
+</section>
+
+<section>
+    <h2>Хеш-таблицы</h2>
+    <img src="images\6\hashtable.png" height="500">
+    <aside class="notes">
+        Давайте обсудим хэш таблицы. В Java с помощью хэш таблиц реализуется абстрактный тип данных ассоциативный массив, поэтому часто эти понятия используются как синонимы.  Это по сути массив, только в индексах вместо номеров элементов используются ключи. Иногда говорят, что хранятся пары — ключ, значение.
+        <br><br>
+        Часто гоняют на собесах с вопросом как они работают. Обязательно нужно сказать, что для корректной работы у значений должны быть переопределены hashCode и equals.
+        <br><br>
+        Если у ключа не переопределены hashcode() и equals(), таблица работает неправильно.  Например hashCode по умолчанию разный для разных объектов — если у вас есть какой-то класс, для получения данных по ключу, вам недостаточно знать значения его полей, вам нужно иметь конкретный экземпляр. Equals используется для поиска в ячейке ключа, значение которого нужно вывести. 
+        Когда что использовать? HashMap LinkedHashMap TreeMap  LinkedHashMap сохраняет порядок добавления либо доступа по ключу.  А TreeMap сортирует элементы в процессе добавления. Важно помнить, что базовые операции добавления-изменения-получения в TreeMap имеет log(n) сложность.
+        <br><br>
+        Обратите внимания — сложность добавления в treemap N элементов имеет сложность N Log N — как я раньше говорил, так работают эффективные сортировки. 
+        Также вы прошли Множества — урезанные хэш таблицы  И бонусом Деревья — сложные задачки в топ IT кампании, leetcode
+    </aside>
+</section>
+
+<section>
+    <h2>Comparator</h2>
+    <ul>
+
+    </ul>
+    @FunctionalInterface c методом
+    <pre data-id="code-animation"><code class="hljs java" data-trim data-line-numbers>
+        <script type="text/template">
+            int compare(T o1, T o2);
+		</script>
+	</code></pre>
+    static методы
+    <pre data-id="code-animation"><code class="hljs java" data-trim data-line-numbers>
+        <script type="text/template">
+            Comparator<Player> byAge =
+                Comparator.comparing(Player::getAge);
+            byAge.compare(firstPlayer, secondPlayer);
+		</script>
+	</code></pre>
+    default методы
+    <pre data-id="code-animation"><code class="hljs java" data-trim data-line-numbers>
+        <script type="text/template">
+            default Comparator<T> reversed()
+            Comparator.comparingInt(Player::getAge)
+                .reversed()
+                .thenComparing(Player::getWeight)
+		</script>
+	</code></pre>
+
+    <aside class="notes">
+        TODO Больше инфы
+
+        @FunctionalInterface c методом
+        <br><br>
+        static методы для удобного создания компараторов
+        <br><br>
+        default методы для организации цепочки вызовов
+        <br><br>
+        Интерфейс компаратор позволяет задавать правила сравнения классов для сортировки коллекций.
+    </aside>
+</section>
+
+<section>
+    <h2>ФП7 Трекер задач</h2>
+    Хранение в файлах
+    <ul>
+        <li>Покрыть тестами</li>
+        <li>Добавить время выполнения</li>
+        <li>Сортировка списка задач по времени</li>
+        <li>Отсутствие пересечения по времени</li>
+    </ul>
+    <aside class="notes">
+        Тесты — много работы, но она механическая.
+
+        Время выполнения для эпика должно рассчитываться как статус в том же месте.
+
+        Стартом первой задачи можно выставлять текущее время, а стартом каждой новой — конец последней в очереди приоритетов.
+    </aside>
+</section>
+
+<section>
+    <h2>Ваши вопросы</h2>
+    <ul>
+        <li>Класс String</li>
+        <li>Исключения</li>
+        <li>Работа с файлами</li>
+        <li>ФП7 Трекер задач</li>
+    </ul>
+</section>
