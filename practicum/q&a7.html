@@ -30,7 +30,7 @@
 </section>
 
 <section>
-    <h2>String</h2>
+    <h2>Класс String</h2>
     <pre data-id="code-animation"><code class="hljs java" data-trim data-line-numbers>
         <script type="text/template">
             String foo = "hello";
@@ -109,7 +109,7 @@
 
 <section>
     <h2>Исключения</h2>
-    <img src="images\7\exceptions.png" height="350">
+    <img src="images\7\exceptions.png" height="500">
     <aside class="notes">
         Важная тема, на собесах редко
         <br><br>
@@ -127,78 +127,37 @@
 </section>
 
 <section>
-    <h2>Списки</h2>
-    <img src="images\6\arraylist.png" height="350">
-    <img src="images\6\linkedlist.png" height="350">
-    <aside class="notes">
-        Вы познакомились с устройством arraylist и linkedlist. ArrayList это наверное самая используемая реализация списка, но связные списки также много где используются.
-        <br><br>
-        ArrayList — реализация через расширяющийся динамический массив. Обратите внимание, при удалении размер массива не уменьшается.
-        Детали реализации не важны, главное, что амортизированная сложность — константная.
-        Амортизированная — сложность одной операции при последовательности. Мало кто знает это понятие, на собеседованиях.
-        <br><br>
-        Какой выбрать? Кто помнит?
-        ArrayList — занимает меньше места из-за ссылок в LinkedList (но не сильно, если основное место — данные),
-        ровно расположен в памяти, быстрые операции.
-        LinkedList — если часто нужна вставка и удаление в начало или середину, если критически важно, чтобы вставка работала за O(1).
-    </aside>
-</section>
-
-<section>
-    <h2>Хеш-таблицы</h2>
-    <img src="images\6\hashtable.png" height="500">
-    <aside class="notes">
-        Давайте обсудим хэш таблицы. В Java с помощью хэш таблиц реализуется абстрактный тип данных ассоциативный массив, поэтому часто эти понятия используются как синонимы.  Это по сути массив, только в индексах вместо номеров элементов используются ключи. Иногда говорят, что хранятся пары — ключ, значение.
-        <br><br>
-        Часто гоняют на собесах с вопросом как они работают. Обязательно нужно сказать, что для корректной работы у значений должны быть переопределены hashCode и equals.
-        <br><br>
-        Если у ключа не переопределены hashcode() и equals(), таблица работает неправильно.  Например hashCode по умолчанию разный для разных объектов — если у вас есть какой-то класс, для получения данных по ключу, вам недостаточно знать значения его полей, вам нужно иметь конкретный экземпляр. Equals используется для поиска в ячейке ключа, значение которого нужно вывести. 
-        Когда что использовать? HashMap LinkedHashMap TreeMap  LinkedHashMap сохраняет порядок добавления либо доступа по ключу.  А TreeMap сортирует элементы в процессе добавления. Важно помнить, что базовые операции добавления-изменения-получения в TreeMap имеет log(n) сложность.
-        <br><br>
-        Обратите внимания — сложность добавления в treemap N элементов имеет сложность N Log N — как я раньше говорил, так работают эффективные сортировки. 
-        Также вы прошли Множества — урезанные хэш таблицы  И бонусом Деревья — сложные задачки в топ IT кампании, leetcode
-    </aside>
-</section>
-
-<section>
-    <h2>Comparator</h2>
-    <ul>
-
-    </ul>
-    @FunctionalInterface c методом
+    <h2>Работа с файлами</h2>
     <pre data-id="code-animation"><code class="hljs java" data-trim data-line-numbers>
         <script type="text/template">
-            int compare(T o1, T o2);
-		</script>
-	</code></pre>
-    static методы
-    <pre data-id="code-animation"><code class="hljs java" data-trim data-line-numbers>
-        <script type="text/template">
-            Comparator<Player> byAge =
-                Comparator.comparing(Player::getAge);
-            byAge.compare(firstPlayer, secondPlayer);
-		</script>
-	</code></pre>
-    default методы
-    <pre data-id="code-animation"><code class="hljs java" data-trim data-line-numbers>
-        <script type="text/template">
-            default Comparator<T> reversed()
-            Comparator.comparingInt(Player::getAge)
-                .reversed()
-                .thenComparing(Player::getWeight)
-		</script>
-	</code></pre>
+            ➜  user python3
+            Python 3.9.6 (default, Mar 12 2025, 20:22:46)
+            [Clang 17.0.0 (clang-1700.0.13.3)] on darwin
+            Type "help", "copyright", "credits" or "license" for more information.
+            >>> len("Hi🔥")
+            3
 
+            ➜  user jshell
+            jshell> System.out.println("Hi🔥".length());
+            4
+            jshell> String s = "Hi🔥"; s.codePointCount(0, s.length());
+            s ==> "Hi🔥"
+            $3 ==> 3
+		</script>
+	</code></pre>
     <aside class="notes">
-        TODO Больше инфы
-
-        @FunctionalInterface c методом
+        В старой Java IO — INPUT OUTPUT
+        В новой написали NIO — NEW и его уже обновляли
         <br><br>
-        static методы для удобного создания компараторов
+        Встречается редко, но знать как работает ФС надо. Смотря что будете писать, серверное ПО обычно работает с БД.
         <br><br>
-        default методы для организации цепочки вызовов
+        Но я писал ETL процесс, результатом которого должны были быть именно файлы.
         <br><br>
-        Интерфейс компаратор позволяет задавать правила сравнения классов для сортировки коллекций.
+        Кодировки, как календари — рано или поздно любой программист сталкивается с проблемами
+        <br><br>
+        DEMO — показать, что длины строк в различных ЯП разные, есть двойные и четверные символы
+        <br><br>
+        Можно ли одновременно использовать чтение и запись из одного файла?
     </aside>
 </section>
 
@@ -206,17 +165,41 @@
     <h2>ФП7 Трекер задач</h2>
     Хранение в файлах
     <ul>
-        <li>Покрыть тестами</li>
-        <li>Добавить время выполнения</li>
-        <li>Сортировка списка задач по времени</li>
-        <li>Отсутствие пересечения по времени</li>
+        <li>Ветка sprint_7-solution-in-file-manager</li>
+        <li>FileBackedTaskManager реализация менеджера с хранением в файлах</li>
+        <li>По сути два метода</li>
+        <li>Save — преобразует данные о задачах в текстовый файл</li>
+        <li>Load — делает обратное преобразование</li>
     </ul>
     <aside class="notes">
-        Тесты — много работы, но она механическая.
+        Что такое Persistent storage — БД, которая сохраняет данные при отключении, например PostgreSQL
 
-        Время выполнения для эпика должно рассчитываться как статус в том же месте.
-
-        Стартом первой задачи можно выставлять текущее время, а стартом каждой новой — конец последней в очереди приоритетов.
+        final String csv = Files.readString(file.toPath());
+        final String[] lines = csv.split(System.lineSeparator());
+        int generatorId = 0;
+        List<Integer> history = Collections.emptyList();
+        for (int i = 1; i < lines.length; i++) {
+            String line = lines[i];
+            if (line.isEmpty()) {
+                history = CSVTaskFormat.historyFromString(lines[i + 1]);
+                break;
+            }
+            final Task task = CSVTaskFormat.taskFromString(line);
+            final int id = task.getId();
+            if (id > generatorId) {
+                generatorId = id;
+            }
+            taskManager.addTask(task);
+        }
+        for (Map.Entry<Integer, Subtask> e : taskManager.subtasks.entrySet()) {
+            final Subtask subtask = e.getValue();
+            final Epic epic = taskManager.epics.get(subtask.getEpicId());
+            epic.addSubtaskId(subtask.getId());
+        }
+        for (Integer taskId : history) {
+            taskManager.historyManager.add(taskManager.findTask(taskId));
+        }
+        taskManager.generatorId = generatorId;
     </aside>
 </section>
 
@@ -224,6 +207,7 @@
     <h2>Ваши вопросы</h2>
     <ul>
         <li>Класс String</li>
+        <li>Unmodifiable vs immutable</li>
         <li>Исключения</li>
         <li>Работа с файлами</li>
         <li>ФП7 Трекер задач</li>

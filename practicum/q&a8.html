@@ -1,1 +1,254 @@
-Сложность алгоритмов из keynote Q&A2
+<section>
+    <h2>Спринт 8</h2>
+    <ul>
+        <li>Функциональный стиль</li>
+        <li>Анонимные классы и лямбды</li>
+        <li>Другие классы внутри класса</li>
+        <li>Stream</li>
+        <li>Время и дата</li>
+        <li>Unit тестирование</li>
+    </ul>
+    <br>
+    <a href="#/0" class="footer">в начало</a>
+    <aside class="notes">
+        <br><br>
+        <a href="https://leetcode.com/problems/number-of-even-and-odd-bits/solutions/">Link</a>
+        <pre><code class="java" data-trim><script type="text/template">
+            class Solution {
+                public int[] evenOddBit(int n) {
+                    int odd = 0;
+                    int even = 0;
+                    while (n > 0) {
+                        even += n & 1;
+                        n >>= 1;
+                        odd += n & 1;
+                        n >>= 1;
+                    }
+                    return new int[]{even, odd};
+                }
+            }
+        </script></code></pre>
+    </aside>
+</section>
+
+<section>
+    <h2>Функциональный стиль</h2>
+    <pre data-id="code-animation"><code class="hljs java" data-trim data-line-numbers>
+        <script type="text/template">
+            // Наименее декларативное
+            for (Product product: products) {
+                if (product.rating >= 5 && product.price < 100) {
+                    bestProducts.add(product);
+                }
+            }
+
+            // Более декларативное
+            bestProducts = products.stream()
+                .filter(product -> product.rating >= 5
+                    && product.price < 100)
+                .collect(Collectors.toList());
+
+            // Наиболее декларативное, имплементация скрыта в функции
+            bestProducts = getBestProducts(products);
+        </script>
+    </code></pre>
+    <aside class="notes">
+        Опишу ФП немного с другой стороны, чем в лекциях.
+        <br><br>
+        ФП — парадигма, при которой процесс вычисления трактуется как вычисление значений функций в их математическом понимании.
+        <br><br>
+        ФП основано на математической теории лямбда исчисления. Чистые ФП языки реализуют лямбда исчисление.
+        <br><br>
+        Но важно понимать, что ФП это не только про функции. ФП — декларативный стиль, то есть программа описывает что надо получить в результате вычисления.
+        <br><br>
+        Процедурное и ООП — императивный подход, то есть по шагам описывается как получать результат.
+        <br><br>
+        Java больше предназначен для ООП, потому что изначально развивался как ООП.
+        <br><br>
+        Зачем вам ФП — с помощью ФП можно проще решить некоторые задачи, как показано в теории. Лямбды постоянно используются в коде.
+        <br><br>
+        Хвостовая рекурсия — в Java ее нет.
+        <br><br>
+    </aside>
+</section>
+
+<section>
+    <h2>Анонимные классы и лямбды</h2>
+    <ul>
+        <li>Замыкание</li>
+        <li>Ссылка на метод <br>
+            countries.removeIf(String::isEmpty);</li>
+        <li>Optional</li>
+    </ul>
+    <pre data-id="code-animation"><code class="hljs java" data-trim data-line-numbers>
+        <script type="text/template">
+            public UnaryOperator<String> addFavouriteSpice() {
+                return recipe -> recipe + " " + favouriteSpice;
+            }
+        </script>
+    </code></pre>
+    <aside class="notes">
+        Анонимные классы — синтаксический сахар, нужны чтобы не создавать маленькие классы, которые нужно использовать только один раз.
+        <br><br>
+        Лямбды — называются из-за лямбда исчисления, дальнейшее упрощение анонимных классов. Это анонимные функции.
+        <br><br>
+        Когда анонимный класс можно заменить на лямбду? Если они содержат ровно один метод. Если в них нет полей.
+        <br><br>
+        Также вам рассказали про замыкания. Замыкание в общем случае это техника привязки окружающих переменных к функции при ее создании.
+        Иногда такую функцию и называют замыканием.
+        В Java нет чистых замыканий — к переменным есть требование final or effectively final.
+        Для чистых замыканий нужна полная переработка языка, которая может нарушить обратную совместимость.
+        https://stackoverflow.com/a/17204638
+        <br><br>
+        Ссылка на метод вместо лямбды — IDEA сама подскажет, если можно заменить.
+        <br><br>
+        Optional нужно использовать там, где вы не контролируете переменную. Не нужно им обмазывать все подряд.
+        <br><br>
+        Что возвращает этот код с точки зрения языка? А что такое лямбда?
+        Этот код возвращает лямбда-выражение, реализующее функциональный интерфейс UnaryOperator<String>.
+    </aside>
+</section>
+
+<section>
+    <h2>Другие классы внутри класса</h2>
+    <pre data-id="code-animation"><code class="hljs java" data-trim data-line-numbers>
+        <script type="text/template">
+            public class Foo {
+
+                void bar(String baz) {
+                    class LocalClass {}
+                }
+
+                static class NestedClass {}
+
+                class InnerClass {}
+            }
+        </script>
+    </code></pre>
+    <aside class="notes">
+        Хочу рассказать вам про другие варианты объявления классов внутри класса.
+        <br><br>
+        Это также синтаксический сахар, который позволяет сгруппировать объекты, улучшить инкапсуляцию, сделать код более читаемым и поддерживаемым.
+        <br><br>
+        Локальный класс — внутри метода. Анонимный класс создает один экземпляр, локальный — если нужно создавать больше.
+        Внутренний Nested статический на уровне метода. Как локальный + нужно использовать этот класс в разных методах внешнего.
+        <br><br>
+        Вложенный Inner не статический. Как Nested + в этом классе нужен доступ к приватным полям/методам внешнего класса.
+        <br><br>
+        Примеры использования есть в стандартной библиотеке — например класс Node в списке, который мы изучали на прошлом вебинаре.
+        <br><br>
+        При реализации JSON API я использую эти возможности для реализации JSON вложенности в соответствующих Java объектах.
+        <br><br>
+        https://docs.oracle.com/javase/tutorial/java/javaOO/nested.html
+    </aside>
+</section>
+
+<section>
+    <h2>Stream</h2>
+    <pre data-id="code-animation"><code class="hljs java" data-trim data-line-numbers>
+        <script type="text/template">
+            Stream<String> stream = list.stream()
+                .filter(element -> {
+                    System.out.println("PROCESSED");
+                    return element.contains("2");
+                });
+
+            Optional<String> stream1 = list.stream()
+                .filter(element -> {
+                    System.out. println("filter() was called");
+                    return element.contains ("2");})
+                .map (element -> {
+                    System.out.println("map() was called");
+                    return element.toUpperCase();})
+                .findFirst();
+        </script>
+    </code></pre>
+    <aside class="notes">
+        Вся подводка функционального стиля вела к stream.
+        <br><br>
+        Это постоянно используется при разработке АПИ.
+        <br><br>
+        Сколько раз будет выведено PROCESSED? Ответ — ноль, потому что нет терминальной операции.
+        <br><br>
+        Intermediate operations are lazy. This means that they will be invoked only if it is necessary for the terminal operation execution.
+        <br><br>
+        Как будет работать стрим. Два раза выполним фильтрацию, один раз map и вернем первый результат.
+        <br><br>
+        filter() was called
+        filter() was called
+        map() was called
+        <br><br>
+        Порядок вызовов важен для оптимизации обработки — сначала нужно выполнять фильтрующие операции.
+        Почему стримы вообще?
+    </aside>
+</section>
+
+<section>
+    <h2>Время и дата</h2>
+    <img src="images\8\datetime.png" height="500">
+    <aside class="notes">
+        Как и кодировки — боль разработчиков.
+        <br><br>
+        Информацию о текущем времени программа берёт из устройства, на котором она запущена.
+        <br><br>
+        На серверах обычно следят за тем, чтобы время было синхронизированным, но может быть небольшой разбег.
+        <br><br>
+        Начинает вмешиваться теория относительности — трейдинговые боты располагают в соседнем с биржей здании.
+        <br><br>
+        Если вы будете работать в разных часовых поясах, то утилиты скорее всего будут настроены по времени центрального офиса.
+        <br><br>
+    </aside>
+</section>
+
+<section>
+    <h2>Unit тестирование</h2>
+    <img src="images\8\testing.png" height="500">
+    <aside class="notes">
+        Все просто. Если не писать тесты — придется при каждом изменении руками и глазами проверять одно и то же.
+        <br><br>
+        Если пишете фичу и руки чешутся быстренько ее руками проверить и отправить в бой, садимся на руки и автоматизируем проверку.
+        <br><br>
+        По факту — есть проекты без тестов, это больно и сложно.
+        <br><br>
+        Пирамида тестирования — мы отвечаем за нижний слой.
+        <br><br>
+        Быстрые и изолированные модульные тесты обычно лежат рядом с кодом и запускаются при каждой сборке приложения (сервиса).
+        <br><br>
+        Сервисные тестируют приложение целиком, UI тестирует GUI.
+        <br><br>
+        Обычно делаются снаружи — есть куча инструментов, но и то и то можно писать на Java, например Cucumber.
+    </aside>
+</section>
+
+<section>
+    <h2>ФП8 Трекер задач с тестами</h2>
+    <ul>
+        <li>sprint_8-solution-time-and-duration</li>
+        <li>Покрыть тестами</li>
+        <li>Добавить время выполнения</li>
+        <li>Сортировка списка задач по времени</li>
+        <li>Отсутствие пересечения по времени</li>
+    </ul>
+    <aside class="notes">
+        Тесты — много работы, но она механическая.
+        <br><br>
+        Время выполнения для эпика должно рассчитываться как статус в том же месте.
+        <br><br>
+        Стартом первой задачи можно выставлять текущее время, а стартом каждой новой — конец последней в очереди приоритетов.
+        <br><br>
+        boolean notOverlapping = start2.isAfter(end1) || start1.isAfter(end2);
+    </aside>
+</section>
+
+<section>
+    <h2>Ваши вопросы</h2>
+    <ul>
+        <li>Функциональный стиль</li>
+        <li>Анонимные классы и лямбды</li>
+        <li>Другие классы внутри класса</li>
+        <li>Stream</li>
+        <li>Время и дата</li>
+        <li>Unit тестирование</li>
+        <li>ФП8 Трекер задач с тестами</li>
+    </ul>
+</section>
