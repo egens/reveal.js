@@ -7,6 +7,23 @@
 		<li>IntelliJ IDEA</li>
 	</ul>
 	<aside class="notes">
+		<a href="https://leetcode.com/problems/max-consecutive-ones/description/">https://leetcode.com/problems/max-consecutive-ones/description/</a>
+		<pre><code class="java" data-trim>
+			public int findMaxConsecutiveOnes(int[] nums) {
+				int count = 0;
+				int max = 0;
+				for(int i=0; i nums.length; i++){
+					if (nums[i] == 1){
+						count++;
+						if (count > max) max = count;
+					}else{
+						count = 0;
+					}
+				}
+				return max;
+			}
+		</code></pre>
+
 		Сегодня мы подводим промежуточные итоги и вспоминаем ключевые темы, которые вы прошли.
 		Это важный фундамент, на котором строится всё дальнейшее обучение. Давайте кратко пробежимся по
 		каждой теме и разберём несколько дополнительных нюансов, которые помогут вам в реальной разработке.
@@ -52,23 +69,7 @@
 	<h2>Наш курс</h2>
 	<img src="images/1/course.png" class="r-stretch">
 	<aside class="notes">
-		Эта задачка имеет прямое отношение к ФП1
-		<a href="https://leetcode.com/problems/max-consecutive-ones/description/">https://leetcode.com/problems/max-consecutive-ones/description/</a>
-		<pre><code class="java" data-trim>
-			public int findMaxConsecutiveOnes(int[] nums) {
-				int count = 0;
-				int max = 0;
-				for(int i=0; i nums.length; i++){
-					if (nums[i] == 1){
-						count++;
-						if (count > max) max = count;
-					}else{
-						count = 0;
-					}
-				}
-				return max;
-			}
-		</code></pre>
+
 
 		Чем вы занимаетесь, какая профессия? Кто дальше всего от айти?
 		<br><br>
@@ -99,7 +100,8 @@
 		<li>Работаем в тренажере</li>
 		<li>Пишем код только вместо точек <...></li>
 		<li>Подсказки — на крайний случай</li>
-		<li>Вопросы — поддержке на сайте</li>
+		<li>Вопросы — в общий чат теории</li>
+		<li>Обязательно название урока и ссылка</li>
 	</ul>
 	<aside class="notes">
 		На первом спринтах мы занимаемся в тренажере, но потом будем сдавать проекты в виде кода
