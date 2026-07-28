@@ -162,44 +162,46 @@
 </section>
 
 <section>
-    <h2>ФП7 Трекер задач</h2>
-    Хранение в файлах
+    <h2>ФП7 Игра в слова (Wordle)</h2>
     <ul>
-        <li>Ветка sprint_7-solution-in-file-manager</li>
-        <li>FileBackedTaskManager реализация менеджера с хранением в файлах</li>
-        <li>По сути два метода</li>
-        <li>Save — преобразует данные о задачах в текстовый файл</li>
-        <li>Load — делает обратное преобразование</li>
+        <li>Wordle</li>
+        <li>WordleGame</li>
+        <li>WordleDictionary</li>
+        <li>WordleDictionaryLoader</li>
     </ul>
     <aside class="notes">
-        Что такое Persistent storage — БД, которая сохраняет данные при отключении, например PostgreSQL
-
-        final String csv = Files.readString(file.toPath());
-        final String[] lines = csv.split(System.lineSeparator());
-        int generatorId = 0;
-        List<Integer> history = Collections.emptyList();
-        for (int i = 1; i < lines.length; i++) {
-            String line = lines[i];
-            if (line.isEmpty()) {
-                history = CSVTaskFormat.historyFromString(lines[i + 1]);
-                break;
-            }
-            final Task task = CSVTaskFormat.taskFromString(line);
-            final int id = task.getId();
-            if (id > generatorId) {
-                generatorId = id;
-            }
-            taskManager.addTask(task);
-        }
-        for (Map.Entry<Integer, Subtask> e : taskManager.subtasks.entrySet()) {
-            final Subtask subtask = e.getValue();
-            final Epic epic = taskManager.epics.get(subtask.getEpicId());
-            epic.addSubtaskId(subtask.getId());
-        }
-        for (Integer taskId : history) {
-            taskManager.historyManager.add(taskManager.findTask(taskId));
-        }
-        taskManager.generatorId = generatorId;
+        Вам нужно написать 4 класса.
+        <br><br>
+        Wordle — главный класс, содержит метод main(). В нём мы готовим всё, что нужно для игры, создаём лог-файл, создаём загрузчик словарей, загружаем словарь. Здесь же мы создаём класс игры WordleGame и опрашиваем пользователя. В общем, главный класс задаёт общий ход работы программы.
+        <br><br>
+        WordleGame — класс игры, хранит её состояние, то есть все переменные, которые относятся непосредственно к процессу угадывания слов из словаря. Это может быть количество оставшихся шагов, правильный ответ и, самое главное, словарь вариантов. Методы игрового класса позволяют сделать ход, проверить ответ и вычислить подсказку. Важно, что класс игры не взаимодействует с пользователем или консолью, это задача главного класса.
+        <br><br>
+        WordleDictionary — это класс-словарь, в нём хранится список слов и различные методы для доступа к этому списку, его фильтрации, нормализации и так далее. Также этот класс может содержать дополнительные статические методы побуквенной проверки слов на совпадение.
+        <br><br>
+        WordleDictionaryLoader — загрузчик словарей. Он занимается исключительно работой с файлами словаря. Вы можете отделить способ хранения словаря на диске от работы со словарём в памяти. Класс-загрузчик учитывает кодировки, формат файла. В результате работы загрузчика вы получаете словарь WordleDictionary.
+        <br><br>
+        Ссылка на Техническое Задание https://practicum.yandex.ru/learn/java-developer-plus/courses/012bc707-42ca-43c4-8002-1828df8722d4/sprints/471542/topics/ca5c930f-8aea-40a7-9073-0d6099ec57a8/lessons/aa70430b-4ee0-4f50-96fe-32b6f5dd6ac3/
+        <br><br>
+        Авторское решение(за доступом писать Старшему ревьюеру): https://github.com/praktikum-java/wordle4j-reference
+        <br><br>
+        Шаблон https://github.com/praktikum-java/wordle4j
+        <br><br>
+        Рекомендации для ревьюверов:
+        <br><br>
+        В этом проекте важно следить за правильностью работы с файлами (try-with-resources, кодировки при чтении и при записи).
+        <br><br>
+        Также важно, чтобы студенты описали свои типы исключений и использовали их в сигнатурах методов (checked exceptions) и хотя бы одно-два unchecked exceptions.
+        <br><br>
+        Внутри класса-словаря слова могут лежать в простом списке, но внутри класса-игры лучше чтобы студенты хранили отдельные символы в Set или Map, а не весь список введённых игроком слов (т.к. это не нужно по заданию).
+        <br><br>
+        Проверить наличие нормализации и проверок строк с помощью встроенных методов (isEmpty, isBlank, toLowerCase и т.д.)
+        <br><br>
+        Желательно, но не обязательно, чтобы вместо складывания строк через + они использовали String.format или StringBuffer, хотя бы внутри циклов, в вторичных местах можно и через +.
+        <br><br>
+        Убедиться что они корректно работают с char, String.charAt и Character.
+        <br><br>
+        Так как это игра с конкретными правилами, то в коде может быть много магических чисел, которые лучше вынести в константы (длина слова, количество шагов и т.д.)
+        <br><br>
     </aside>
 </section>
 
