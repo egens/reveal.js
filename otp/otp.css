@@ -1,0 +1,298 @@
+/* Тема для презентации «Анализ причин ошибок» — холст 1920×1080 */
+
+:root {
+	--dark: #12161f;
+	--dark-card: #1c2230;
+	--light: #f7f5f0;
+	--card: #ffffff;
+	--border: #e2e0d8;
+	--ink: #1c1e22;
+	--ink-inverse: #f5f4ef;
+	--muted: #8a8d84;
+	--muted-dark: #6b7280;
+	--muted-inverse: #c7c9c0;
+	--accent: #c68a3e;
+
+	--cat-analysis: #3b6ea8;
+	--cat-impl: #d1a13a;
+	--cat-test: #c1573f;
+	--cat-env: #6b5b95;
+	--cat-none: #8b8f78;
+
+	--serif: 'Source Serif 4', Georgia, serif;
+	--sans: 'Inter', system-ui, sans-serif;
+}
+
+html, body, .reveal-viewport {
+	background: var(--dark);
+}
+
+.reveal {
+	font-family: var(--sans);
+	color: var(--ink);
+}
+
+.reveal .slides {
+	text-align: left;
+}
+
+/* Каждый слайд — фиксированный холст с полями 128px, нижнее поле под футер */
+.reveal .slides > section {
+	width: 1920px;
+	height: 1080px;
+	padding: 0;
+}
+
+.slide {
+	position: relative;
+	box-sizing: border-box;
+	width: 1920px;
+	height: 1080px;
+	padding: 128px 128px 160px;
+	display: flex;
+	flex-direction: column;
+	gap: 48px;
+}
+
+.slide.cover {
+	padding-bottom: 128px;
+	justify-content: space-between;
+}
+
+.dark .slide {
+	color: var(--ink-inverse);
+}
+
+.reveal p,
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+	margin: 0;
+}
+
+.reveal h1,
+.reveal h2 {
+	font-family: var(--serif);
+	font-weight: 400;
+	line-height: 1.15;
+	letter-spacing: normal;
+	text-transform: none;
+}
+
+.reveal h1 { font-size: 92px; line-height: 1.1; max-width: 1500px; }
+.reveal h2 { font-size: 64px; max-width: 1600px; }
+
+.eyebrow {
+	font-size: 24px;
+	font-weight: 600;
+	letter-spacing: 1px;
+	color: var(--accent);
+}
+
+.heading {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.footer {
+	position: absolute;
+	left: 128px;
+	bottom: 64px;
+	font-size: 24px;
+	color: var(--muted);
+}
+
+.dark .footer { color: var(--muted-dark); }
+
+.lead {
+	font-size: 30px;
+	line-height: 1.4;
+	color: var(--muted);
+	max-width: 1500px;
+}
+
+.dark .lead { color: var(--muted-inverse); }
+
+/* Ряды карточек */
+.row {
+	display: flex;
+	gap: 32px;
+	flex: 1;
+}
+
+.row.center { align-items: center; }
+
+.card {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 16px;
+	background: var(--card);
+	border: 1px solid var(--border);
+	border-radius: 16px;
+	padding: 48px;
+}
+
+.dark .card {
+	background: var(--dark-card);
+	border: none;
+	padding: 40px;
+}
+
+.card .label {
+	font-size: 26px;
+	font-weight: 600;
+	color: var(--accent);
+}
+
+.card .text {
+	font-size: 32px;
+	line-height: 1.4;
+}
+
+.dark .card .text { font-size: 30px; line-height: 1.5; }
+
+.stat .num {
+	font-size: 88px;
+	font-weight: 700;
+	line-height: 1.1;
+}
+
+.stat .num.small { font-size: 70px; }
+
+.stat .text {
+	font-size: 28px;
+	color: var(--muted-inverse);
+}
+
+/* Шаги процесса */
+.steps {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 32px;
+}
+
+.step {
+	display: flex;
+	gap: 20px;
+	align-items: flex-start;
+	font-size: 30px;
+	line-height: 1.4;
+}
+
+.step .n {
+	flex: none;
+	width: 48px;
+	height: 48px;
+	border-radius: 24px;
+	background: var(--accent);
+	color: var(--dark);
+	font-size: 24px;
+	font-weight: 700;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* Макет формы Jira */
+.form {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	background: var(--card);
+	border: 1px solid var(--border);
+	border-radius: 16px;
+	padding: 40px;
+}
+
+.form .title { font-size: 24px; font-weight: 600; color: var(--muted-dark); }
+.form .field { display: flex; flex-direction: column; gap: 6px; }
+.form .field span { font-size: 22px; color: var(--muted); }
+.form .field b { font-size: 28px; font-weight: 400; }
+.form hr { width: 100%; border: none; border-top: 1px solid var(--border); margin: 0; }
+
+/* Таблица свода */
+.reveal table.summary {
+	width: 1664px;
+	font-size: 28px;
+	border-collapse: collapse;
+}
+
+.reveal table.summary th {
+	text-align: left;
+	padding: 16px 12px;
+	font-size: 22px;
+	font-weight: 600;
+	color: var(--muted);
+	border-bottom: 2px solid var(--ink);
+}
+
+.reveal table.summary td {
+	padding: 20px 12px;
+	border-bottom: 1px solid var(--border);
+}
+
+.reveal table.summary tr:last-child td { border-bottom: none; }
+
+.reveal table.summary td.key {
+	color: var(--cat-analysis);
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+/* Метки категорий */
+.tags { display: flex; gap: 16px; flex-wrap: wrap; }
+
+.tag {
+	display: inline-block;
+	padding: 10px 24px;
+	border-radius: 24px;
+	font-size: 24px;
+	white-space: nowrap;
+}
+
+.tag.analysis { background: #dce7f2; color: var(--cat-analysis); }
+.tag.impl     { background: #f6e9cf; color: #a97a1f; }
+.tag.test     { background: #f3ded6; color: var(--cat-test); }
+.tag.env      { background: #e9e4f2; color: var(--cat-env); }
+.tag.none     { background: #eceadf; color: #6b6f43; }
+
+/* Слайд с данными */
+.chart { flex: none; width: 920px; height: 592px; }
+.chart text { font-family: var(--sans); }
+
+.points {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 22px;
+	font-size: 28px;
+	line-height: 1.5;
+}
+
+/* Чек-лист просьб */
+.asks {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 24px;
+}
+
+.ask {
+	display: flex;
+	gap: 24px;
+	align-items: center;
+	background: var(--card);
+	border: 1px solid var(--border);
+	border-radius: 16px;
+	padding: 32px 40px;
+	font-size: 32px;
+}
+
+.ask svg { flex: none; width: 44px; height: 44px; }

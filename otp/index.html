@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="ru">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Анализ причин ошибок — ретроспектива</title>
+
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,300..700&display=swap">
+
+		<link rel="stylesheet" href="../dist/reset.css">
+		<link rel="stylesheet" href="../dist/reveal.css">
+		<link rel="stylesheet" href="otp.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+				<!-- 1. Обложка -->
+				<section id="cover" class="dark" data-background-color="#12161f">
+					<div class="slide cover">
+						<div class="heading" style="gap:24px">
+							<p class="eyebrow" style="font-size:28px; letter-spacing:2px; font-weight:400">BACKEND CHAPTER · OTP BANK</p>
+							<h1>Анализ причин ошибок: ретроспектива за май–сентябрь 2026</h1>
+						</div>
+						<div style="display:flex; justify-content:space-between; align-items:flex-end">
+							<p style="font-size:32px; color:#a9ac9f">От реагирования на ошибки — к их предотвращению</p>
+							<p style="font-size:24px; color:#6b7280">01</p>
+						</div>
+					</div>
+					<aside class="notes">
+						Сегодня хочу показать, зачем мы полгода собираем ошибки по категориям, что уже видно в данных и что попросим делать дальше.
+					</aside>
+				</section>
+
+				<!-- 2. Зачем -->
+				<section id="why" data-background-color="#f7f5f0">
+					<div class="slide">
+						<h2>Зачем мы это делаем</h2>
+						<div class="row">
+							<div class="card">
+								<p class="label">Цель</p>
+								<p class="text">Понять, на каком этапе чаще всего рождается дефект — анализ, реализация, тестирование или окружение</p>
+							</div>
+							<div class="card">
+								<p class="label">Подход</p>
+								<p class="text">Ретроспективный анализ ошибок → точечные улучшения качества, а не общие меры</p>
+							</div>
+							<div class="card">
+								<p class="label">Важно</p>
+								<p class="text">Мы никого не блеймим. Смещаем фокус с реагирования на предотвращение</p>
+							</div>
+						</div>
+						<p class="footer">Ретроспектива ошибок · OTP Bank</p>
+					</div>
+					<aside class="notes">
+						Мы не блеймим людей и не считаем KPI по разработчикам. Задача — увидеть системную причину: если, скажем, большинство ошибок — analysis_error, то чинить надо процесс аналитики, а не гонять тестировщиков сильнее.
+					</aside>
+				</section>
+
+				<!-- 3. Процесс: заведение ошибки -->
+				<section id="process-create" data-background-color="#f7f5f0">
+					<div class="slide">
+						<div class="heading">
+							<p class="eyebrow">ПРОЦЕСС · СТРАНИЦА 1</p>
+							<h2>Как заводится ошибка</h2>
+						</div>
+						<div class="row" style="gap:48px">
+							<div class="steps">
+								<div class="step"><span class="n">1</span><p>Jira, проект <b>Liabilities and Investments (LICT)</b>, тип задачи — «Ошибка»</p></div>
+								<div class="step"><span class="n">2</span><p>Обязательные поля: Тема, Автор, логин пользователя</p></div>
+								<div class="step"><span class="n">3</span><p>Описание должно <b>однозначно</b> указывать причину возникновения</p></div>
+							</div>
+							<div class="form">
+								<p class="title">Создание задачи</p>
+								<div class="field"><span>Проект*</span><b>Liabilities and Investments (LICT)</b></div>
+								<hr>
+								<div class="field"><span>Тип задачи*</span><b>Ошибка</b></div>
+								<hr>
+								<div class="field"><span>Тема*</span><b>Краткое, однозначное описание причины</b></div>
+							</div>
+						</div>
+						<p class="footer">Confluence · «Правила и процессы» → «Создание ошибки (bug)»</p>
+					</div>
+					<aside class="notes">
+						Первая страница — это регламент: как правильно завести баг, чтобы его потом можно было классифицировать без гадания. Ключевое требование — формулировка темы и описания должна сразу давать понять, откуда растут ноги у проблемы.
+					</aside>
+				</section>
+
+				<!-- 4. Процесс: свод -->
+				<section id="process-summary" data-background-color="#f7f5f0">
+					<div class="slide" style="gap:40px">
+						<div class="heading">
+							<p class="eyebrow">ПРОЦЕСС · СТРАНИЦА 2</p>
+							<h2>Свод: та же ошибка с категорией</h2>
+						</div>
+						<table class="summary">
+							<tr><th>Ключ</th><th>Тема</th><th>Метка</th></tr>
+							<tr>
+								<td class="key">LICT-1742</td>
+								<td>Бэк. Добавить ПФ для вклада «Горизонт» на срок 1098 д.</td>
+								<td><span class="tag none" style="font-size:22px">not_classified</span></td>
+							</tr>
+							<tr>
+								<td class="key">LICT-1753</td>
+								<td>Исправить падение системы при недоступности Alfresco</td>
+								<td><span class="tag env" style="font-size:22px">environment_error</span></td>
+							</tr>
+						</table>
+						<div class="tags">
+							<span class="tag analysis">analysis_error</span>
+							<span class="tag impl">implementation_error</span>
+							<span class="tag test">testing_error</span>
+							<span class="tag env">environment_error</span>
+							<span class="tag none">not_classified</span>
+						</div>
+						<p class="footer">Confluence · свод ошибок по категориям</p>
+					</div>
+					<aside class="notes">
+						Вторая страница — это уже результат: та же ошибка, но с проставленной меткой-категорией. Именно эти метки и дают график, который дальше покажу.
+					</aside>
+				</section>
+
+				<!-- 5. Данные -->
+				<section id="data-method" data-background-color="#f7f5f0">
+					<div class="slide" style="gap:36px">
+						<div class="heading">
+							<p class="eyebrow">ДАННЫЕ · МАЙ–СЕНТЯБРЬ 2026</p>
+							<h2 style="font-size:56px">Категоризацию делал ИИ — и это показало слабое место</h2>
+						</div>
+						<div class="row center" style="gap:48px">
+							<svg class="chart" viewBox="0 0 900 580" role="img" aria-label="Динамика ошибок по категориям с мая по сентябрь 2026">
+								<line x1="40" y1="440" x2="880" y2="440" stroke="#c9c7bc"/>
+								<g font-size="18" fill="#1c1e22" text-anchor="middle">
+									<!-- май -->
+									<rect x="113" y="415" width="22" height="25" fill="#d1a13a"/><text x="124" y="405">1</text>
+									<!-- июнь -->
+									<rect x="253" y="140" width="22" height="300" fill="#3b6ea8"/><text x="264" y="130">12</text>
+									<rect x="281" y="315" width="22" height="125" fill="#d1a13a"/><text x="292" y="305">5</text>
+									<rect x="309" y="415" width="22" height="25" fill="#6b5b95"/><text x="320" y="405">1</text>
+									<!-- июль -->
+									<rect x="421" y="265" width="22" height="175" fill="#3b6ea8"/><text x="432" y="255">7</text>
+									<rect x="449" y="290" width="22" height="150" fill="#d1a13a"/><text x="460" y="280">6</text>
+									<rect x="477" y="390" width="22" height="50" fill="#8b8f78"/><text x="488" y="380">2</text>
+									<!-- август -->
+									<rect x="575" y="215" width="22" height="225" fill="#3b6ea8"/><text x="586" y="205">9</text>
+									<rect x="603" y="290" width="22" height="150" fill="#d1a13a"/><text x="614" y="280">6</text>
+									<rect x="631" y="390" width="22" height="50" fill="#6b5b95"/><text x="642" y="380">2</text>
+									<rect x="659" y="190" width="22" height="250" fill="#8b8f78"/><text x="670" y="180">10</text>
+									<!-- сентябрь -->
+									<rect x="743" y="415" width="22" height="25" fill="#3b6ea8"/><text x="754" y="405">1</text>
+									<rect x="771" y="390" width="22" height="50" fill="#c1573f"/><text x="782" y="380">2</text>
+									<rect x="799" y="390" width="22" height="50" fill="#6b5b95"/><text x="810" y="380">2</text>
+									<rect x="827" y="65" width="22" height="375" fill="#8b8f78"/><text x="838" y="55">15</text>
+								</g>
+								<g font-size="20" fill="#6b7280" text-anchor="middle">
+									<text x="124" y="465">май</text>
+									<text x="292" y="465">июн</text>
+									<text x="460" y="465">июл</text>
+									<text x="628" y="465">авг</text>
+									<text x="796" y="465">сен</text>
+								</g>
+								<g font-size="17" fill="#1c1e22">
+									<rect x="40" y="520" width="18" height="18" fill="#3b6ea8"/><text x="64" y="534">Анализ</text>
+									<rect x="190" y="520" width="18" height="18" fill="#d1a13a"/><text x="214" y="534">Реализация</text>
+									<rect x="380" y="520" width="18" height="18" fill="#c1573f"/><text x="404" y="534">Тестирование</text>
+									<rect x="590" y="520" width="18" height="18" fill="#6b5b95"/><text x="614" y="534">Окружение</text>
+									<rect x="760" y="520" width="18" height="18" fill="#8b8f78"/><text x="784" y="534">Не классиф.</text>
+								</g>
+							</svg>
+							<div class="points">
+								<p>Метки категорий за полугодие проставлял <b>ИИ</b> — по тексту темы и описания задачи</p>
+								<p>Часть ошибок он не смог однозначно классифицировать: расплывчатое описание → <span style="color:#6b6f43">not_classified</span></p>
+								<p>Поэтому разработали <b>инструкцию и процесс</b> заведения ошибки — чтобы причина была понятна сразу</p>
+							</div>
+						</div>
+						<p class="footer">Классификация выполнена ИИ по данным Jira · сен 2026</p>
+					</div>
+					<aside class="notes">
+						Разметку категорий за это полугодие делал ИИ по тексту задачи — вручную такой объём разбирать было бы дольше. Но вскрылась проблема: если тема и описание сформулированы расплывчато, даже ИИ не может понять, к какому этапу отнести ошибку — отсюда not_classified. Это стало главным аргументом в пользу инструкции: чем точнее автор укажет причину при заведении, тем надёжнее категория. В следующем квартале заведём ошибки уже по новым правилам и сравним результат.
+					</aside>
+				</section>
+
+				<!-- 6. Ручная разметка -->
+				<section id="gap-manual" class="dark" data-background-color="#12161f">
+					<div class="slide">
+						<h2 style="font-size:60px">Пока категория проставляется постфактум — вручную</h2>
+						<div class="row center">
+							<div class="card stat">
+								<p class="num" style="color:#c68a3e">1×</p>
+								<p class="text">в неделю — ручной разбор и простановка меток</p>
+							</div>
+							<div class="card stat">
+								<p class="num" style="color:#8b8f78">15</p>
+								<p class="text">задач в очереди на классификацию к сентябрю</p>
+							</div>
+							<div class="card stat">
+								<p class="num small" style="color:#c1573f">2 → 10 → 15</p>
+								<p class="text">рост неразмеченных ошибок за июль–сентябрь</p>
+							</div>
+						</div>
+						<p class="lead">Хотим, чтобы причина ошибки была понятна сразу при заведении — без ручной постфактум-разметки</p>
+						<p class="footer">Данные Jira · LICT</p>
+					</div>
+					<aside class="notes">
+						Здесь стоит честно проговорить: большой серый столбик к сентябрю — это накопившиеся неразмеченные задачи, ждущие ручной разборки. Хотим этого избежать: тратим время лида на еженедельную ручную разметку вместо того, чтобы данные были точными сразу.
+					</aside>
+				</section>
+
+				<!-- 7. Просьба к команде -->
+				<section id="ask-team" data-background-color="#f7f5f0">
+					<div class="slide">
+						<h2>Что мы просим от команды</h2>
+						<div class="asks">
+							<div class="ask">
+								<svg viewBox="0 0 24 24" fill="none" stroke="#c68a3e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg>
+								<p>Заводить ошибку по инструкции — «Создание ошибки (bug)» в Confluence</p>
+							</div>
+							<div class="ask">
+								<svg viewBox="0 0 24 24" fill="none" stroke="#c68a3e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg>
+								<p>Формулировать Тему и Описание так, чтобы причина была понятна без уточнений</p>
+							</div>
+							<div class="ask">
+								<svg viewBox="0 0 24 24" fill="none" stroke="#c68a3e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg>
+								<p>Проставлять метку категории сразу при создании задачи</p>
+							</div>
+						</div>
+						<p class="lead" style="font-size:28px">Тогда данные будут точными сразу — без еженедельной ручной разметки</p>
+						<p class="footer">Инструкция: Confluence → Deposits Home → Правила и процессы</p>
+					</div>
+					<aside class="notes">
+						Просьба простая: если каждый будет сразу по инструкции указывать причину и ставить метку, нам не придётся раз в неделю вручную это разбирать — данные будут актуальны сразу, и мы быстрее увидим тренды.
+					</aside>
+				</section>
+
+				<!-- 8. Итог -->
+				<section id="conclusion" class="dark" data-background-color="#12161f">
+					<div class="slide">
+						<div class="heading" style="gap:48px">
+							<p class="eyebrow">ИТОГ</p>
+							<h2 style="font-size:58px; line-height:1.25; max-width:1500px">Цель — меньше ошибок долетает до этапа тестирования</h2>
+						</div>
+						<div class="row">
+							<div class="card">
+								<p class="label" style="font-size:28px">Шаг 1</p>
+								<p class="text">Понять, какой этап — анализ, реализация, тестирование или окружение — даёт больше всего ошибок</p>
+							</div>
+							<div class="card">
+								<p class="label" style="font-size:28px">Шаг 2</p>
+								<p class="text">Следующий квартал — заводим ошибки по инструкции, копим точные данные</p>
+							</div>
+							<div class="card">
+								<p class="label" style="font-size:28px">Шаг 3</p>
+								<p class="text">Повторная ретроспектива — точечные улучшения на этапе-лидере</p>
+							</div>
+						</div>
+						<p class="footer">Backend chapter · OTP Bank</p>
+					</div>
+					<aside class="notes">
+						Финальная цель — чтобы меньше багов долетало до этапа тестирования, то есть чтобы качество росло раньше по цепочке. Но чинить «всё и сразу» неэффективно, поэтому первый шаг — точно понять, какой этап сейчас основной источник проблем. По текущим данным это выглядит как анализ требований, но выборка размечена ИИ и не всегда надёжно, поэтому в следующем квартале мы соберём данные уже по новой инструкции и на них подтвердим или скорректируем эту гипотезу. Дальше — точечно усиливаем именно этот этап.
+					</aside>
+				</section>
+
+			</div>
+		</div>
+
+		<script src="../dist/reveal.js"></script>
+		<script src="../plugin/notes/notes.js"></script>
+		<script>
+			// ?notes в адресе — показать подстрочник прямо под слайдом (например, для печати в PDF)
+			const showNotes = new URLSearchParams( location.search ).has( 'notes' );
+
+			Reveal.initialize({
+				hash: true,
+				width: 1920,
+				height: 1080,
+				margin: 0.04,
+				center: false,
+				transition: 'fade',
+				slideNumber: 'c/t',
+				showNotes: showNotes,
+				plugins: [ RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
