@@ -1,66 +1,49 @@
-/* Тема для презентации «Анализ причин ошибок» — холст 1920×1080 */
+/*
+ * Корпоративный стиль OTP Bank (по шаблону QBR Q3–Q4'26), холст 1920×1080.
+ * Цвета — из темы шаблона, шрифт — Montserrat.
+ */
 
 :root {
-	--dark: #12161f;
-	--dark-card: #1c2230;
-	--light: #f7f5f0;
-	--card: #ffffff;
-	--border: #e2e0d8;
-	--ink: #1c1e22;
-	--ink-inverse: #f5f4ef;
-	--muted: #8a8d84;
-	--muted-dark: #6b7280;
-	--muted-inverse: #c7c9c0;
-	--accent: #c68a3e;
+	--black: #000000;
+	--ink: #262626;          /* accent6 — заголовки */
+	--ink-soft: #4a4a4a;     /* dk2 */
+	--white: #ffffff;
+	--grey-bg: #f2f2f2;      /* lt2 — подложки */
+	--grey: #d8d8d8;         /* accent5 */
+	--line: #e3e3e3;
 
-	--cat-analysis: #3b6ea8;
-	--cat-impl: #d1a13a;
-	--cat-test: #c1573f;
-	--cat-env: #6b5b95;
-	--cat-none: #8b8f78;
+	--lime: #c1fd0e;         /* accent1 */
+	--purple: #9e6ec6;       /* accent2 */
+	--orange: #fe7c32;       /* accent3 */
+	--sky: #c8dffc;          /* accent4 — плашка раздела */
 
-	--serif: 'Source Serif 4', Georgia, serif;
-	--sans: 'Inter', system-ui, sans-serif;
+	--cat-analysis: var(--purple);
+	--cat-impl: var(--orange);
+	--cat-test: var(--lime);
+	--cat-env: var(--ink);
+	--cat-none: var(--grey);
+
+	--font: 'Montserrat', Arial, sans-serif;
+	--side: 53px;            /* поле слева/справа, как в шаблоне */
 }
 
 html, body, .reveal-viewport {
-	background: var(--dark);
+	background: var(--white);
 }
 
 .reveal {
-	font-family: var(--sans);
-	color: var(--ink);
+	font-family: var(--font);
+	color: var(--black);
 }
 
 .reveal .slides {
 	text-align: left;
 }
 
-/* Каждый слайд — фиксированный холст с полями 128px, нижнее поле под футер */
 .reveal .slides > section {
 	width: 1920px;
 	height: 1080px;
 	padding: 0;
-}
-
-.slide {
-	position: relative;
-	box-sizing: border-box;
-	width: 1920px;
-	height: 1080px;
-	padding: 128px 128px 160px;
-	display: flex;
-	flex-direction: column;
-	gap: 48px;
-}
-
-.slide.cover {
-	padding-bottom: 128px;
-	justify-content: space-between;
-}
-
-.dark .slide {
-	color: var(--ink-inverse);
 }
 
 .reveal p,
@@ -70,212 +53,424 @@ html, body, .reveal-viewport {
 	margin: 0;
 }
 
-.reveal h1,
-.reveal h2 {
-	font-family: var(--serif);
-	font-weight: 400;
-	line-height: 1.15;
-	letter-spacing: normal;
-	text-transform: none;
-}
+.reveal b { font-weight: 700; }
 
-.reveal h1 { font-size: 92px; line-height: 1.1; max-width: 1500px; }
-.reveal h2 { font-size: 64px; max-width: 1600px; }
+/* ---------- Контентный слайд (layout «заголовок + плашка раздела») ---------- */
 
-.eyebrow {
-	font-size: 24px;
-	font-weight: 600;
-	letter-spacing: 1px;
-	color: var(--accent);
-}
-
-.heading {
+.slide {
+	position: relative;
+	box-sizing: border-box;
+	width: 1920px;
+	height: 1080px;
+	padding: 96px var(--side) 120px;
 	display: flex;
 	flex-direction: column;
-	gap: 12px;
+	gap: 40px;
+	background: var(--white);
 }
 
-.footer {
+/* Голубая плашка раздела сверху */
+.section-bar {
 	position: absolute;
-	left: 128px;
-	bottom: 64px;
-	font-size: 24px;
-	color: var(--muted);
+	left: 0;
+	top: 0;
+	width: 1920px;
+	height: 54px;
+	box-sizing: border-box;
+	padding: 0 var(--side);
+	display: flex;
+	align-items: center;
+	background: var(--sky);
+	font-size: 22px;
+	font-weight: 500;
 }
 
-.dark .footer { color: var(--muted-dark); }
-
-.lead {
-	font-size: 30px;
-	line-height: 1.4;
-	color: var(--muted);
-	max-width: 1500px;
+.reveal h2 {
+	font-family: var(--font);
+	font-size: 52px;
+	font-weight: 800;
+	line-height: 1.15;
+	color: var(--ink);
+	letter-spacing: normal;
+	text-transform: none;
+	max-width: 1700px;
 }
 
-.dark .lead { color: var(--muted-inverse); }
+/* Источник — слева внизу, номер слайда — справа внизу */
+.source {
+	position: absolute;
+	left: var(--side);
+	bottom: 44px;
+	font-size: 20px;
+	color: var(--ink-soft);
+}
 
-/* Ряды карточек */
+.source span { color: var(--purple); }
+
+.page {
+	position: absolute;
+	right: var(--side);
+	bottom: 44px;
+	font-size: 20px;
+	color: var(--purple);
+}
+
+/* ---------- Обложка (layout «титул») ---------- */
+
+.cover {
+	position: relative;
+	width: 1920px;
+	height: 1080px;
+	background: var(--white);
+}
+
+.cover .tagline {
+	position: absolute;
+	left: 47px;
+	top: 25px;
+	font-size: 20px;
+	font-weight: 500;
+}
+
+.cover .chapter {
+	position: absolute;
+	left: 47px;
+	top: 330px;
+	font-size: 32px;
+	font-weight: 600;
+	color: var(--purple);
+	letter-spacing: 2px;
+}
+
+.cover .logo-box {
+	position: absolute;
+	left: 1644px;
+	top: 0;
+	width: 276px;
+	height: 88px;
+	background: var(--orange);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.cover .logo-box img {
+	width: 225px;
+	height: auto;
+	margin: 0;
+}
+
+.cover .side {
+	position: absolute;
+	left: 1644px;
+	top: 88px;
+	width: 276px;
+	height: 992px;
+	background: var(--purple);
+}
+
+.cover .date {
+	position: absolute;
+	left: 1670px;
+	bottom: 36px;
+	font-size: 22px;
+	font-weight: 500;
+	color: var(--white);
+}
+
+.cover .lime {
+	position: absolute;
+	left: 0;
+	top: 450px;
+	width: 1644px;
+	height: 630px;
+	box-sizing: border-box;
+	padding: 48px 34px 0;
+	background: var(--lime);
+	display: flex;
+	flex-direction: column;
+	gap: 36px;
+}
+
+.reveal .cover h1 {
+	font-family: var(--font);
+	font-size: 92px;
+	font-weight: 600;
+	line-height: 1.08;
+	text-transform: uppercase;
+	letter-spacing: normal;
+	color: var(--black);
+}
+
+.cover .subtitle {
+	font-size: 36px;
+	font-weight: 500;
+	text-transform: uppercase;
+}
+
+.cover .site {
+	position: absolute;
+	left: 47px;
+	bottom: 30px;
+	font-size: 20px;
+	font-weight: 500;
+}
+
+/* ---------- Общие элементы ---------- */
+
 .row {
 	display: flex;
 	gap: 32px;
-	flex: 1;
+	margin: auto 0;        /* ряд по высоте содержимого, по центру свободного места */
 }
 
-.row.center { align-items: center; }
-
-.card {
-	flex: 1;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	gap: 16px;
-	background: var(--card);
-	border: 1px solid var(--border);
-	border-radius: 16px;
-	padding: 48px;
-}
-
-.dark .card {
-	background: var(--dark-card);
-	border: none;
-	padding: 40px;
-}
-
-.card .label {
-	font-size: 26px;
-	font-weight: 600;
-	color: var(--accent);
-}
-
-.card .text {
-	font-size: 32px;
-	line-height: 1.4;
-}
-
-.dark .card .text { font-size: 30px; line-height: 1.5; }
-
-.stat .num {
-	font-size: 88px;
-	font-weight: 700;
-	line-height: 1.1;
-}
-
-.stat .num.small { font-size: 70px; }
-
-.stat .text {
-	font-size: 28px;
-	color: var(--muted-inverse);
-}
-
-/* Шаги процесса */
-.steps {
-	flex: 1;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	gap: 32px;
-}
-
-.step {
-	display: flex;
-	gap: 20px;
-	align-items: flex-start;
-	font-size: 30px;
-	line-height: 1.4;
-}
-
-.step .n {
+/* Салатовый номер-кружок — фирменный мотив шаблона */
+.n {
 	flex: none;
-	width: 48px;
-	height: 48px;
-	border-radius: 24px;
-	background: var(--accent);
-	color: var(--dark);
-	font-size: 24px;
+	width: 52px;
+	height: 52px;
+	border-radius: 26px;
+	background: var(--lime);
+	color: var(--black);
+	font-size: 26px;
 	font-weight: 700;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 }
 
-/* Макет формы Jira */
+/* Карточка с фиолетовой шапкой */
+.pcard {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	border-radius: 14px;
+	background: var(--white);
+	box-shadow: 0 6px 24px rgba(38, 38, 38, 0.10);
+	overflow: hidden;
+}
+
+.pcard .head {
+	background: var(--purple);
+	color: var(--white);
+	font-size: 30px;
+	font-weight: 700;
+	padding: 26px 36px;
+}
+
+.pcard .body {
+	flex: 1;
+	min-height: 240px;
+	padding: 40px 36px;
+	font-size: 34px;
+	line-height: 1.45;
+}
+
+/* Панель «Комментарии и выводы» */
+.panel {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.panel .pill-head {
+	background: var(--lime);
+	border-radius: 10px;
+	padding: 18px 28px;
+	font-size: 28px;
+	font-weight: 700;
+	text-align: center;
+}
+
+.panel .panel-body {
+	flex: 1;
+	background: var(--grey-bg);
+	border-radius: 10px;
+	padding: 36px 32px;
+	display: flex;
+	flex-direction: column;
+	gap: 32px;
+}
+
+.item {
+	display: flex;
+	gap: 20px;
+	align-items: flex-start;
+	font-size: 28px;
+	line-height: 1.45;
+}
+
+/* Салатовая выноска «!» */
+.callout {
+	display: flex;
+	gap: 24px;
+	align-items: center;
+	background: var(--lime);
+	border-radius: 10px;
+	padding: 28px 36px;
+	font-size: 30px;
+	line-height: 1.4;
+}
+
+.callout .bang {
+	flex: none;
+	width: 52px;
+	height: 52px;
+	border-radius: 26px;
+	background: var(--white);
+	font-size: 30px;
+	font-weight: 800;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* ---------- Процесс: шаги и макет формы ---------- */
+
+.steps {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 44px;
+}
+
+.steps .item { font-size: 32px; align-items: center; }
+
 .form {
 	flex: 1;
 	display: flex;
 	flex-direction: column;
-	gap: 24px;
-	background: var(--card);
-	border: 1px solid var(--border);
-	border-radius: 16px;
-	padding: 40px;
+	border-radius: 14px;
+	box-shadow: 0 6px 24px rgba(38, 38, 38, 0.10);
+	overflow: hidden;
 }
 
-.form .title { font-size: 24px; font-weight: 600; color: var(--muted-dark); }
-.form .field { display: flex; flex-direction: column; gap: 6px; }
-.form .field span { font-size: 22px; color: var(--muted); }
-.form .field b { font-size: 28px; font-weight: 400; }
-.form hr { width: 100%; border: none; border-top: 1px solid var(--border); margin: 0; }
-
-/* Таблица свода */
-.reveal table.summary {
-	width: 1664px;
+.form .head {
+	background: var(--purple);
+	color: var(--white);
 	font-size: 28px;
-	border-collapse: collapse;
+	font-weight: 700;
+	padding: 24px 36px;
+}
+
+.form .fields {
+	padding: 12px 36px 24px;
+	display: flex;
+	flex-direction: column;
+}
+
+.form .field {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding: 28px 0;
+	border-bottom: 1px solid var(--line);
+}
+
+.form .field:last-child { border-bottom: none; }
+.form .field span { font-size: 22px; color: var(--ink-soft); }
+.form .field b { font-size: 30px; font-weight: 500; }
+
+/* ---------- Таблица свода ---------- */
+
+.reveal table.summary {
+	width: 100%;
+	font-size: 28px;
+	border-collapse: separate;
+	border-spacing: 0;
 }
 
 .reveal table.summary th {
+	background: var(--purple);
+	color: var(--white);
 	text-align: left;
-	padding: 16px 12px;
-	font-size: 22px;
-	font-weight: 600;
-	color: var(--muted);
-	border-bottom: 2px solid var(--ink);
+	padding: 22px 24px;
+	font-size: 24px;
+	font-weight: 700;
+	border: none;
 }
+
+.reveal table.summary th:first-child { border-top-left-radius: 14px; }
+.reveal table.summary th:last-child { border-top-right-radius: 14px; }
 
 .reveal table.summary td {
-	padding: 20px 12px;
-	border-bottom: 1px solid var(--border);
+	padding: 40px 24px;
+	font-size: 30px;
+	border-bottom: 1px solid var(--grey);
+	vertical-align: middle;
 }
 
-.reveal table.summary tr:last-child td { border-bottom: none; }
-
 .reveal table.summary td.key {
-	color: var(--cat-analysis);
-	font-weight: 600;
+	font-weight: 700;
 	white-space: nowrap;
 }
 
-/* Метки категорий */
-.tags { display: flex; gap: 16px; flex-wrap: wrap; }
+/* Метки категорий — пилюли, как статусы в шаблоне */
+.tags {
+	display: flex;
+	gap: 16px;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+.tags .caption {
+	font-size: 24px;
+	font-weight: 700;
+	margin-right: 8px;
+}
 
 .tag {
 	display: inline-block;
-	padding: 10px 24px;
+	padding: 10px 26px;
 	border-radius: 24px;
 	font-size: 24px;
+	font-weight: 500;
 	white-space: nowrap;
 }
 
-.tag.analysis { background: #dce7f2; color: var(--cat-analysis); }
-.tag.impl     { background: #f6e9cf; color: #a97a1f; }
-.tag.test     { background: #f3ded6; color: var(--cat-test); }
-.tag.env      { background: #e9e4f2; color: var(--cat-env); }
-.tag.none     { background: #eceadf; color: #6b6f43; }
+.tag.analysis { background: var(--cat-analysis); color: var(--white); }
+.tag.impl     { background: var(--cat-impl); color: var(--black); }
+.tag.test     { background: var(--cat-test); color: var(--black); }
+.tag.env      { background: var(--cat-env); color: var(--white); }
+.tag.none     { background: var(--cat-none); color: var(--black); }
 
-/* Слайд с данными */
-.chart { flex: none; width: 920px; height: 592px; }
-.chart text { font-family: var(--sans); }
+/* ---------- Слайд с данными ---------- */
 
-.points {
+.chart { flex: none; width: 1080px; height: 700px; }
+.chart text { font-family: var(--font); }
+
+/* ---------- Большие числа ---------- */
+
+.stat {
 	flex: 1;
 	display: flex;
 	flex-direction: column;
-	gap: 22px;
-	font-size: 28px;
-	line-height: 1.5;
+	justify-content: center;
+	gap: 20px;
+	min-height: 380px;
+	box-sizing: border-box;
+	background: var(--grey-bg);
+	border-radius: 14px;
+	padding: 48px 44px;
 }
 
-/* Чек-лист просьб */
+.stat .num {
+	font-size: 104px;
+	font-weight: 800;
+	line-height: 1;
+}
+
+.stat .num.small { font-size: 80px; }
+
+.stat .text {
+	font-size: 30px;
+	line-height: 1.4;
+	color: var(--ink-soft);
+}
+
+/* ---------- Чек-лист ---------- */
+
 .asks {
 	flex: 1;
 	display: flex;
@@ -286,13 +481,12 @@ html, body, .reveal-viewport {
 
 .ask {
 	display: flex;
-	gap: 24px;
+	gap: 28px;
 	align-items: center;
-	background: var(--card);
-	border: 1px solid var(--border);
-	border-radius: 16px;
-	padding: 32px 40px;
+	background: var(--grey-bg);
+	border-radius: 14px;
+	padding: 34px 40px;
 	font-size: 32px;
 }
 
-.ask svg { flex: none; width: 44px; height: 44px; }
+.ask svg { flex: none; width: 52px; height: 52px; }
