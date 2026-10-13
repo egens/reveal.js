@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ru">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>{{TITLE}}</title>
+
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap">
+
+		<link rel="stylesheet" href="../dist/reset.css">
+		<link rel="stylesheet" href="../dist/reveal.css">
+		<link rel="stylesheet" href="otp.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+				<!-- 1. Титул -->
+				<section id="cover">
+					<div class="cover">
+						<p class="tagline">FOR THOSE WHO ARE OPEN TO NEW THINGS</p>
+						<p class="chapter">{{TEAM}}</p>
+						<div class="lime">
+							<h1>{{TITLE}}</h1>
+							<p class="subtitle">{{SUBTITLE}}</p>
+						</div>
+						<div class="logo-box"><img src="img/otp-logo.png" alt="OTP Bank"></div>
+						<div class="side"></div>
+						<p class="date">{{DATE}}</p>
+						<p class="site">OTPBANK.RU</p>
+					</div>
+					<aside class="notes">
+						<p>Приветствие и одна фраза о том, зачем собрались.</p>
+						<p>План встречи по пунктам и сколько она займёт.</p>
+					</aside>
+				</section>
+
+				<!-- 2. Контентный слайд — копируйте и заменяйте тело из references/layouts.md -->
+				<section id="example">
+					<div class="slide">
+						<div class="section-bar">Раздел</div>
+						<h2>Заголовок слайда — одна мысль</h2>
+						<div class="row">
+							<div class="pcard">
+								<div class="head">Карточка</div>
+								<p class="body">Текст карточки</p>
+							</div>
+						</div>
+						<p class="source"><span>Источник:</span> откуда данные</p>
+					</div>
+					<aside class="notes">
+						<p>Подстрочник: что сказать на этом слайде.</p>
+					</aside>
+				</section>
+
+			</div>
+		</div>
+
+		<script src="../dist/reveal.js"></script>
+		<script src="../plugin/notes/notes.js"></script>
+		<script>
+			// Номер страницы — справа внизу, как в шаблоне (на титуле не ставится)
+			document.querySelectorAll( '.reveal .slides > section' ).forEach( ( section, i ) => {
+				const slide = section.querySelector( '.slide' );
+				if( !slide ) return;
+				const page = document.createElement( 'span' );
+				page.className = 'page';
+				page.textContent = i + 1;
+				slide.appendChild( page );
+			} );
+
+			// ?notes в адресе — показать подстрочник прямо под слайдом (например, для печати в PDF)
+			const showNotes = new URLSearchParams( location.search ).has( 'notes' );
+
+			Reveal.initialize({
+				hash: true,
+				width: 1920,
+				height: 1080,
+				margin: 0,
+				center: false,
+				controls: false,
+				transition: 'fade',
+				backgroundTransition: 'none',
+				showNotes: showNotes,
+				plugins: [ RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
