@@ -1609,6 +1609,17 @@ export default function( revealElement, options ) {
 		backgrounds.update();
 		notes.update();
 
+		// backgrounds.update() only starts embedded content when the
+		// background element changes. Re-syncing the current slide
+		// keeps the same element, so start content explicitly.
+		if( slide === currentSlide ) {
+			slideContent.startEmbeddedContent( slide );
+
+			if( slide.slideBackgroundElement ) {
+				slideContent.startEmbeddedContent( slide.slideBackgroundElement );
+			}
+		}
+
 		dispatchEvent({
 			type: 'slidesync',
 			data: {

@@ -141,6 +141,7 @@ export default class Backgrounds {
 		element.removeAttribute( 'data-background-size' );
 		element.removeAttribute( 'data-background-transition' );
 		element.style.backgroundColor = '';
+		element.style.backgroundImage = '';
 
 		contentElement.style.backgroundSize = '';
 		contentElement.style.backgroundRepeat = '';

@@ -395,20 +395,47 @@
 				});
 
 				QUnit.test( 'Reveal.syncSlide', function( assert ) {
-					var slide = Reveal.getSlide( 3 );
+					var slide = Reveal.getCurrentSlide();
+					var originalBackgroundImage = slide.getAttribute( 'data-background-image' );
 					var imageURL = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
+					var gradient = 'linear-gradient(to right, #000000, #ffffff)';
+					var iframeURL = 'about:blank';
 
 					slide.setAttribute( 'data-background-image', imageURL );
 					Reveal.syncSlide( slide );
 
-					var backgroundImage = Reveal.getSlideBackground( slide )
+					var background = Reveal.getSlideBackground( slide );
+					var backgroundImage = background
 						.querySelector( '.slide-background-content' )
 						.style.backgroundImage;
 
 					assert.ok( backgroundImage.indexOf( 'data:image/gif' ) !== -1, 'syncSlide updates slide background' );
 
 					slide.removeAttribute( 'data-background-image' );
+					slide.setAttribute( 'data-background-gradient', gradient );
 					Reveal.syncSlide( slide );
+
+					assert.ok( background.style.backgroundImage.indexOf( 'linear-gradient' ) !== -1, 'syncSlide applies gradient background' );
+
+					slide.removeAttribute( 'data-background-gradient' );
+					Reveal.syncSlide( slide );
+
+					assert.strictEqual( background.style.backgroundImage, '', 'syncSlide clears gradient background' );
+
+					slide.setAttribute( 'data-background-iframe', iframeURL );
+					Reveal.syncSlide( slide );
+
+					var iframe = background.querySelector( 'iframe' );
+					assert.ok( iframe, 'syncSlide creates background iframe' );
+					assert.strictEqual( iframe.getAttribute( 'src' ), iframeURL, 'syncSlide starts background iframe on current slide' );
+
+					slide.removeAttribute( 'data-background-iframe' );
+					if( originalBackgroundImage ) {
+						slide.setAttribute( 'data-background-image', originalBackgroundImage );
+					}
+					Reveal.syncSlide( slide );
+
+					assert.strictEqual( background.querySelector( 'iframe' ), null, 'syncSlide removes background iframe' );
 				});
 
 				QUnit.test( 'Reveal.syncFragments', function( assert ) {
