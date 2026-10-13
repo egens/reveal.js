@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="../dist/reset.css">
+		<link rel="stylesheet" href="../dist/reveal.css">
+		<link rel="stylesheet" href="../dist/theme/black.css">
+		<link rel="stylesheet" href="css/custom.css">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="../dist/plugin/highlight/monokai.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="watermark">
+				<img src="images/yandex.svg" height="38"/>
+				<img src="images/practicum.svg" />
+			</div>
+
+			<div class="slides">
+				<section class="qa1">
+					<section>
+						<div class="container">
+							<div class="col">
+								<br>
+								<div class="qa"><h1>Q&A</h1></div>
+							</div>
+							<div class="col">
+								<img src="images/photo.tiff" height="300" />
+								<h5>Егор Ерохин</h5>
+								наставник
+							</div>
+							<aside class="notes">
+								<a href="https://practicum.yandex.ru/webinar-form/java-developer/">Заранее зарегистрировать вебинар</a>
+								(erohinegor)
+								<br><br>
+								Нужно быть залогиненым под учеткой, которая используется в практикуме. Выбрать пункт "студент". Нажать отправить.
+								<br><br>
+								Поставить на запись
+								<br><br>
+								Привет Камеры Ждем остальных
+								<br><br>
+							</aside>
+						</div>
+						<div class="footer">
+							<a href="#/1">1</a>
+							<a href="#/2">2</a>
+							<a href="#/3">3</a>
+							<a href="#/4">4</a>
+							<a href="#/5">5</a>
+							<a href="#/6">6</a>
+							<a href="#/7">7</a>
+							<a href="#/8">8</a>
+							<a href="#/9">9</a>
+							<a href="#/10">10</a>
+							<a href="#/11">11</a>
+							<a href="#/12">12-1</a>
+							<a href="#/13">12-2</a>
+							<a href="#/14">13-group</a>
+							<a href="#/15">14</a>
+							<a href="#/16">15</a>
+							<a href="#/17">16</a>
+							<a href="#/17">17</a>
+						</div>
+					</section>
+				</section>
+				<section class="qa1"><include src="q&a1.html"></include></section>
+				<section class="qa2"><include src="q&a2.html"></include></section>
+				<section class="qa3"><include src="q&a3.html"></include></section>
+				<section class="qa4"><include src="q&a4.html"></include></section>
+				<section class="qa5"><include src="q&a5.html"></include></section>
+				<section class="qa6"><include src="q&a6.html"></include></section>
+				<section class="qa7"><include src="q&a7.html"></include></section>
+				<section class="qa8"><include src="q&a8.html"></include></section>
+				<section class="qa9"><include src="q&a9.html"></include></section>
+				<section class="qa10"><include src="q&a10.html"></include></section>
+				<section class="qa11"><include src="q&a11.html"></include></section>
+				<section class="qa12-1"><include src="q&a12-1.html"></include></section>
+				<section class="qa12-2"><include src="q&a12-2.html"></include></section>
+				<section class="qa13"><include src="q&a13_group.html"></include></section>
+				<section class="qa14"><include src="q&a14.html"></include></section>
+				<section class="qa15"><include src="q&a15.html"></include></section>
+				<section class="qa16"><include src="q&a16.html"></include></section>
+				<section class="qa17"><include src="q&a17.html"></include></section>
+			</div>
+		</div>
+
+		<script src="../dist/reveal.js"></script>
+		<script src="../dist/plugin/notes.js"></script>
+		<script src="../dist/plugin/markdown.js"></script>
+		<script src="../dist/plugin/highlight.js"></script>
+		<script>
+			function loadIncludes() {
+				return Promise.all(
+						[...document.querySelectorAll("include")].map((include) => {
+							return fetch(include.getAttribute("src"))
+									.then((response) => response.text())
+									.then((html) => (include.outerHTML = html))
+									.catch(console.err);
+						})
+				);
+			}
+			loadIncludes().then(() => {
+				// More info about initialization & config:
+				// - https://revealjs.com/initialization/
+				// - https://revealjs.com/config/
+				Reveal.initialize({
+					hash: true,
+
+					// Learn about plugins: https://revealjs.com/plugins/
+					plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+				});
+			});
+		</script>
+	</body>
+</html>

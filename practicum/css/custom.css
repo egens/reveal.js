@@ -1,0 +1,26 @@
+.watermark {
+    position: absolute;
+    left: 16px;
+    bottom: 16px;
+    z-index: 10;
+    opacity: 0.5;
+}
+
+.container{
+    display: flex;
+}
+.col{
+    flex: 1;
+}
+
+speaker-controls-notes {
+    font-size: 10px;
+}
+
+.qa {
+    font-size: 60px;
+}
+
+.footer {
+    font-size: small;
+}
