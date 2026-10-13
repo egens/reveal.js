@@ -32,9 +32,9 @@
 								int i = digits.length - 1;
 								int sum = 0;
 								int d = 1;
-								while (i >= 0) {
+								while (i &gt;= 0) {
 									sum += Character.getNumericValue(digits[i--]) * d;
-									if (i < 0) return sum;
+									if (i &lt; 0) return sum;
 									sum += Character.getNumericValue(digits[i--]) * d;
 									d *= 10;
 								}
@@ -66,17 +66,17 @@
 
 			<br><br>
 			<a href="https://leetcode.com/problems/row-with-maximum-ones">https://leetcode.com/problems/row-with-maximum-ones</a>
-			<pre><code class="java" data-trim></code>
+			<pre><code class="java" data-trim>
 					class Solution {
 					public int[] rowAndMaximumOnes(int[][] mat) {
 					int max = -1;
 					int maxI = -1;
-					for (int i = 0; i < mat.length; i++){
+					for (int i = 0; i &lt; mat.length; i++){
 					int countOnes = 0;
-					for (int j = 0; j < mat[0].length; j++){
+					for (int j = 0; j &lt; mat[0].length; j++){
 					if(mat[i][j] == 1) countOnes++;
 					}
-					if(countOnes > max){
+					if(countOnes &gt; max){
 					max = countOnes;
 					maxI = i;
 					}
@@ -84,7 +84,7 @@
 					return new int[] {maxI, max};
 					}
 					}
-					</pre>
+					</code></pre>
 		</aside>
 	</div>
 </section>

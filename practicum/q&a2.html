@@ -103,10 +103,10 @@
 			int bestSeries(int goalByStepsPerDay) {
 				int currentSeries = 0;
 				int finalSeries = 0;
-				for (int i = 0; i < 30; i++) {
-					if (days[i] >= goalByStepsPerDay) {
+				for (int i = 0; i &lt; 30; i++) {
+					if (days[i] &gt;= goalByStepsPerDay) {
 						currentSeries++;
-						if (finalSeries < currentSeries) {
+						if (finalSeries &lt; currentSeries) {
 							finalSeries = currentSeries;
 						}
 					} else {

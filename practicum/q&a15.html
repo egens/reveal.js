@@ -24,7 +24,7 @@
 						return false;
 					}
 
-					for(int i = 0; i < len; i++) {
+					for(int i = 0; i &lt; len; i++) {
 						if(indexS[s.charAt(i)] != indexT[t.charAt(i)]) {
 							return false;
 						}
@@ -42,9 +42,9 @@
 				public int numSquares(int n) {
 					int[] dp = new int[n + 1];
 					dp[0] = 0;
-					for (int i = 1; i <= n; i++) {
+					for (int i = 1; i &lt;= n; i++) {
 						int min = i;
-						for (int j = 1; j * j <= i; j++) {
+						for (int j = 1; j * j &lt;= i; j++) {
 							min = Math.min(min, dp[i - j * j] + 1);
 						}
 						dp[i] = min;
@@ -114,40 +114,40 @@
 	</aside>
 </section>
 <!--<section>-->
-<!--	<pre data-id="code-animation"><code class="hljs java" data-trim data-line-numbers>-->
-<!--		@Service-->
-<!--		public class UserService {-->
+<!--	<pre data-id="code-animation"><code class="hljs java" data-trim data-line-numbers>--&gt;
+&lt;!--		@Service--&gt;
+&lt;!--		public class UserService {--&gt;
 
-<!--			@Autowired-->
-<!--			private InvoiceService invoiceService;-->
+&lt;!--			@Autowired--&gt;
+&lt;!--			private InvoiceService invoiceService;--&gt;
 
-<!--			@Transactional-->
-<!--			public void invoice() {-->
-<!--			invoiceService.createPdf();-->
-<!--			// send invoice as email, etc.-->
-<!--			}-->
-<!--			}-->
+&lt;!--			@Transactional--&gt;
+&lt;!--			public void invoice() {--&gt;
+&lt;!--			invoiceService.createPdf();--&gt;
+&lt;!--			// send invoice as email, etc.--&gt;
+&lt;!--			}--&gt;
+&lt;!--			}--&gt;
 
-<!--			@Service-->
-<!--			public class InvoiceService {-->
+&lt;!--			@Service--&gt;
+&lt;!--			public class InvoiceService {--&gt;
 
-<!--			@Transactional-->
-<!--			public void createPdf() {-->
-<!--			// ...-->
-<!--			}-->
-<!--		}-->
-<!--	</code></pre>-->
+&lt;!--			@Transactional--&gt;
+&lt;!--			public void createPdf() {--&gt;
+&lt;!--			// ...--&gt;
+&lt;!--			}--&gt;
+&lt;!--		}--&gt;
+&lt;!--	</code></pre>-->
 
-<!--	<pre data-id="code-animation"><code class="hljs java" data-trim data-line-numbers>-->
-<!--	@Service-->
-<!--	public class InvoiceService {-->
+<!--	<pre data-id="code-animation"><code class="hljs java" data-trim data-line-numbers>--&gt;
+&lt;!--	@Service--&gt;
+&lt;!--	public class InvoiceService {--&gt;
 
-<!--	@Transactional(propagation = Propagation.REQUIRES_NEW)-->
-<!--	public void createPdf() {-->
-<!--	// ...-->
-<!--	}-->
-<!--	}-->
-<!--	</code></pre>-->
+&lt;!--	@Transactional(propagation = Propagation.REQUIRES_NEW)--&gt;
+&lt;!--	public void createPdf() {--&gt;
+&lt;!--	// ...--&gt;
+&lt;!--	}--&gt;
+&lt;!--	}--&gt;
+&lt;!--	</code></pre>-->
 <!--	<aside class="notes">-->
 <!--		Про логические и физические транзакции с примерами. Логические транзакции живут на уровне спринга.-->
 <!--		Физические транзакции это непосредственный вызов запросов к БД, который формируется спрингом.-->

@@ -26,8 +26,8 @@
 							public int[][] transpose(int[][] matrix) {
 								int[][] res = new int[matrix[0].length][matrix.length];
 
-								for (int r = 0; r < matrix.length; r++) {
-									for (int c = 0; c < matrix[0].length; c++) {
+								for (int r = 0; r &lt; matrix.length; r++) {
+									for (int c = 0; c &lt; matrix[0].length; c++) {
 										res[c][r] = matrix[r][c];
 									}
 								}
@@ -41,10 +41,10 @@
 			<a href="https://leetcode.com/problems/longest-unequal-adjacent-groups-subsequence-i/description/">https://leetcode.com/problems/longest-unequal-adjacent-groups-subsequence-i/description/</a>
 			<pre><code class="java" data-trim>
 						class Solution {
-							public List<String> getLongestSubsequence(String[] words, int[] groups) {
-								List<String> result = new ArrayList<>();
+							public List&lt;String&gt; getLongestSubsequence(String[] words, int[] groups) {
+								List&lt;String&gt; result = new ArrayList&lt;&gt;();
 								int prev = -1;
-								for (int i = 0; i < words.length; i++) {
+								for (int i = 0; i &lt; words.length; i++) {
 									int group = groups[i];
 									if(group == prev) continue;
 									prev = group;

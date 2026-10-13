@@ -28,7 +28,7 @@
 									return false;
 								}
 
-								if (root.left == null && root.right == null) {
+								if (root.left == null &amp;&amp; root.right == null) {
 									return targetSum == root.val;
 								}
 
@@ -49,14 +49,14 @@
 								int freq = 1;
 								StringBuilder res = new StringBuilder ();
 								res.append (s.charAt (0));
-								for (int i = 1; i < s.length (); i++) {
+								for (int i = 1; i &lt; s.length (); i++) {
 									if (s.charAt (i) == prev)
 										freq++;
 									else {
 										prev = s.charAt (i);
 										freq = 1;
 									}
-									if (freq < 3)
+									if (freq &lt; 3)
 										res.append (s.charAt (i));
 								}
 								return res.toString ();
@@ -68,9 +68,9 @@
 			<a href="https://leetcode.com/problems/find-words-containing-character/description/">https://leetcode.com/problems/find-words-containing-character/description/</a>
 			<pre><code class="java" data-trim>
 						class Solution {
-							public List<Integer> findWordsContaining(String[] words, char x) {
-								List<Integer> ans = new ArrayList<>();
-								for (int i = 0; i < words.length; ++i) {
+							public List&lt;Integer&gt; findWordsContaining(String[] words, char x) {
+								List&lt;Integer&gt; ans = new ArrayList&lt;&gt;();
+								for (int i = 0; i &lt; words.length; ++i) {
 									if (words[i].indexOf(x) != -1) {
 										ans.add(i);
 									}
@@ -84,9 +84,9 @@
 			<a href="https://leetcode.com/problems/find-words-containing-character/description/">https://leetcode.com/problems/find-words-containing-character/description/</a>
 			<pre><code class="java" data-trim>
 						class Solution {
-							public List<Integer> findWordsContaining(String[] words, char x) {
-								List<Integer> ans = new ArrayList<>();
-								for (int i = 0; i < words.length; ++i) {
+							public List&lt;Integer&gt; findWordsContaining(String[] words, char x) {
+								List&lt;Integer&gt; ans = new ArrayList&lt;&gt;();
+								for (int i = 0; i &lt; words.length; ++i) {
 									if (words[i].indexOf(x) != -1) {
 										ans.add(i);
 									}

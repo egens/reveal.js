@@ -15,7 +15,7 @@
 				for(int i=0; i nums.length; i++){
 					if (nums[i] == 1){
 						count++;
-						if (count > max) max = count;
+						if (count &gt; max) max = count;
 					}else{
 						count = 0;
 					}
@@ -98,7 +98,7 @@
 	<h2>ФП1 Список покупок</h2>
 	<ul>
 		<li>Работаем в тренажере</li>
-		<li>Пишем код только вместо точек <...></li>
+		<li>Пишем код только вместо точек &lt;...&gt;</li>
 		<li>Подсказки — на крайний случай</li>
 		<li>Вопросы — в общий чат теории</li>
 		<li>Обязательно название урока и ссылка</li>
@@ -120,7 +120,7 @@
 			if (productCount == currentListSize) {
 				int newListSize = currentListSize * 2;
 				String[] newShoppingList = new String[newListSize];
-				for (int i = 0; i < currentListSize; i++) {
+				for (int i = 0; i &lt; currentListSize; i++) {
 					newShoppingList[i] = shoppingList[i];
 				}
 				shoppingList = newShoppingList;

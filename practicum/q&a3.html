@@ -140,34 +140,34 @@
 		<pre><code class="java" data-trim>
 			public class DinnerConstructor {
 
-				HashMap<String, ArrayList<String>> dinnersByType = new HashMap<>();
+				HashMap&lt;String, ArrayList&lt;String&gt;&gt; dinnersByType = new HashMap&lt;&gt;();
 				Random random = new Random();
 
 				public void addNewDish(String dishType, String dishName) {
-					ArrayList<String> dishesForType;
+					ArrayList&lt;String&gt; dishesForType;
 					if (dinnersByType.containsKey(dishType)) {
 						dishesForType = dinnersByType.get(dishType);
 					} else {
-						dishesForType = new ArrayList<>();
+						dishesForType = new ArrayList&lt;&gt;();
 						dinnersByType.put(dishType, dishesForType);
 					}
 
 					dishesForType.add(dishName);
 				}
 
-				public ArrayList<ArrayList<String>> generateCombos(int comboNumber, ArrayList<String> dishTypes) {
-					ArrayList<ArrayList<String>> combos = new ArrayList<>();
-					for (int i = 1; i <= comboNumber; i++) {
-						ArrayList<String> combo = generateCombo(dishTypes);
+				public ArrayList&lt;ArrayList&lt;String&gt;&gt; generateCombos(int comboNumber, ArrayList&lt;String&gt; dishTypes) {
+					ArrayList&lt;ArrayList&lt;String&gt;&gt; combos = new ArrayList&lt;&gt;();
+					for (int i = 1; i &lt;= comboNumber; i++) {
+						ArrayList&lt;String&gt; combo = generateCombo(dishTypes);
 						combos.add(combo);
 					}
 					return combos;
 				}
 
-				private ArrayList<String> generateCombo(ArrayList<String> dishTypes) {
-					ArrayList<String> selectedDishes = new ArrayList<>();
+				private ArrayList&lt;String&gt; generateCombo(ArrayList&lt;String&gt; dishTypes) {
+					ArrayList&lt;String&gt; selectedDishes = new ArrayList&lt;&gt;();
 					for (String dishType: dishTypes) {
-						ArrayList<String> availableDishes = dinnersByType.get(dishType);
+						ArrayList&lt;String&gt; availableDishes = dinnersByType.get(dishType);
 						int numberOfDishesForType = availableDishes.size();
 						int dishIndex = random.nextInt(numberOfDishesForType);
 						String selectedDish = availableDishes.get(dishIndex);
