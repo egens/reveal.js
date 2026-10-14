@@ -7,7 +7,30 @@
 // Использование: node check_slides.js <path/to/index.html> <outdir>
 const path = require( 'path' );
 const fs = require( 'fs' );
+const os = require( 'os' );
 const { execSync } = require( 'child_process' );
+
+// Локальная копия reveal.js нужной версии из npm — на случай, если cdnjs недоступен
+// (например, в облачном контейнере). cdnjs раскладывает файлы пакета так: dist/** → корень,
+// и добавляет .min-версии. По этому правилу и ищем файл в пакете.
+const npmCache = {};
+function localRevealFile( version, file ) {
+	if( !npmCache[ version ] ) {
+		const dir = path.join( os.tmpdir(), `reveal.js-${version}` );
+		if( !fs.existsSync( path.join( dir, 'package' ) ) ) {
+			fs.mkdirSync( dir, { recursive: true } );
+			const tgz = execSync( `npm pack reveal.js@${version} --silent --pack-destination ${dir}` ).toString().trim().split( '\n' ).pop();
+			execSync( `tar xzf ${path.join( dir, tgz )} -C ${dir}` );
+		}
+		npmCache[ version ] = path.join( dir, 'package' );
+	}
+	const plain = file.replace( /\.min\.(js|css)$/, '.$1' );
+	for( const candidate of [ path.join( 'dist', plain ), plain ] ) {
+		const full = path.join( npmCache[ version ], candidate );
+		if( fs.existsSync( full ) ) return full;
+	}
+	return null;
+}
 
 function loadPlaywright() {
 	try { return require( 'playwright' ); } catch ( e ) {}
@@ -32,6 +55,21 @@ function loadPlaywright() {
 		try { await route.fulfill( { response: await route.fetch() } ); }
 		catch ( e ) { await route.abort(); }
 	} );
+	const missing = [];
+	await context.route( /^https:\/\/cdnjs\.cloudflare\.com\/ajax\/libs\/reveal\.js\/([^/]+)\/(.+)$/, async route => {
+		try {
+			const response = await route.fetch();
+			if( response.ok() ) return route.fulfill( { response } );
+		} catch ( e ) {}
+		const [ , version, file ] = route.request().url().match( /reveal\.js\/([^/]+)\/(.+)$/ );
+		const local = localRevealFile( version, file );
+		if( !local ) {
+			missing.push( route.request().url() );
+			return route.abort();
+		}
+		const type = local.endsWith( '.css' ) ? 'text/css' : 'application/javascript';
+		await route.fulfill( { path: local, contentType: type } );
+	} );
 	const page = await context.newPage();
 	page.on( 'pageerror', e => console.log( 'PAGE ERROR', e.message ) );
 	await page.goto( 'file://' + path.resolve( file ), { waitUntil: 'networkidle' } );
@@ -40,6 +78,11 @@ function loadPlaywright() {
 		console.log( 'WARN Montserrat not loaded — text widths are approximate' );
 	}
 
+	if( missing.length ) {
+		console.log( 'ERROR reveal.js file not found on cdnjs nor in the npm package — check the URL:\n  ' + missing.join( '\n  ' ) );
+		await browser.close();
+		process.exit( 2 );
+	}
 	const total = await page.evaluate( () => Reveal.getTotalSlides() );
 	let problems = 0;
 	for( let i = 0; i < total; i++ ) {

@@ -10,8 +10,9 @@
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap">
 
-		<link rel="stylesheet" href="../dist/reset.css">
-		<link rel="stylesheet" href="../dist/reveal.css">
+		<!-- reveal.js с cdnjs. Версия указана здесь и в двух <script> внизу — меняйте во всех четырёх местах -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/6.0.2/reset.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/6.0.2/reveal.min.css">
 		<link rel="stylesheet" href="otp.css">
 	</head>
 	<body>
@@ -488,8 +489,8 @@
 			</div>
 		</div>
 
-		<script src="../dist/reveal.js"></script>
-		<script src="../plugin/notes/notes.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/6.0.2/reveal.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/6.0.2/plugin/notes.min.js"></script>
 		<script>
 			// Номер страницы — справа внизу, как в шаблоне (на титуле не ставится)
 			document.querySelectorAll( '.reveal .slides > section' ).forEach( ( section, i ) => {
