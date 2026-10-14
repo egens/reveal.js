@@ -11,3 +11,9 @@ node_modules/
 .sass-cache
 # Claude Code personal settings
 .claude/settings.local.json
+presentation
+presentation.zip
+dist/reveal.es5.js
+react/dist
+react/demo/dist
+dev.html
