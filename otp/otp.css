@@ -1,0 +1,618 @@
+/*
+ * Корпоративный стиль OTP Bank (по шаблону QBR Q3–Q4'26), холст 1920×1080.
+ * Цвета — из темы шаблона, шрифт — Montserrat.
+ */
+
+:root {
+	--black: #000000;
+	--ink: #262626;          /* accent6 — заголовки */
+	--ink-soft: #4a4a4a;     /* dk2 */
+	--white: #ffffff;
+	--grey-bg: #f2f2f2;      /* lt2 — подложки */
+	--grey: #d8d8d8;         /* accent5 */
+	--line: #e3e3e3;
+
+	--lime: #c1fd0e;         /* accent1 */
+	--purple: #9e6ec6;       /* accent2 */
+	--orange: #fe7c32;       /* accent3 */
+	--sky: #c8dffc;          /* accent4 — плашка раздела */
+
+	--cat-analysis: var(--purple);
+	--cat-impl: var(--orange);
+	--cat-test: var(--lime);
+	--cat-env: var(--ink);
+	--cat-none: var(--grey);
+
+	--font: 'Montserrat', Arial, sans-serif;
+	--side: 53px;            /* поле слева/справа, как в шаблоне */
+}
+
+html, body, .reveal-viewport {
+	background: var(--white);
+}
+
+.reveal {
+	font-family: var(--font);
+	color: var(--black);
+}
+
+.reveal .slides {
+	text-align: left;
+}
+
+.reveal .slides > section {
+	width: 1920px;
+	height: 1080px;
+	padding: 0;
+}
+
+.reveal p,
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+	margin: 0;
+}
+
+.reveal b { font-weight: 700; }
+
+/* ---------- Контентный слайд (layout «заголовок + плашка раздела») ---------- */
+
+.slide {
+	position: relative;
+	box-sizing: border-box;
+	width: 1920px;
+	height: 1080px;
+	padding: 96px var(--side) 120px;
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
+	background: var(--white);
+}
+
+/* Голубая плашка раздела сверху */
+.section-bar {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 1920px;
+	height: 54px;
+	box-sizing: border-box;
+	padding: 0 var(--side);
+	display: flex;
+	align-items: center;
+	background: var(--sky);
+	font-size: 22px;
+	font-weight: 500;
+}
+
+.reveal h2 {
+	font-family: var(--font);
+	font-size: 52px;
+	font-weight: 800;
+	line-height: 1.15;
+	color: var(--ink);
+	letter-spacing: normal;
+	text-transform: none;
+	max-width: 1700px;
+}
+
+/* Источник — слева внизу, номер слайда — справа внизу */
+.source {
+	position: absolute;
+	left: var(--side);
+	bottom: 44px;
+	font-size: 20px;
+	color: var(--ink-soft);
+}
+
+.source span { color: var(--purple); }
+
+.page {
+	position: absolute;
+	right: var(--side);
+	bottom: 44px;
+	font-size: 20px;
+	color: var(--purple);
+}
+
+/* ---------- Обложка (layout «титул») ---------- */
+
+.cover {
+	position: relative;
+	width: 1920px;
+	height: 1080px;
+	background: var(--white);
+}
+
+.cover .tagline {
+	position: absolute;
+	left: 47px;
+	top: 25px;
+	font-size: 20px;
+	font-weight: 500;
+}
+
+.cover .chapter {
+	position: absolute;
+	left: 47px;
+	top: 330px;
+	font-size: 32px;
+	font-weight: 600;
+	color: var(--purple);
+	letter-spacing: 2px;
+}
+
+.cover .logo-box {
+	position: absolute;
+	left: 1644px;
+	top: 0;
+	width: 276px;
+	height: 88px;
+	background: var(--orange);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.cover .logo-box img {
+	width: 225px;
+	height: auto;
+	margin: 0;
+}
+
+.cover .side {
+	position: absolute;
+	left: 1644px;
+	top: 88px;
+	width: 276px;
+	height: 992px;
+	background: var(--purple);
+}
+
+.cover .date {
+	position: absolute;
+	left: 1670px;
+	bottom: 36px;
+	font-size: 22px;
+	font-weight: 500;
+	color: var(--white);
+}
+
+.cover .lime {
+	position: absolute;
+	left: 0;
+	top: 450px;
+	width: 1644px;
+	height: 630px;
+	box-sizing: border-box;
+	padding: 48px 34px 0;
+	background: var(--lime);
+	display: flex;
+	flex-direction: column;
+	gap: 36px;
+}
+
+.reveal .cover h1 {
+	font-family: var(--font);
+	font-size: 92px;
+	font-weight: 600;
+	line-height: 1.08;
+	text-transform: uppercase;
+	letter-spacing: normal;
+	color: var(--black);
+}
+
+.cover .subtitle {
+	font-size: 36px;
+	font-weight: 500;
+	text-transform: uppercase;
+}
+
+.cover .site {
+	position: absolute;
+	left: 47px;
+	bottom: 30px;
+	font-size: 20px;
+	font-weight: 500;
+}
+
+/* ---------- Общие элементы ---------- */
+
+.row {
+	display: flex;
+	gap: 32px;
+	margin: auto 0;        /* ряд по высоте содержимого, по центру свободного места */
+}
+
+/* Салатовый номер-кружок — фирменный мотив шаблона */
+.n {
+	flex: none;
+	width: 52px;
+	height: 52px;
+	border-radius: 26px;
+	background: var(--lime);
+	color: var(--black);
+	font-size: 26px;
+	font-weight: 700;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* Карточка с фиолетовой шапкой */
+.pcard {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	border-radius: 14px;
+	background: var(--white);
+	box-shadow: 0 6px 24px rgba(38, 38, 38, 0.10);
+	overflow: hidden;
+}
+
+.pcard .head {
+	background: var(--purple);
+	color: var(--white);
+	font-size: 30px;
+	font-weight: 700;
+	padding: 26px 36px;
+}
+
+.pcard .body {
+	flex: 1;
+	min-height: 240px;
+	padding: 40px 36px;
+	font-size: 34px;
+	line-height: 1.45;
+}
+
+/* Панель «Комментарии и выводы» */
+.panel {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.panel .pill-head {
+	background: var(--lime);
+	border-radius: 10px;
+	padding: 18px 28px;
+	font-size: 28px;
+	font-weight: 700;
+	text-align: center;
+}
+
+.panel .panel-body {
+	flex: 1;
+	background: var(--grey-bg);
+	border-radius: 10px;
+	padding: 36px 32px;
+	display: flex;
+	flex-direction: column;
+	gap: 32px;
+}
+
+.item {
+	display: flex;
+	gap: 20px;
+	align-items: flex-start;
+	font-size: 28px;
+	line-height: 1.45;
+}
+
+/* Салатовая выноска «!» */
+.callout {
+	display: flex;
+	gap: 24px;
+	align-items: center;
+	background: var(--lime);
+	border-radius: 10px;
+	padding: 28px 36px;
+	font-size: 30px;
+	line-height: 1.4;
+}
+
+.callout .bang {
+	flex: none;
+	width: 52px;
+	height: 52px;
+	border-radius: 26px;
+	background: var(--white);
+	font-size: 30px;
+	font-weight: 800;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* ---------- Процесс: шаги и макет формы ---------- */
+
+.steps {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 44px;
+}
+
+.steps .item { font-size: 32px; align-items: center; }
+
+.form {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	border-radius: 14px;
+	box-shadow: 0 6px 24px rgba(38, 38, 38, 0.10);
+	overflow: hidden;
+}
+
+.form .head {
+	background: var(--purple);
+	color: var(--white);
+	font-size: 28px;
+	font-weight: 700;
+	padding: 24px 36px;
+}
+
+.form .fields {
+	padding: 12px 36px 24px;
+	display: flex;
+	flex-direction: column;
+}
+
+.form .field {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding: 28px 0;
+	border-bottom: 1px solid var(--line);
+}
+
+.form .field:last-child { border-bottom: none; }
+.form .field span { font-size: 22px; color: var(--ink-soft); }
+.form .field b { font-size: 30px; font-weight: 500; }
+
+/* ---------- Таблица свода ---------- */
+
+.reveal table.summary {
+	width: 100%;
+	font-size: 28px;
+	border-collapse: separate;
+	border-spacing: 0;
+}
+
+.reveal table.summary th {
+	background: var(--purple);
+	color: var(--white);
+	text-align: left;
+	padding: 22px 24px;
+	font-size: 24px;
+	font-weight: 700;
+	border: none;
+}
+
+.reveal table.summary th:first-child { border-top-left-radius: 14px; }
+.reveal table.summary th:last-child { border-top-right-radius: 14px; }
+
+.reveal table.summary td {
+	padding: 30px 24px;
+	font-size: 30px;
+	line-height: 1.35;
+	border-bottom: 1px solid var(--grey);
+	vertical-align: middle;
+}
+
+.reveal table.summary td.key {
+	font-weight: 700;
+	white-space: nowrap;
+}
+
+/* Метки категорий — пилюли, как статусы в шаблоне */
+.tags {
+	display: flex;
+	gap: 16px;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+.tags .caption {
+	font-size: 24px;
+	font-weight: 700;
+	margin-right: 8px;
+}
+
+.tag {
+	display: inline-block;
+	padding: 10px 26px;
+	border-radius: 24px;
+	font-size: 24px;
+	font-weight: 500;
+	white-space: nowrap;
+}
+
+.tag.analysis { background: var(--cat-analysis); color: var(--white); }
+.tag.impl     { background: var(--cat-impl); color: var(--black); }
+.tag.test     { background: var(--cat-test); color: var(--black); }
+.tag.env      { background: var(--cat-env); color: var(--white); }
+.tag.none     { background: var(--cat-none); color: var(--black); }
+
+/* ---------- Слайд с данными ---------- */
+
+.chart { flex: none; width: 1080px; height: 700px; }
+.chart text { font-family: var(--font); }
+
+/* ---------- Большие числа ---------- */
+
+.stat {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 20px;
+	min-height: 380px;
+	box-sizing: border-box;
+	background: var(--grey-bg);
+	border-radius: 14px;
+	padding: 48px 44px;
+}
+
+.stat .num {
+	font-size: 104px;
+	font-weight: 800;
+	line-height: 1;
+}
+
+.stat .num.small { font-size: 80px; }
+
+.stat .text {
+	font-size: 30px;
+	line-height: 1.4;
+	color: var(--ink-soft);
+}
+
+/* ---------- Чек-лист ---------- */
+
+.asks {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 24px;
+}
+
+.ask {
+	display: flex;
+	gap: 28px;
+	align-items: center;
+	background: var(--grey-bg);
+	border-radius: 14px;
+	padding: 34px 40px;
+	font-size: 32px;
+}
+
+.ask svg { flex: none; width: 52px; height: 52px; }
+
+.tag.unlabeled { background: var(--white); color: var(--ink-soft); border: 2px dashed #a6a6a6; padding: 8px 24px; }
+
+/* ---------- Справочник меток ---------- */
+
+.reveal table.ref td {
+	padding: 22px 24px;
+	font-size: 26px;
+	line-height: 1.4;
+	vertical-align: top;
+}
+
+.reveal table.ref td.name {
+	font-weight: 700;
+	width: 330px;
+}
+
+.reveal table.ref td.label { width: 330px; }
+
+/* ---------- Шаблон описания: цепочка карточек ---------- */
+
+.flow {
+	display: flex;
+	gap: 20px;
+	margin: auto 0;
+}
+
+.flow .step-card {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+	background: var(--grey-bg);
+	border-radius: 14px;
+	padding: 32px 28px;
+	min-height: 330px;
+	box-sizing: border-box;
+}
+
+.flow .step-card h3 {
+	font-family: var(--font);
+	font-size: 30px;
+	font-weight: 700;
+	line-height: 1.2;
+	text-transform: none;
+	letter-spacing: normal;
+	color: var(--black);
+}
+
+.flow .step-card p {
+	font-size: 26px;
+	line-height: 1.4;
+	color: var(--ink-soft);
+}
+
+.flow .step-card.accent { background: var(--lime); }
+.flow .step-card.accent p { color: var(--black); }
+
+/* ---------- Сетка полей ---------- */
+
+.grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 24px;
+	margin: auto 0;
+}
+
+.field-card {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+	background: var(--grey-bg);
+	border-radius: 14px;
+	padding: 30px 32px;
+}
+
+.field-card .fhead {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	font-size: 30px;
+	font-weight: 700;
+}
+
+.field-card .fhead .n { width: 46px; height: 46px; font-size: 22px; }
+
+.field-card p {
+	font-size: 26px;
+	line-height: 1.4;
+}
+
+.field-card .muted { color: var(--ink-soft); }
+
+/* ---------- Назначение исполнителя ---------- */
+
+.routes {
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+	margin: auto 0;
+}
+
+.route {
+	display: grid;
+	grid-template-columns: 360px 56px 1fr;
+	align-items: center;
+	background: var(--grey-bg);
+	border-radius: 14px;
+	padding: 24px 32px;
+	font-size: 30px;
+	line-height: 1.35;
+}
+
+.route .arrow {
+	font-size: 34px;
+	color: var(--purple);
+	font-weight: 700;
+}
+
+.route small {
+	display: block;
+	margin-top: 6px;
+	font-size: 24px;
+	color: var(--ink-soft);
+}

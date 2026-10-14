@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="ru">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Анализ причин ошибок — новая практика</title>
+
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap">
+
+		<!-- reveal.js с cdnjs. Версия указана здесь и в двух <script> внизу — меняйте во всех четырёх местах -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/6.0.2/reset.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/6.0.2/reveal.min.css">
+		<link rel="stylesheet" href="otp.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+				<!-- 1. Титул -->
+				<section id="cover">
+					<div class="cover">
+						<p class="tagline">FOR THOSE WHO ARE OPEN TO NEW THINGS</p>
+						<p class="chapter">КЛАСТЕР LIABILITIES</p>
+						<div class="lime">
+							<h1>Анализ причин ошибок</h1>
+							<p class="subtitle">Новая практика: как заводим и классифицируем ошибки</p>
+						</div>
+						<div class="logo-box"><img src="img/otp-logo.png" alt="OTP Bank"></div>
+						<div class="side"></div>
+						<p class="date">Сентябрь 2026</p>
+						<p class="site">OTPBANK.RU</p>
+					</div>
+					<aside class="notes">
+						<p>Коллеги, всем привет, спасибо, что пришли.</p>
+						<p>Сегодня хочу познакомить вас с практикой, которую мы запускаем в кластере Liabilities, — анализом причин ошибок. Для большинства она новая, поэтому начну с того, зачем она нужна, а потом по шагам разберём, что меняется лично для вас, когда вы заводите ошибку в Jira.</p>
+						<p>План такой: зачем мы это делаем; справочник из пяти меток-причин; как заполнять карточку ошибки и кому её назначать; где смотреть сводку; что показали первые данные за май–сентябрь; и что мы просим от команды начиная с сегодняшнего дня.</p>
+						<p>Займёт минут 15–20, вопросы — в конце или по ходу, если что-то непонятно.</p>
+					</aside>
+				</section>
+
+				<!-- 2. Что и зачем -->
+				<section id="why">
+					<div class="slide">
+						<div class="section-bar">Что и зачем</div>
+						<h2>Что и зачем мы делаем</h2>
+						<div class="row">
+							<div class="pcard">
+								<div class="head">Что</div>
+								<p class="body">Каждой ошибке в Jira ставим метку причины: анализ, реализация, тестирование или окружение</p>
+							</div>
+							<div class="pcard">
+								<div class="head">Зачем</div>
+								<p class="body">Копим историю, чтобы проводить ретроспективы, искать корневые причины и предотвращать ошибки в будущих спринтах</p>
+							</div>
+							<div class="pcard">
+								<div class="head">Сегодня</div>
+								<p class="body">Практика новая — знакомим с процессом и договариваемся заводить ошибки по единому стандарту</p>
+							</div>
+						</div>
+						<div class="callout">
+							<span class="bang">!</span>
+							<p>Мы никого не блеймим: метка описывает этап процесса, а не человека</p>
+						</div>
+						<p class="source"><span>Источник:</span> Confluence · «Создание ошибки (bug)»</p>
+					</div>
+					<aside class="notes">
+						<p>Сначала — что это за практика. Ошибки в Jira мы и так заводим, чтобы зафиксировать отклонение от требований и запустить исправление. Новое в том, что теперь у каждой ошибки есть метка причины: на каком этапе дефект появился — в анализе, в реализации, в тестировании или его вызвало окружение.</p>
+						<p>Зачем это нужно. Одна отдельная ошибка ничего не говорит о процессе. А когда накапливается история, можно проводить ретроспективу, группировать проблемы и находить корневые причины. Тогда мы перестаём только тушить пожары и начинаем устранять то, из-за чего ошибки появляются, — ещё в следующих спринтах.</p>
+						<p>Практика новая, и многие о ней пока не слышали, поэтому цель встречи — познакомить вас с процессом и договориться заводить ошибки одинаково.</p>
+						<p>И важный момент: это не поиск виноватых и не KPI по людям. Метка описывает этап процесса. Если окажется, что большинство ошибок — analysis_error, чинить будем процесс аналитики, а не требовать от тестировщиков работать больше.</p>
+					</aside>
+				</section>
+
+				<!-- 3. Справочник меток -->
+				<section id="labels">
+					<div class="slide" style="gap:32px">
+						<div class="section-bar">Справочник меток</div>
+						<h2>Пять меток — пять причин</h2>
+						<table class="summary ref">
+							<tr><th>Метка</th><th>Название</th><th>Когда ставим</th></tr>
+							<tr>
+								<td class="label"><span class="tag analysis">analysis_error</span></td>
+								<td class="name">Ошибка анализа / требований</td>
+								<td>Кейс описан неполно или неверно: сделали по ТЗ, а поведение неверное. Артефакты или спецификация неактуальны. Нет страницы в Confluence и задачи анализа / story с этим кейсом</td>
+							</tr>
+							<tr>
+								<td class="label"><span class="tag impl">implementation_error</span></td>
+								<td class="name">Ошибка реализации</td>
+								<td>Верное поведение уже было описано в Confluence или Jira, а сделали иначе</td>
+							</tr>
+							<tr>
+								<td class="label"><span class="tag test">testing_error</span></td>
+								<td class="name">Ошибка тестирования</td>
+								<td>Верное поведение было в ТЗ, но QA не нашёл дефект до прода. Находки с Dev / Test / Preprod сюда не относим</td>
+							</tr>
+							<tr>
+								<td class="label"><span class="tag env">environment_error</span></td>
+								<td class="name">Ошибка окружения</td>
+								<td>Дефект вызван окружением, а не анализом, реализацией или тестированием</td>
+							</tr>
+							<tr>
+								<td class="label"><span class="tag none">not_classified</span></td>
+								<td class="name">Вне классификации</td>
+								<td>Отменено, дубль, не воспроизводится или платформенная проблема — чтобы не искажать статистику</td>
+							</tr>
+						</table>
+						<p class="source"><span>Источник:</span> Confluence · «Создание ошибки (bug)» → «Справочник меток»</p>
+					</div>
+					<aside class="notes">
+						<p>Это главный слайд, его стоит запомнить: на каждую ошибку ставим ровно одну из пяти меток.</p>
+						<p>analysis_error — ошибка в требованиях. Сделали строго по ТЗ, а поведение всё равно неверное; требования дописали уже после того, как завели баг; разработка и тестирование опирались на устаревшую спецификацию; или кейс вообще нигде не описан — ни в Confluence, ни в задаче анализа.</p>
+						<p>implementation_error — ошибка реализации: верное поведение было описано, но сделали по-другому.</p>
+						<p>testing_error — ошибка тестирования: верное поведение было в ТЗ, но QA не поймал дефект до прода. Важно: если мы сами нашли ошибку на Dev, Test или Preprod, это не testing_error — значит, тестирование как раз сработало.</p>
+						<p>environment_error — причина в окружении, а не в нашей работе.</p>
+						<p>not_classified — отменённые задачи, дубли, невоспроизводимые ошибки и платформенные проблемы. Для них отдельная метка, чтобы они не искажали статистику по остальным четырём.</p>
+						<p>Простое правило, чтобы выбрать между первыми двумя: было ли верное поведение где-то записано. Если нет — это анализ, если да — реализация.</p>
+					</aside>
+				</section>
+
+				<!-- 4. Как завести ошибку -->
+				<section id="process-create">
+					<div class="slide">
+						<div class="section-bar">Процесс · заведение ошибки</div>
+						<h2>Как завести ошибку: обязательные поля</h2>
+						<div class="row" style="gap:64px">
+							<div class="steps" style="gap:36px">
+								<div class="item"><span class="n">1</span><p>Проект — <b>Liabilities and Investments (LICT)</b></p></div>
+								<div class="item"><span class="n">2</span><p>Тип задачи — <b>Ошибка</b></p></div>
+								<div class="item"><span class="n">3</span><p>Тема — краткое описание ошибки</p></div>
+								<div class="item"><span class="n">4</span><p>Автор — логин пользователя, подставляется по умолчанию</p></div>
+								<div class="item"><span class="n">5</span><p>Описание — по шаблону, так чтобы <b>причина определялась однозначно</b></p></div>
+							</div>
+							<div class="form">
+								<div class="head">Создание задачи</div>
+								<div class="fields">
+									<div class="field"><span>Проект*</span><b>Liabilities and Investments (LICT)</b></div>
+									<div class="field"><span>Тип задачи*</span><b>Ошибка</b></div>
+									<div class="field"><span>Тема*</span><b>Краткое описание ошибки</b></div>
+									<div class="field"><span>Автор*</span><b>Логин пользователя</b></div>
+								</div>
+							</div>
+						</div>
+						<p class="source"><span>Источник:</span> Confluence · «Правила и процессы» → «Создание ошибки (bug)»</p>
+					</div>
+					<aside class="notes">
+						<p>Теперь практика. Ошибку заводим в Jira, в проекте Liabilities and Investments, он же LICT, с типом задачи «Ошибка».</p>
+						<p>Обязательные поля отмечены звёздочкой: проект, тип задачи, тема и автор. Автор подставляется сам — это ваш логин. В теме коротко пишем, что сломалось, — так, чтобы по списку задач было понятно, о чём речь, без открытия карточки.</p>
+						<p>Самое важное поле — описание, хотя звёздочки у него нет. Требование к нему одно: по описанию должно быть однозначно понятно, откуда взялась ошибка. Если описание расплывчатое, классифицировать ошибку потом не сможет ни человек, ни автоматическая разметка — в данных я покажу, к чему это приводит. Для описания есть шаблон — он на следующем слайде.</p>
+					</aside>
+				</section>
+
+				<!-- 5. Шаблон описания -->
+				<section id="description">
+					<div class="slide">
+						<div class="section-bar">Процесс · описание ошибки</div>
+						<h2>Описание — по шаблону из пяти блоков</h2>
+						<div class="flow">
+							<div class="step-card">
+								<span class="n">1</span>
+								<h3>Тестовые данные</h3>
+								<p>Что нужно для воспроизведения: клиент, логи и т.&nbsp;д.</p>
+							</div>
+							<div class="step-card">
+								<span class="n">2</span>
+								<h3>Предусловие</h3>
+								<p>Что нужно сделать перед воспроизведением</p>
+							</div>
+							<div class="step-card">
+								<span class="n">3</span>
+								<h3>Шаги воспроизведения</h3>
+								<p>Шаги до возникновения ошибки</p>
+							</div>
+							<div class="step-card">
+								<span class="n">4</span>
+								<h3>Фактический результат</h3>
+								<p>Скриншоты и что именно сломалось</p>
+							</div>
+							<div class="step-card accent">
+								<span class="n" style="background:#ffffff">5</span>
+								<h3>Ожидаемый результат</h3>
+								<p>Что ожидали по документации — <b>со ссылкой на документ</b></p>
+							</div>
+						</div>
+						<div class="callout" style="background:#f2f2f2">
+							<span class="bang" style="background:#c1fd0e">!</span>
+							<p>Ссылка на документ сразу показывает, было ли верное поведение описано, — от этого зависит метка</p>
+						</div>
+						<p class="source"><span>Источник:</span> Confluence · «Создание ошибки (bug)», поле «Описание»</p>
+					</div>
+					<aside class="notes">
+						<p>Шаблон описания состоит из пяти блоков, он раскрывается прямо на странице инструкции.</p>
+						<p>Тестовые данные — всё, что нужно для воспроизведения: клиент, логи. Предусловие — что сделать заранее. Шаги воспроизведения — по порядку, до момента ошибки. Фактический результат — скриншоты и что именно сломалось.</p>
+						<p>Отдельно про пятый блок, ожидаемый результат. Пишем, что ожидали получить по документации, и обязательно даём ссылку на документ. Именно ссылка решает, какую метку ставить. Если ссылки нет, потому что поведение нигде не описано, — это analysis_error. Если ссылка есть и там написано иначе, чем работает, — implementation_error. Получается, хорошо заполненный пятый блок почти сам подсказывает категорию.</p>
+						<p>Плюс для команды: разработчику не нужно переспрашивать, как воспроизвести ошибку и как должно быть, — исправление идёт быстрее.</p>
+					</aside>
+				</section>
+
+				<!-- 6. Остальные поля -->
+				<section id="fields">
+					<div class="slide">
+						<div class="section-bar">Процесс · остальные поля</div>
+						<h2>Остальные поля карточки</h2>
+						<div class="grid">
+							<div class="field-card">
+								<div class="fhead"><span class="n">6</span>Приоритет</div>
+								<p>По умолчанию «Средний»</p>
+								<p class="muted">Блокирующий · Критичный ·<br>Средний · Низкий</p>
+							</div>
+							<div class="field-card" style="background:#c1fd0e">
+								<div class="fhead"><span class="n" style="background:#ffffff">7</span>Метки</div>
+								<p>Одна из пяти меток-причин</p>
+								<p>analysis · implementation · testing · environment · not_classified</p>
+							</div>
+							<div class="field-card">
+								<div class="fhead"><span class="n">8</span>Environment</div>
+								<p>Где нашли ошибку</p>
+								<p class="muted">Dev · Test · Preprod · Prod · External</p>
+							</div>
+							<div class="field-card">
+								<div class="fhead"><span class="n">9</span>Задача</div>
+								<p>Задача, в рамках которой обнаружили ошибку</p>
+							</div>
+							<div class="field-card">
+								<div class="fhead"><span class="n">10</span>Исполнитель</div>
+								<p>Выбирается по метке — на следующем слайде</p>
+							</div>
+							<div class="field-card">
+								<div class="fhead"><span class="n">11</span>Epic Link</div>
+								<p>Связанный эпик, иначе</p>
+								<p class="muted">«Регрессионное тестирование» (<span style="white-space:nowrap">LICT-978</span>)</p>
+							</div>
+						</div>
+						<p class="source"><span>Источник:</span> Confluence · «Создание ошибки (bug)», поля 6–11</p>
+					</div>
+					<aside class="notes">
+						<p>Коротко про остальные поля — в инструкции их всего одиннадцать.</p>
+						<p>Приоритет по умолчанию «Средний»; блокирующий или критичный ставим, только когда это действительно так.</p>
+						<p>Метки — поле, ради которого всё затевалось: одна из пяти меток-причин из справочника.</p>
+						<p>Environment — где нашли ошибку: Dev, Test, Preprod, Prod или External. Это поле нужно и для выбора метки: вспомните, что находки с Dev, Test и Preprod не бывают testing_error.</p>
+						<p>Задача — связь с задачей, в рамках которой ошибку обнаружили. По ней видно, из какой доработки пришёл дефект.</p>
+						<p>Исполнитель выбирается по метке — на следующем слайде.</p>
+						<p>Epic Link — если есть подходящий эпик, указываем его, если нет — «Регрессионное тестирование», LICT-978. Так ни одна ошибка не остаётся без эпика и не теряется на доске.</p>
+					</aside>
+				</section>
+
+				<!-- 7. Кому назначать -->
+				<section id="assignee">
+					<div class="slide">
+						<div class="section-bar">Процесс · назначение</div>
+						<h2>Кому назначать: исполнитель зависит от метки</h2>
+						<div class="routes">
+							<div class="route">
+								<span><span class="tag analysis">analysis_error</span></span>
+								<span class="arrow">→</span>
+								<p><b>Аналитик по задаче</b>, если неизвестен — чаптер-лид<small>Аналитик описывает исправление и передаёт в разработку. Если документации нет или описание займёт больше 2 ч — заводится связанная задача</small></p>
+							</div>
+							<div class="route">
+								<span><span class="tag impl">implementation_error</span></span>
+								<span class="arrow">→</span>
+								<p><b>Разработчик</b> — на исправление</p>
+							</div>
+							<div class="route">
+								<span><span class="tag test">testing_error</span></span>
+								<span class="arrow">→</span>
+								<p><b>Разработчик</b> — на исправление</p>
+							</div>
+							<div class="route">
+								<span><span class="tag env">environment_error</span></span>
+								<span class="arrow">→</span>
+								<p><b>Чаптер-лид тестирования</b></p>
+							</div>
+						</div>
+						<p class="source"><span>Источник:</span> Confluence · «Создание ошибки (bug)», поле «Исполнитель»</p>
+					</div>
+					<aside class="notes">
+						<p>Метка определяет не только статистику, но и маршрут ошибки.</p>
+						<p>analysis_error назначаем на аналитика, который вёл задачу. Если не понятно, кто это, — на чаптер-лида, он найдёт. Аналитик сначала описывает, как должно быть, и только потом передаёт ошибку в разработку. Так исправление опирается на актуальную документацию, и одна и та же ошибка не возвращается дважды. Если документации нет совсем или её описание займёт больше двух часов, аналитик заводит отдельную связанную задачу, чтобы не держать баг.</p>
+						<p>implementation_error и testing_error сразу идут разработчику на исправление: требования в порядке, нужно поправить код.</p>
+						<p>environment_error — на чаптер-лида тестирования, он разбирается с окружением.</p>
+						<p>Для not_classified исполнитель в инструкции пока не задан — это отменённые задачи, дубли и невоспроизводимые ошибки, правило для них ещё зафиксируем.</p>
+					</aside>
+				</section>
+
+				<!-- 8. Свод -->
+				<section id="process-summary">
+					<div class="slide">
+						<div class="section-bar">Свод</div>
+						<h2>Все ошибки собираются на странице «Ошибки»</h2>
+						<table class="summary">
+							<tr><th style="width:220px">Ключ</th><th>Тема</th><th style="width:340px">Метка</th><th style="width:190px">Статус</th></tr>
+							<tr>
+								<td class="key">LICT-1742</td>
+								<td>Бэк. Добавить ПФ для вклада «Горизонт» на срок 1098&nbsp;д.</td>
+								<td><span class="tag none">not_classified</span></td>
+								<td>Closed</td>
+							</tr>
+							<tr>
+								<td class="key">LICT-1753</td>
+								<td>Исправить падение системы при недоступности Alfresco</td>
+								<td><span class="tag env">environment_error</span></td>
+								<td>Closed</td>
+							</tr>
+							<tr>
+								<td class="key">LICT-1754</td>
+								<td>Ошибка при вызове /check_client с клиентом без cftClientId</td>
+								<td><span class="tag impl">implementation_error</span></td>
+								<td>Closed</td>
+							</tr>
+							<tr>
+								<td class="key">LICT-1761</td>
+								<td>Некорректная обработка ответа от UBL для клиента с двумя блокировками паспорта</td>
+								<td><span class="tag analysis">analysis_error</span></td>
+								<td>Closed</td>
+							</tr>
+						</table>
+						<p style="font-size:26px; line-height:1.4; color:#4a4a4a">Из Jira тянутся: ключ, тема, метки, приоритет, статус, дата, исполнитель, автор, месяц. Над таблицей — две диаграммы</p>
+						<p class="source"><span>Источник:</span> Confluence · «Ошибки», данные Jira LICT</p>
+					</div>
+					<aside class="notes">
+						<p>Все ошибки проекта автоматически попадают на страницу «Ошибки» в Confluence. Это таблица из Jira: ключ, тема, метки, приоритет, статус, дата создания, исполнитель, автор и месяц. Над таблицей две диаграммы: сколько ошибок каждой категории было по месяцам и какую долю занимает каждая категория.</p>
+						<p>На слайде четыре реальные строки из свода — по одной на разные метки: not_classified, environment_error, implementation_error и analysis_error. По теме каждой видно, что искать: падение при недоступности Alfresco — это окружение, а некорректная обработка ответа для клиента с двумя блокировками паспорта — кейс, который нужно было учесть в требованиях.</p>
+						<p>Страница открыта для всех: можно в любой момент посмотреть, как размечены ваши ошибки, и поправить метку, если она кажется неверной.</p>
+					</aside>
+				</section>
+
+				<!-- 9. Данные -->
+				<section id="data-method">
+					<div class="slide" style="gap:32px">
+						<div class="section-bar">Данные · май–сентябрь 2026</div>
+						<h2>Первые данные: лидирует анализ требований</h2>
+						<div class="row" style="flex:1; margin:0">
+							<svg class="chart" viewBox="0 0 1080 712" role="img" aria-label="Ошибки LICT по категориям, май–сентябрь 2026">
+								<line x1="20" y1="560" x2="1060" y2="560" stroke="#d8d8d8" stroke-width="2"/>
+								<g font-size="24" font-weight="600" fill="#000" text-anchor="middle">
+									<rect x="125" y="538" width="30" height="22" rx="3" fill="#fe7c32"/><text x="140" y="526">1</text>
+									<rect x="289" y="252" width="30" height="308" rx="3" fill="#9e6ec6"/><text x="304" y="240">14</text>
+									<rect x="325" y="450" width="30" height="110" rx="3" fill="#fe7c32"/><text x="340" y="438">5</text>
+									<rect x="361" y="538" width="30" height="22" rx="3" fill="#262626"/><text x="376" y="526">1</text>
+									<rect x="489" y="406" width="30" height="154" rx="3" fill="#9e6ec6"/><text x="504" y="394">7</text>
+									<rect x="525" y="406" width="30" height="154" rx="3" fill="#fe7c32"/><text x="540" y="394">7</text>
+									<rect x="561" y="516" width="30" height="44" rx="3" fill="#d8d8d8"/><text x="576" y="504">2</text>
+									<rect x="653" y="340" width="30" height="220" rx="3" fill="#9e6ec6"/><text x="668" y="328">10</text>
+									<rect x="689" y="428" width="30" height="132" rx="3" fill="#fe7c32"/><text x="704" y="416">6</text>
+									<rect x="725" y="516" width="30" height="44" rx="3" fill="#262626"/><text x="740" y="504">2</text>
+									<rect x="761" y="516" width="30" height="44" rx="3" fill="#d8d8d8"/><text x="776" y="504">2</text>
+									<rect x="797" y="384" width="30" height="176" rx="3" fill="#ffffff" stroke="#8c8c8c" stroke-width="2" stroke-dasharray="6 4"/><text x="812" y="372">8</text>
+									<rect x="871" y="538" width="30" height="22" rx="3" fill="#9e6ec6"/><text x="886" y="526">1</text>
+									<rect x="907" y="516" width="30" height="44" rx="3" fill="#c1fd0e" stroke="#9bcc00"/><text x="922" y="504">2</text>
+									<rect x="943" y="516" width="30" height="44" rx="3" fill="#262626"/><text x="958" y="504">2</text>
+									<rect x="979" y="164" width="30" height="396" rx="3" fill="#ffffff" stroke="#8c8c8c" stroke-width="2" stroke-dasharray="6 4"/><text x="994" y="152">18</text>
+								</g>
+								<g font-size="24" fill="#4a4a4a" text-anchor="middle">
+									<text x="140" y="600">май</text>
+									<text x="340" y="600">июн</text>
+									<text x="540" y="600">июл</text>
+									<text x="740" y="600">авг</text>
+									<text x="940" y="600">сен</text>
+								</g>
+								<g font-size="22" fill="#000">
+									<rect x="20" y="632" width="24" height="24" rx="12" fill="#9e6ec6"/><text x="54" y="652">analysis</text>
+									<rect x="200" y="632" width="24" height="24" rx="12" fill="#fe7c32"/><text x="234" y="652">implementation</text>
+									<rect x="440" y="632" width="24" height="24" rx="12" fill="#c1fd0e" stroke="#9bcc00"/><text x="474" y="652">testing</text>
+									<rect x="600" y="632" width="24" height="24" rx="12" fill="#262626"/><text x="634" y="652">environment</text>
+									<rect x="20" y="676" width="24" height="24" rx="12" fill="#d8d8d8"/><text x="54" y="696">not_classified</text>
+									<rect x="260" y="676" width="24" height="24" rx="12" fill="#ffffff" stroke="#8c8c8c" stroke-width="2" stroke-dasharray="4 3"/><text x="294" y="696">без метки</text>
+								</g>
+							</svg>
+							<div class="panel" style="flex:1">
+								<p class="pill-head">Комментарии и выводы</p>
+								<div class="panel-body" style="gap:28px">
+									<div class="item"><span class="n">1</span><p><b>88</b> ошибок за май–сентябрь, из них <b>62</b> с меткой</p></div>
+									<div class="item"><span class="n">2</span><p>Среди размеченных: analysis — <b>32 (52%)</b>, implementation — <b>19 (31%)</b>, остальные — 11</p></div>
+									<div class="item"><span class="n">3</span><p>Историю разметили <b>разово</b> с помощью ИИ, когда разрабатывали процесс, — выводы пока предварительные</p></div>
+								</div>
+							</div>
+						</div>
+						<p class="source"><span>Источник:</span> Confluence · «Ошибки», данные Jira LICT на 25.09.2026</p>
+					</div>
+					<aside class="notes">
+						<p>Теперь про данные. С мая по сентябрь в LICT завели 88 ошибок, метка есть у 62.</p>
+						<p>Среди размеченных больше половины, 32 ошибки, — analysis_error. Ещё 19, почти треть, — implementation_error. На окружение, тестирование и not_classified вместе приходится 11.</p>
+						<p>Что это значит: по первым данным главный источник ошибок — требования, а не код и не тестирование. Но выводы пока предварительные. Когда мы разрабатывали процесс, то один раз разметили историю, чтобы проверить, работает ли классификация и что она покажет. Размечали с помощью ИИ, по теме и описанию задачи. А ИИ ошибается там же, где ошибся бы человек: если описание расплывчатое, причину по нему однозначно не определить.</p>
+						<p>Поэтому, прежде чем что-то менять в процессе аналитики, мы хотим собрать данные, которые размечают по новым правилам сами авторы ошибок. Об этом следующий слайд.</p>
+					</aside>
+				</section>
+
+				<!-- 10. Разовая разметка -->
+				<section id="gap-manual">
+					<div class="slide">
+						<div class="section-bar">Данные · проблема</div>
+						<h2>Разметка была разовой — новые ошибки без меток</h2>
+						<div class="row">
+							<div class="stat">
+								<p class="num" style="color:#9e6ec6">62</p>
+								<p class="text">ошибки разметили один раз, когда разрабатывали процесс, — чтобы заглянуть в историю</p>
+							</div>
+							<div class="stat">
+								<p class="num" style="color:#262626">26</p>
+								<p class="text">ошибок заведено после разовой разметки, и метки у них нет</p>
+							</div>
+							<div class="stat">
+								<p class="num small" style="color:#fe7c32">0 → 8 → 18</p>
+								<p class="text">ошибок без метки в июле, августе и сентябре</p>
+							</div>
+						</div>
+						<div class="callout">
+							<span class="bang">!</span>
+							<p>Чтобы история не обрывалась, метку ставит автор — <b>сразу при заведении</b></p>
+						</div>
+						<p class="source"><span>Источник:</span> Confluence · «Ошибки», данные Jira LICT на 25.09.2026</p>
+					</div>
+					<aside class="notes">
+						<p>Важно понимать, откуда взялись метки. Постоянного процесса разметки у нас не было. Когда мы разрабатывали практику, то один раз разметили 62 ошибки задним числом — чтобы посмотреть в историю и проверить, что классификация вообще что-то показывает.</p>
+						<p>Всё, что заведено после этого, осталось без метки: 26 ошибок, почти треть от всех. На графике это видно: в июле таких нет, в августе восемь, в сентябре восемнадцать. Число ошибок в сентябре не выросло — просто новые ошибки пока заводятся по-старому.</p>
+						<p>Повторять разовую разметку каждый раз мы не хотим. Во-первых, данные будут отставать. Во-вторых, тот, кто размечает задним числом, знает о причине меньше, чем автор ошибки в момент её заведения, — поэтому такая разметка менее точная.</p>
+						<p>Поэтому с сегодняшнего дня метку ставит сам автор, сразу при заведении ошибки. Тогда история не обрывается, а данные на странице «Ошибки» всегда актуальны.</p>
+					</aside>
+				</section>
+
+				<!-- 11. Просьба к команде -->
+				<section id="ask-team">
+					<div class="slide">
+						<div class="section-bar">Что меняем</div>
+						<h2>Что мы просим от команды</h2>
+						<div class="asks" style="gap:20px">
+							<div class="ask">
+								<svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="26" fill="#c1fd0e"/><path d="m16 27 7 7 13-15" fill="none" stroke="#000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+								<p>Заводить ошибку по инструкции «Создание ошибки (bug)»</p>
+							</div>
+							<div class="ask">
+								<svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="26" fill="#c1fd0e"/><path d="m16 27 7 7 13-15" fill="none" stroke="#000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+								<p>Писать описание по шаблону — со ссылкой на документ в ожидаемом результате</p>
+							</div>
+							<div class="ask">
+								<svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="26" fill="#c1fd0e"/><path d="m16 27 7 7 13-15" fill="none" stroke="#000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+								<p>Ставить метку причины сразу при создании задачи</p>
+							</div>
+							<div class="ask">
+								<svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="26" fill="#c1fd0e"/><path d="m16 27 7 7 13-15" fill="none" stroke="#000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+								<p>Назначать исполнителя по метке, указывать Environment, задачу и Epic Link</p>
+							</div>
+						</div>
+						<p class="source"><span>Источник:</span> Confluence → Deposits Home → Правила и процессы</p>
+					</div>
+					<aside class="notes">
+						<p>Итак, конкретная просьба — четыре пункта.</p>
+						<p>Первое: заводите ошибку по инструкции «Создание ошибки (bug)». Она в Confluence, в разделе «Правила и процессы» пространства Deposits Home. Ссылку пришлю в чат после встречи.</p>
+						<p>Второе: пишите описание по шаблону и в ожидаемом результате давайте ссылку на документ. Это пара минут, зато по ошибке сразу видна причина.</p>
+						<p>Третье: ставьте метку сами, сразу при создании. Если сомневаетесь, какую выбрать, откройте справочник: главный вопрос — было ли верное поведение где-то описано.</p>
+						<p>Четвёртое: назначайте исполнителя по метке и заполняйте Environment, задачу и Epic Link — тогда ошибка сразу попадёт к нужному человеку.</p>
+						<p>Если так будут делать все, новых «дыр» в истории не появится: данные на странице «Ошибки» актуальны каждый день, и тренды видны сразу, а не через месяц.</p>
+					</aside>
+				</section>
+
+				<!-- 12. Итог -->
+				<section id="conclusion">
+					<div class="slide">
+						<div class="section-bar">Итог</div>
+						<h2>Цель — меньше ошибок долетает до этапа тестирования</h2>
+						<div class="row">
+							<div class="pcard">
+								<div class="head">Шаг 1 · сейчас</div>
+								<p class="body">Внедряем практику: каждая новая ошибка — по шаблону и с меткой причины</p>
+							</div>
+							<div class="pcard">
+								<div class="head">Шаг 2 · квартал</div>
+								<p class="body">Копим данные, размеченные авторами, и проверяем гипотезу про analysis_error</p>
+							</div>
+							<div class="pcard">
+								<div class="head">Шаг 3 · ретро</div>
+								<p class="body">Повторная ретроспектива и точечные улучшения на этапе-лидере</p>
+							</div>
+						</div>
+						<p class="source"><span>Источник:</span> Кластер Liabilities · OTP Bank</p>
+					</div>
+					<aside class="notes">
+						<p>Подведу итог. Цель всей практики — чтобы меньше ошибок доходило до тестирования, а качество закладывалось раньше по цепочке, ещё на анализе и в разработке.</p>
+						<p>Чинить всё и сразу неэффективно, поэтому идём по шагам.</p>
+						<p>Шаг первый — прямо сейчас: каждую новую ошибку заводим по шаблону и сразу с меткой причины.</p>
+						<p>Шаг второй — в течение квартала копим данные, размеченные уже самими авторами при заведении, а не разово задним числом. Сейчас данные указывают на анализ требований как на главный источник ошибок, но это гипотеза: на чистых данных мы её подтвердим или поправим.</p>
+						<p>Шаг третий — по итогам квартала проводим повторную ретроспективу, находим этап-лидер и точечно усиливаем именно его, а не вводим общие меры для всех.</p>
+						<p>Спасибо! Готов ответить на вопросы. Инструкцию и страницу «Ошибки» пришлю в чат.</p>
+					</aside>
+				</section>
+
+			</div>
+		</div>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/6.0.2/reveal.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/6.0.2/plugin/notes.min.js"></script>
+		<script>
+			// Номер страницы — справа внизу, как в шаблоне (на титуле не ставится)
+			document.querySelectorAll( '.reveal .slides > section' ).forEach( ( section, i ) => {
+				const slide = section.querySelector( '.slide' );
+				if( !slide ) return;
+				const page = document.createElement( 'span' );
+				page.className = 'page';
+				page.textContent = i + 1;
+				slide.appendChild( page );
+			} );
+
+			// ?notes в адресе — показать подстрочник прямо под слайдом (например, для печати в PDF)
+			const showNotes = new URLSearchParams( location.search ).has( 'notes' );
+
+			Reveal.initialize({
+				hash: true,
+				width: 1920,
+				height: 1080,
+				margin: 0,
+				center: false,
+				controls: false,
+				transition: 'fade',
+				backgroundTransition: 'none',
+				showNotes: showNotes,
+				plugins: [ RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
